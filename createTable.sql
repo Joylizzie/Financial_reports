@@ -44,10 +44,12 @@ company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) primary key not 
 company_name varchar(30) not null
 );
 
+--Functional currency of Parent company is different than it's subsidaries when they run in differnet jurisdiction.
 create table if not exists currencies(
 currency_id serial primary key,
 currency_name char(3) check(currency_name ~ '[A-Z]{3}') not null,
-description varchar(20)
+description varchar(20),
+functional_currency boolean	
 );
 
 --balance sheet category: assets, liabilities, equity
@@ -59,26 +61,35 @@ create table coa_categories(
 create table if not exists chart_of_accounts(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	general_ledger_number numeric(6) not null,
-	general_ledger_name varchar(30) not null,
+	general_ledger_name varchar(30) unique not null,
 	coacat_id integer references coa_categories(coacat_id) not null,
+	currency_id integer references currencies(currency_id),
 	CONSTRAINT fk_companyCode
       FOREIGN KEY(company_code) 
 	  REFERENCES companies(company_code),
 	CONSTRAINT fk_coacategory
       FOREIGN KEY(coacat_id) 
-	  REFERENCES coa_categories(coacat_id)
+	  REFERENCES coa_categories(coacat_id),
+	constraint fk_currency
+		foreign key(currency_id)
+			references currencies(currency_id)
 	); 
 
-	  
---ALTER TABLE chart_of_accounts ALTER COLUMN general_ledger_name TYPE varchar(30);
-
 create table tax(
+	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	tax_code serial primary key,
 	tax_name varchar(15) unique,
 	tax_rate numeric(4,4) not null,
 	tax_area varchar(20) not null,
-    description varchar(30) not null);
-	
+	tax_belongto varchar(15) check( tax_belongto in ('state','federal')),
+    description varchar(30) not null,
+	CONSTRAINT fk_companyCode
+      FOREIGN KEY(company_code) 
+	  REFERENCES companies(company_code)
+);
+
+--A profit centre is for arregating revenue and cost for a company.
+--A profit centre can have mulitple cost centres and wbs codes.
 create table if not exists profit_centres(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	pc_id char(6) check(pc_id ~ '[A-Z]{2}[0-9]{4}') primary key, 
@@ -86,7 +97,8 @@ create table if not exists profit_centres(
 	CONSTRAINT fk_companyCode
       FOREIGN KEY(company_code) 
 	  	REFERENCES companies(company_code));
-					
+
+--A cost is for accumulating cost for a group.
 create table if not exists cost_centres(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	cc_id char(6) check(cc_id ~ '[A-Z]{2}[0-9]{4}') primary key, 
@@ -99,7 +111,8 @@ create table if not exists cost_centres(
 		foreign key (pc_id)
 			references profit_centres(pc_id)
 );
-					
+
+--A wbs code is for accumulating cost for a product is in developing.
 create table if not exists wbs(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	wbs_code char(5) check(wbs_code ~ '[A-Z]{2}[0-9]{3}') primary key, 
@@ -113,6 +126,8 @@ create table if not exists wbs(
 			references profit_centres(pc_id)
 );
 
+--A vendor sells goods, or provides services or both to the company.
+--In accounting operations, an invoice from a vendor will be booked against this vendor as accounts payable.
 create table if not exists vendors (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	vendor_id char(6) primary key,
@@ -203,7 +218,7 @@ create table if not exists purchase_orders_items (
 	product_id integer references products(product_id),
 	item_id serial not null,
 	cc_id char(6) references cost_centres(cc_id),
-	general_ledger_number char(6) check(general_ledger_number in(502001, 600001)),
+	general_ledger_number integer check(general_ledger_number in(502001, 600001)),
 	wbs_code char(5) references wbs(wbs_code), 
 	tax_code integer references tax(tax_code) not null,
 	CONSTRAINT fk_companyCode
@@ -276,7 +291,7 @@ create table if not exists sales_invoices (
 	product_unit_name varchar(6),
 	units integer,
 	unit_selling_price numeric not null,
-    general_ledger_number numeric(6) default 501001,
+    general_ledger_number integer default 501001,
 	tax_code integer references tax(tax_code) not null,
 	cc_id char(6) references cost_centres(cc_id),
     CONSTRAINT fk_salesorders
@@ -304,7 +319,7 @@ create table if not exists sales_invoices (
 
 insert into companies(company_code, company_name)
                 values
-                  ('US001', 'Company_US');
+                  ('US001', 'OceanStream_US');
 				  
 select * from companies;
 				  
@@ -317,54 +332,52 @@ insert into coa_categories(coacat_id,coa_category_name)
 	
 select * from coa_categories;
 
+insert into currencies(currency_name, description)
+ 	values('USD', 'American_dollar'),
+	       ('CNY', 'Chines_Yuan');
+		   
+select * from currencies;
+
 insert into chart_of_accounts(company_code, general_ledger_number, general_ledger_name,
-							  coacat_id)
- 		values('US001', 100001,'checking_account',1),
-	       ('US001', 101001,'inventory',1),
-			('US001', 102001,'account_receivables',1),
-			('US001', 103001,'prepaied_expenses',1),
-			('US001', 104001,'property_plant_equipment',1),
-			('US001', 104002,'depreciation',1),
-			('US001', 105001,'other_assets',1),
-			('US001', 200001,'accounts_paybles',2),
-			('US001', 201001,'accrued_expenses',2),
-		    ('US001', 202001,'unearned_revenue',2),
-	        ('US001', 203001,'tax_payable',2),
-			('US001', 204001,'other_payables',2),
-			('US001', 205001,'long_term_debt',2),
-			('US001', 206001,'other_long_term_libilities',2),
-			('US001', 301001,'equity_capital',3),
-			('US001', 302002,'retaining_earnings',3),
-			('US001', 501001,'revenue',5),
-			('US001', 502001,'cost_of_goods_sold',5),
-			('US001', 600001,'research_development',6),			
-			('US001', 600002,'advertising',6),
-			('US001', 600003,'rent',6),
-			('US001', 600004,'utilities',6),
-			('US001', 600005,'wages',6),
-			('US001', 600006,'office_supplies',6),
-			('US001', 600007,'depreciation',6),
-			('US001', 600008,'insurance',6),
-			('US001', 600009,'other_expense',6),
-			('US001', 600010,'interest_expense',6)
+							  coacat_id,currency_id)
+ 		values('US001', 100001,'checking_account',1,1),
+	       ('US001', 101001,'inventory',1,1),
+			('US001', 102001,'account_receivables',1,1),
+			('US001', 103001,'prepaied_expenses',1,1),
+			('US001', 104001,'property_plant_equipment',1,1),
+			('US001', 104002,'accum_depreciation',1,1),
+			('US001', 105001,'other_assets',1,1),
+			('US001', 200001,'accounts_paybles',2,1),
+			('US001', 201001,'accrued_expenses',2,1),
+		    ('US001', 202001,'unearned_revenue',2,1),
+	        ('US001', 203001,'tax_payable',2,1),
+			('US001', 204001,'other_payables',2,1),
+			('US001', 205001,'long_term_debt',2,1),
+			('US001', 206001,'other_long_term_libilities',2,1),
+			('US001', 301001,'equity_capital',3,1),
+			('US001', 302002,'retaining_earnings',3,1),
+			('US001', 501001,'revenue',5,1),
+			('US001', 502001,'cost_of_goods_sold',5,1),
+			('US001', 600001,'research_development',6,1),			
+			('US001', 600002,'advertising',6,1),
+			('US001', 600003,'rent',6,1),
+			('US001', 600004,'utilities',6,1),
+			('US001', 600005,'wages',6,1),
+			('US001', 600006,'office_supplies',6,1),
+			('US001', 600007,'depreciation',6,1),
+			('US001', 600008,'insurance',6,1),
+			('US001', 600009,'other_expense',6,1),
+			('US001', 600010,'interest_expense',6,1)
 			;	
 	
 select * from chart_of_accounts as coa
 join coa_categories ca
 on coa.coacat_id = ca.coacat_id;
 
-insert into tax(tax_name, tax_rate, tax_area, description)
-   values('sales_tax', 0.10, 'US_Seattle','pec_of_sales'),
-          ('VAT_purchase', 0.17, 'some_countries', 'pec_of_sales'),
-		  ('VAT_sales', 0.17,'some_countries','pec_of_sales');
+insert into tax(company_code,tax_name, tax_rate, tax_area, tax_belongto,description)
+   values('US001','sales_tax', 0.10, 'US_Seattle','state','pec_of_sales');
 		  
 select * from tax;
-
-insert into currencies(currency_name, description)
- 	values('USD', 'American_dollar'),
-	       ('CNY', 'Chines_Yuan');
-		   
-select * from currencies;
 
 insert into customers (company_code, customer_id,customer_name, currency_id, address_line1, city)
 	values('US001', 'ABC001','customer_abc',1,'1st_ave', 'seattle');
