@@ -52,5 +52,7 @@ psql --host=localhost --dbname=test_conn --username financial_user
 
 sudo -u postgres psql -d  -a -f createTable.sql
 
+psql --host=localhost --dbname=ocean_stream --username financial_user
+
 
 
