@@ -37,6 +37,20 @@ Lizzie Zhou
 2021-03-01
 
 
+To Install Posgres on Linux:
+1. sudo apt update
+2. sudo apt install postgresql postgresql-contrib
+
+bash test_conn.sh
+
+sudo -u postgres createuser --interactive
+at promt, say user is financial_user; allow for super user
+sudo -u postgres psql
+
+connection parameters:
+psql --host=localhost --dbname=test_conn --username financial_user
+
+sudo -u postgres psql -d  -a -f createTable.sql
 
 
 
