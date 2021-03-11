@@ -8,7 +8,7 @@ from psycopg2 import Error
 def get_connection():
 
     connection = psycopg2.connect(user="joy2020",
-                                  password="Dan",
+                                  password="pw",
                                   host="localhost",
                                   port="5432",
                                   database="ocean_stream")
