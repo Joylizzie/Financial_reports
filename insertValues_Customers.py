@@ -34,7 +34,7 @@ def insert_customer_tuple(n, cur, conn):
 def get_connection():
 
     connection = psycopg2.connect(user="joy2020",
-                                  password="Dan",
+                                  password="pw",
                                   host="localhost",
                                   port="5432",
                                   database="ocean_stream")
