@@ -28,25 +28,35 @@ def customer_ids(n):
     return customer_ids_set 
 
 # generate random address with given format of address
-def address_line1(n):
-    direction = ['SE','NE', 'SW', 'NW']
-    randomd = random.choice(direction)
-    i = 1
-    while i < n+1:
-        print(f'{i} {i}th street {randomd}')
-        i += 1
+def address_line1s(n):
+    sn = ['S','N']
+    ew = ['E', 'W']
+    count = 0  
+    address_set = set() 
+    while count < n:
+        randomd = random.choice(sn) + random.choice(ew)
+        new_address = f'{count} {count}th street {randomd}'
+        if new_address in address_set:
+            continue
+        else:
+            address_set.add(new_address) 
+            count += 1
+    return address_set
+    
 
 # randomly select a city from a given list(here is cities in Washington state)            
-def citys(datafile):
+def citys(datafile,n):
     cities = pd.read_csv(datafile)
-    return random.choice(cities["County"].unique())
+    t = [x for x in cities["County"].unique() if not pd.isna(x)]
+    return [random.choice(t) for _ in range(n)]
 
-    
+'''   
 print(customer_id(),end='\n\n')
 
 print(customer_ids(10), end='\n\n')
 
-address_line1(9)
+print(address_line1s(19))
 
 datafile = '/home/lizhi/projects/joylizzie/Financial_reports/list-cities-washington-198j.csv'
-print(citys(datafile))
+print(citys(datafile,19))
+'''
