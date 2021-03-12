@@ -2,7 +2,7 @@ import psycopg2
 import random
 import datetime
 from insertValues_Customers import get_connection
-from randomdate import randomdate
+from common import randomdate
 from common import retrieve_data
 
 # fetch existing customer_ids in database ocean_stream where the company_code is 'US001'
