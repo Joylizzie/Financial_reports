@@ -60,4 +60,6 @@ if __name__ == '__main__':
     pw = os.environ['POSTGRES_PW']
     #test_conn(pw)
     #main(pw)
+    user="financial_user",
+    password=pw)
     create_csv(pw)
