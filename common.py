@@ -1,6 +1,6 @@
 import random
 import datetime
-from psycoConnection_ocean import get_connection
+from psycoConnection_ocean import get_connection, get_args
 
 def randomdate(start_date, end_date):
     # calculate time between start_date and end_date, then convert the time to days    
@@ -29,8 +29,9 @@ def retrieve_data(conn, sql_str):
             item_lst.append(row)
     return item_lst   
 
+if __name__ == '__main__':
 # call the function to see if the function works
-conn = get_connection()
-sql_str = sql = """select customer_id from sales_orders where company_code='US001'
+    conn = get_connection(args)
+    sql_str = sql = """select customer_id from sales_orders where company_code='US001'
       """
-print(retrieve_data(conn, sql_str))
+    print(retrieve_data(conn, sql_str))
