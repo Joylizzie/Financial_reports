@@ -58,7 +58,7 @@ create table tax(
 
 create table if not exists chart_of_accounts(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-	general_ledger_number numeric(6) not null,
+	general_ledger_number integer check(general_ledger_number between 100000 and 999999) unique not null,
 	general_ledger_name varchar(30) unique not null,
 	coacat_id integer references coa_categories(coacat_id) not null,
 	currency_id integer references currencies(currency_id),
@@ -117,7 +117,7 @@ create table if not exists vendors (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	vendor_id char(6) primary key,
 	vendor_name varchar(60) not null unique,
-    general_ledger_number char(6) default 200001,
+    general_ledger_number integer default 200001,
 	currency_id integer references currencies not null,
 	address_line1 varchar(60) not null,
 	address_line2 varchar(20),
@@ -138,8 +138,8 @@ create table if not exists vendors (
 create table if not exists customers (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	customer_id char(6) primary key check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
-	customer_name varchar(60) not null unique,
-    general_ledger_number char(6) default '102001',
+	customer_name varchar(60) not null ,
+    general_ledger_number integer default '102001',
 	currency_id integer references currencies not null,
 	address_line1 varchar(60) not null,
 	city          varchar(30) not null,
@@ -156,6 +156,27 @@ create table if not exists customers (
 	  REFERENCES currencies(currency_id)
 	);
 	
+
+create table if not exists customer_names (
+	customer_id char(6) primary key check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
+	address_line1 varchar(60) not null,
+	city          varchar(30) not null,
+	state         varchar(15),
+	country       varchar(20),
+	postcode       varchar(10),
+	CONSTRAINT fk_customer_id
+      FOREIGN KEY(customer_id) 
+	  REFERENCES customers(customer_id)
+	);
+
+create table if not exists customer_addresses (
+	customer_id char(6) primary key check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
+	last_name varchar(250),
+	first_name varchar(250),
+	CONSTRAINT fk_customer_id
+      FOREIGN KEY(customer_id) 
+	  REFERENCES customers(customer_id)
+	);
 
 create table product_categories(
 	cat_id serial primary key,
