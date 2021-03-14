@@ -1,18 +1,19 @@
 import string
 import random
 import pandas as pd
+random.seed(5)
 
 # generate 3 random uppercase letters
-def randomUc(d):
+def random_uc(d):
     return ''.join([random.choice(string.ascii_uppercase) for _ in range(d)])
 
 # generate 3 random digits
-def randomDg(d):
+def random_dg(d):
     return ''.join([random.choice(string.digits) for _ in range(d)])
 
 # generate random customer id, with length=6, first 3 uppercase letters, followed by 3 digits
 def customer_id():
-    return randomUc(3) + randomDg(3)
+    return random_uc(3) + random_dg(3)
 
 # generate given number of customer ids
 def customer_ids(n):
@@ -50,13 +51,3 @@ def citys(datafile,n):
     t = [x for x in cities["County"].unique() if not pd.isna(x)]
     return [random.choice(t) for _ in range(n)]
 
-'''   
-print(customer_id(),end='\n\n')
-
-print(customer_ids(10), end='\n\n')
-
-print(address_line1s(19))
-
-datafile = '/home/lizhi/projects/joylizzie/Financial_reports/list-cities-washington-198j.csv'
-print(citys(datafile,19))
-'''
