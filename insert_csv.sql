@@ -1,9 +1,12 @@
-drop table if exists test_csv;
-create table if not exists test_csv(
-    name varchar(10),
-    num integer
-    );
-COPY test_csv
-FROM '/home/henry/projects/Financial_reports/test.csv' 
+COPY customers
+FROM '/tmp/customers.csv'
+DELIMITER ','
+CSV HEADER;
+COPY customer_names
+FROM '/tmp/customer_names.csv'
+DELIMITER ','
+CSV HEADER;
+COPY sales_orders
+FROM '/tmp/sales_orders.csv'
 DELIMITER ','
 CSV HEADER;

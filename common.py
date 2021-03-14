@@ -30,7 +30,8 @@ def retrieve_data(conn, sql_str):
     return item_lst   
 
 # call the function to see if the function works
-conn = get_connection()
-sql_str = sql = """select customer_id from sales_orders where company_code='US001'
-      """
-print(retrieve_data(conn, sql_str))
+if __name__ == '__main__':
+    conn = get_connection()
+    sql_str = sql = """select customer_id from sales_orders where company_code='US001'
+          """
+    print(retrieve_data(conn, sql_str))

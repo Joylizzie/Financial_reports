@@ -2,7 +2,6 @@ import os
 import csv
 import random
 
-import psycopg2
 
 from generate_cust_id import customer_ids, address_line1s, citys
 import make_random_data
