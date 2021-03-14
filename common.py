@@ -43,9 +43,4 @@ if __name__ == '__main__':
     run_program(do_work, parms)
 
 
-#if __name__ == '__main__':
-# call the function to see if the function works
-#    conn = get_connection(args)
-#    sql_str = """select customer_id from sales_orders where company_code='US001' """
 
-#    print(retrieve_data(conn, sql_str))
