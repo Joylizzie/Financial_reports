@@ -1,7 +1,12 @@
 #import psycopg2
 #import random
-import datetime
 from psycoConnection_ocean import get_connection, get_args, run_program
+import os
+import random
+import datetime
+
+import psycopg2
+
 from common import randomdate
 from common import retrieve_data
 
@@ -37,10 +42,24 @@ if __name__ == '__main__':
     # call the function with parameters to see if the function works# 
     sql_insert = ''' insert into sales_orders(company_code,s_order_date,customer_id)
                     values(%s,%s,%s)
+<<<<<<< HEAD
             '''   
     parms = {'n':2, 'start_date':(datetime.date(2021, 3, 1)), 'end_date':(datetime.date(2021, 3, 31)),
         'sql_insert':sql_insert}
 
     run_program(do_work, parms)
 
+=======
+            '''
+if __name__ == '__main__':
+    conn = psycopg2.connect(
+        host="localhost",
+        database="ocean_stream",
+        user="financial_user",
+        password=os.environ['POSTGRES_PW'])
+    n = 10
+    start_date = datetime.date(2021, 3, 1)
+    end_date = datetime.date(2021, 3, 31)
+    print(insert_values_tuples(n, conn, sql_insert))
+>>>>>>> main
 

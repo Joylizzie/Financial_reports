@@ -138,7 +138,7 @@ create table if not exists vendors (
 create table if not exists customers (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	customer_id char(6) primary key check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
-	customer_name varchar(60) not null unique,
+	customer_name varchar(60) not null ,
     general_ledger_number integer default '102001',
 	currency_id integer references currencies not null,
 	address_line1 varchar(60) not null,
@@ -156,6 +156,27 @@ create table if not exists customers (
 	  REFERENCES currencies(currency_id)
 	);
 	
+
+create table if not exists customer_names (
+	customer_id char(6) primary key check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
+	address_line1 varchar(60) not null,
+	city          varchar(30) not null,
+	state         varchar(15),
+	country       varchar(20),
+	postcode       varchar(10),
+	CONSTRAINT fk_customer_id
+      FOREIGN KEY(customer_id) 
+	  REFERENCES customers(customer_id)
+	);
+
+create table if not exists customer_addresses (
+	customer_id char(6) primary key check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
+	last_name varchar(250),
+	first_name varchar(250),
+	CONSTRAINT fk_customer_id
+      FOREIGN KEY(customer_id) 
+	  REFERENCES customers(customer_id)
+	);
 
 create table product_categories(
 	cat_id serial primary key,
