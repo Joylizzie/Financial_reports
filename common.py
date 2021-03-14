@@ -1,12 +1,13 @@
 import random
 import datetime
-from psycoConnection_ocean import get_connection
+from psyco_connection_ocean import get_connection, get_args, run_program
+
 
 def randomdate(start_date, end_date):
-    # calculate time between start_date and end_date, then convert the time to days    
+    # calculate time between start_date and end_date, then convert the time to days
     days_between_dates = (end_date - start_date).days
     # select random day in above days
-    random_number_of_days = random.randrange(days_between_dates) 
+    random_number_of_days = random.randrange(days_between_dates)
     random_date = start_date + datetime.timedelta(days=random_number_of_days)
     return random_date
 
@@ -21,17 +22,24 @@ print(randomdate(start_date, end_date))
 
 # fetch existing data from database and close cursur
 def retrieve_data(conn, sql_str):
-    
+
     with conn.cursor() as curs:
-        curs.execute(sql_str) #cursor closed after the execute action
+        curs.execute(sql_str)  #cursor closed after the execute action
         item_lst = []
         for row in curs.fetchall():
             item_lst.append(row)
-    return item_lst   
+    return item_lst
 
-# call the function to see if the function works
+
+def do_work(conn, sql_str):
+    cur = conn.cursor()
+    retrieve_data(conn, sql_str)
+
+
 if __name__ == '__main__':
-    conn = get_connection()
-    sql_str = sql = """select customer_id from sales_orders where company_code='US001'
-          """
-    print(retrieve_data(conn, sql_str))
+
+    # call the function with parameters to see if the function works#
+    sql_str = """select customer_id from sales_orders where company_code='US001' """
+    parms = {'sql_str': sql_str}
+
+    run_program(do_work, parms)
