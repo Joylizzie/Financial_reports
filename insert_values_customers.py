@@ -27,7 +27,7 @@ def generate_customer_tuples(n, data_file):
     return [('US001',
             customer_ids_lst[k], 
             customer_surnames[k] + ',' + customer_first_names[k][0],
-            1, 
+            102001, 
             1,
             '{n} {s}'.format(n = random.randrange(1,100), s = street_addresses[k]),
             cities_list[k][0],

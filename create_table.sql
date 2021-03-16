@@ -283,10 +283,10 @@ create table if not exists sales_invoices (
 		);
 
 create table entry_type(
-entry_type_id serial primary key,
-entry_type_name varchar(15) not null,
-description
-);
+    entry_type_id serial primary key,
+    entry_type_name varchar(15) not null,
+    description varchar(100)
+    );
 
 create table general_ledger_entry(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
@@ -296,8 +296,8 @@ create table general_ledger_entry(
       	    FOREIGN KEY(company_code) 
 	  		    REFERENCES companies(company_code),
         CONSTRAINT fk_entrytype
-            FOREIGN KEY(id) 
-	            REFERENCES entry_type(id),
+            FOREIGN KEY(entry_type_id) 
+	            REFERENCES entry_type(entry_type_id)
         );
  
 
@@ -330,7 +330,7 @@ create table general_ledger_entry_item(
 
 create table ar_invoice_entry(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        entry_type_id integer) default 2,
+        entry_type_id integer default 2,
         ar_invoice_entry_id serial primary key not null,
         invoice_id integer not null,
         debit BOOLEAN NOT NULL,
@@ -376,7 +376,7 @@ create table ap_invoice_entry(
 	  		    REFERENCES companies(company_code),
 	    CONSTRAINT fk_po
             FOREIGN KEY(p_order_id) 
-	            REFERENCES purchase_orders(p_order_id),
+	            REFERENCES purchase_orders(p_order_id)
        );
 
 create table ap_payment(
@@ -406,8 +406,7 @@ create table ap_payment(
 insert into companies(company_code, company_name)
                 values
                   ('US001', 'OceanStream_US');
-				  
--- select * from companies;
+
 				  
 insert into coa_categories(coacat_id,coa_category_name)
     values(1,'assets'),
@@ -416,18 +415,18 @@ insert into coa_categories(coacat_id,coa_category_name)
 	(5,'revenue'),
 	(6,'expenses');
 	
--- select * from coa_categories;
+
 
 insert into currencies(currency_name, description)
  	values('USD', 'American_dollar'),
 	       ('CNY', 'Chines_Yuan');
 		   
--- select * from currencies;
+
 
 insert into tax(company_code,tax_name, tax_rate, tax_area, tax_belongto,description)
    values('US001','sales_tax', 0.10, 'US_Seattle','state','pec_of_sales');
 		  
--- select * from tax;
+
 
 insert into chart_of_accounts(company_code, general_ledger_number, general_ledger_name,
 							  coacat_id,currency_id)
@@ -460,96 +459,71 @@ insert into chart_of_accounts(company_code, general_ledger_number, general_ledge
 			('US001', 600009,'other_expense',6,1),
 			('US001', 600010,'interest_expense',6,1)
 			;	
-/*	
-select * from chart_of_accounts as coa
-join coa_categories ca
-on coa.coacat_id = ca.coacat_id;
-*/
+
 
 insert into customers (company_code, customer_id,customer_name, currency_id, address_line1, city)
 	values('US001', 'ABC001','customer_abc',1,'1st_ave', 'seattle');
 
-/*
-select * from customers as cus
-join currencies cur
-on cus.currency_id = cur.currency_id;
-*/
 
 insert into vendors (company_code, vendor_id,vendor_name, currency_id,address_line1, city)
 	values('US001', 'VBC001','vendor_vbc',1,'1st_street', 'seattle');
 
-/*
-select * from vendors as v
-join currencies cur
-on v.currency_id = cur.currency_id;
-*/
+
 
 insert into product_categories(cat_name)
  	values('h_ware'),
 	       ('s_ware'),
 		   ('service');
 		   
--- select * from product_categories;
+
 
 insert into products(company_code, cat_id, 
 					 product_name, product_units, product_unit_price, currency_id)
 		  values('US001', 1, 'server', 1, 250000,1);
 		  
--- select * from products;
+
 
 insert into profit_centres(company_code, pc_id,pc_name)
   values('US001', 'SE0001','hard_ware_SE');
   
--- select * from profit_centres;
+
 
 insert into cost_centres(company_code, cc_id, name,pc_id)
   values('US001', 'SE0001','hard_ware_SE_server', 'SE0001');
   
--- select * from cost_centres;
+
 
 
 insert into wbs(company_code,wbs_code, name, pc_id)
   values('US001', 'LS001','livestream_1', 'SE0001');
   
--- select * from wbs;
+
  
  insert into purchase_orders(company_code, vendor_id)
  values('US001','VBC001');
  
--- select * from purchase_orders;
- 
-/* 
-select * from purchase_orders_items pt
-join purchase_orders po
-on pt.p_order_id = po.p_order_id;
-*/
-	
+
 insert into sales_orders(company_code, customer_id)
    values('US001','ABC001');
 
--- select * from sales_orders;
+
 
 insert into sales_orders_items(company_code, sales_order_id,
-							  product_id,units,unit_selling_price, currency_id,tax_code)
-	values('US001',1,1,1,520000,1,1);
+							  product_id,units,unit_selling_price, currency_id,tax_code,shipped)
+	values('US001',1,1,1,520000,1,1,True);
 
-/*
-select * from sales_orders_items st
-join sales_orders so
-on st.sales_order_id = so.sales_order_id;
-*/
 
-insert into sales_invoices(company_code, sales_order_id, customer_id,product_id, 
-						   units, unit_selling_price,tax_code, cc_id)
-	values('US001',1,'ABC001',1,1,520000,1,'SE0001');
+
+insert into sales_invoices(company_code, sales_order_id, cc_id)
+	values('US001',1,'SE0001');
 	
 -- select * from sales_invoices;
-insert into entry_type(entry_type_name varchar(15) not null, description);
+insert into entry_type(entry_type_name, description)
     values('journal_entry', 'record entries for general ledger'),
            ('ar_invoice', 'record invoices issued to customers'),
             ('ar_receipt', 'record fund received from customers'),
            ('ap_invoice', 'record invoices received from vendors'),
-            ('ap_payment', 'record fund payment to vendors')
+            ('ap_payment', 'record fund payment to vendors');
 
 
 
