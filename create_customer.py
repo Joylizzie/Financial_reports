@@ -3,8 +3,9 @@ import csv
 import random
 
 
-from generate_cust_id import customer_ids, address_line1s, citys
+#from generate_cust_id import customer_ids, address_line1s, citys
 import make_random_data
+from generate_cust_id import  address_line1s, customer_ids
 
 random.seed(5)
 
@@ -15,9 +16,8 @@ def _generate_phone_num():
 
 def generate_customer_tuples(n, data_file):
     customer_ids_lst = list(customer_ids(n))
-    customer_name_lst = [x + ' Ltd.' for x in customer_ids_lst] #customer_name is customer_id + Ltd.
+    #customer_name_lst = [x + ' Ltd.' for x in customer_ids_lst] #customer_name is customer_id + Ltd.
     address_lst = list(address_line1s(n))
-    city_lst = citys(data_file, n) 
     cities_list = make_random_data.make_random_cities(path = 'data/wash_cities.csv', num = n)
     customer_surnames = make_random_data.make_random_surnames(path = 'data/surnames.csv', num = n)
     customer_first_names = make_random_data.make_random_first_names(path = 'data/first_names.csv', num = n)

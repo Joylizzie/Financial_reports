@@ -1,4 +1,6 @@
 set -e
+python create_customer.py
+python create_sales_orders.py
 sudo -u postgres psql  -a -f create_db.sql
 sudo -u postgres psql -d ocean_stream -a -f create_table.sql
 cp data/customers.csv /tmp
