@@ -10,10 +10,11 @@
      <li> C - Consulting service </li>
 <li> WBS(Work Breakdown Structure) abbreviate of the product under developing and sequence </li>
 <li> Predefined geography areas are:</li>
-     SE - north of King county,
-     SP - east of Cascade,
-     KG - King and Pierce county,
-     OY - west of Puget Sound,south of Pierce county, west of Cascade. </li>
+     <ol>
+     <li> SE - north of King county </li>
+     <li> SP - east of Cascade </li>
+     <li> KG - King and Pierce county </li>
+     <li> OY - west of Puget Sound,south of Pierce county, west of Cascade. </li>
 <li> Profit centres are 6 characters long. Example:PSE001 means vizwise_online_annual_SE </li>
 <li> Cost centres are 5 characters long. Example: PSE02 means vizwise_online_annual_SE </li>
 <li> Each cost centre and WBS code must belong to a Profit centre</li>
