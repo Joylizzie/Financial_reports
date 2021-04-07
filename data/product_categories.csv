@@ -1,0 +1,6 @@
+"company_code","cat_id","cat_name","subcat_id","subcat_name"
+"US001",1,"hard_ware",1,"server"
+"US001",2,"hard_ware",1,"computer"
+"US001",3,"soft_ware",2,"one_off_payement"
+"US001",4,"soft_ware",2,"annual_subscribe"
+"US001",5,"consulting",1,"one_off_payment"

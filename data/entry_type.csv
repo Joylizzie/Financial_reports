@@ -1,0 +1,6 @@
+entry_type_id,entry_type_name,description
+1,journal_entry,entries for general ledger
+2,ar_invoice,entries for invoices issued to customers
+3,ar_receipt,entries for fund received from customers
+4,ap_invoice,entries for invoices received from vendors
+5,ap_payment,entries for fund payment to vendors
