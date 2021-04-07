@@ -1,6 +1,4 @@
 show search_path;
-<<<<<<< HEAD
-=======
 
 DROP SCHEMA IF EXISTS ocean CASCADE;
 
@@ -8,7 +6,7 @@ CREATE SCHEMA IF NOT EXISTS ocean
 AUTHORIZATION CURRENT_USER; 
 
 set search_path TO ocean;
->>>>>>> main
+
 
 drop table if exists companies CASCADE;
 drop table if exists coa_categories CASCADE;
@@ -151,17 +149,9 @@ create table if not exists vendors (
 
 create table if not exists vendor_addresses(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-<<<<<<< HEAD
-	customer_id char(6) primary key check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
-	customer_name varchar(60) not null unique,
-    general_ledger_number integer default '102001',
-	currency_id integer references currencies not null,
-	address_line1 varchar(60) not null,
-=======
 	vendor_id char(5) not null,
 	address_line1 varchar(250) not null,
 	address_line2 varchar(20),
->>>>>>> main
 	city          varchar(30) not null,
 	state         varchar(15),
 	country       varchar(20),
@@ -185,9 +175,6 @@ create table if not exists business_type(
 	   REFERENCES companies(company_code)
     );
 
-<<<<<<< HEAD
-create table product_categories(
-=======
 create table if not exists customer_names (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	customer_id char(6) primary key check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
@@ -220,7 +207,6 @@ create table if not exists customer_addresses (
 
 create table if not exists product_categories(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
->>>>>>> main
 	cat_id serial primary key,
 	cat_name varchar(20) not null,
 	subcat_id integer,
@@ -308,7 +294,6 @@ create table if not exists sales_orders(
 create table if not exists sales_orders_items (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	sales_order_id integer not null,
-	item_id serial,
 	product_id integer not null,
 	unit_name varchar(6),
 	units integer,
@@ -332,42 +317,32 @@ create table if not exists sales_orders_items (
       	FOREIGN KEY(sales_order_id) 
 	  		REFERENCES sales_orders(sales_order_id)
 	);
- 
+
+-- sales invoice will be issued to customers with shipped sales order items
 create table if not exists sales_invoices (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	invoice_date DATE NOT NULL DEFAULT CURRENT_DATE,
 	invoice_id serial primary key not null,
     sales_order_id integer not null,
-    general_ledger_number integer default 501001,
-    cc_id char(6) references cost_centres(cc_id),
 	CONSTRAINT fk_companyCode
       	FOREIGN KEY(company_code) 
 	  		REFERENCES companies(company_code),
     CONSTRAINT fk_salesorders
       	FOREIGN KEY(sales_order_id) 
-	  		REFERENCES sales_orders(sales_order_id),
-     CONSTRAINT fk_costcentre
-       FOREIGN KEY(cc_id) 
-	    REFERENCES cost_centres(cc_id)	
-<<<<<<< HEAD
-		);
-
-create table entry_type(
-=======
+	  		REFERENCES sales_orders(sales_order_id)
     );
 
 create table if not exists entry_type(
->>>>>>> main
-    entry_type_id serial primary key,
-    entry_type_name varchar(15) not null,
+    entry_type_id varchar(3) primary key,
+    entry_type_name varchar(20) not null,
     description varchar(100)
     );
-<<<<<<< HEAD
 
-create table general_ledger_entry(
+create table if not exists journal_entry(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        entry_type_id integer default 1,
-        general_ledger_entry_id serial primary key,
+        entry_type_id varchar(3) default 'JE',
+        transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
+        je_id serial primary key,
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 
 	  		    REFERENCES companies(company_code),
@@ -377,127 +352,12 @@ create table general_ledger_entry(
         );
  
 
-create table general_ledger_entry_item(
+
+create table if not exists journal_entry_item(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        general_ledger_entry_id integer not null,
-        item_id serial,
+        je_id integer not null,
         transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
-        general_ledger_number integer,
-        cc_id char(6) references cost_centres(cc_id), 
-        wbs_code char(5) references wbs(wbs_code),
-        currency_id integer references currencies not null,
-        debit BOOLEAN NOT NULL,
-        credit BOOLEAN NOT NULL,
-        amount numeric(12,2),
-        CONSTRAINT fk_companyCode
-      	    FOREIGN KEY(company_code) 
-	  		    REFERENCES companies(company_code),
-        CONSTRAINT fk_costcentre
-            FOREIGN KEY(cc_id) 
-	            REFERENCES cost_centres(cc_id),
-	    CONSTRAINT fk_wbs
-            FOREIGN KEY(wbs_code) 
-	            REFERENCES wbs(wbs_code),
-	    CONSTRAINT fk_currencyid
-            FOREIGN KEY(currency_id) 
-	            REFERENCES currencies(currency_id)	
-       );
-
-
-create table ar_invoice_entry(
-        company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        entry_type_id integer default 2,
-        ar_invoice_entry_id serial primary key not null,
-        invoice_id integer not null,
-        debit BOOLEAN NOT NULL,
-        credit BOOLEAN NOT NULL,
-        amount numeric(12,2),
-        CONSTRAINT fk_companyCode
-      	    FOREIGN KEY(company_code) 
-	  		    REFERENCES companies(company_code),
-        CONSTRAINT fk_salesinvoice
-      	    FOREIGN KEY(invoice_id) 
-	  		    REFERENCES sales_invoices(invoice_id)
-       );
-
-create table ar_invoice_entry_receipt(
-        company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        entry_type_id integer default 3,
-        ar_invoice_entry_id serial primary key not null,
-        transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
-        general_ledger_number integer default 10001,
-        currency_id integer references currencies not null,
-        debit BOOLEAN NOT NULL,
-        credit BOOLEAN NOT NULL,
-        amount numeric(12,2),
-        CONSTRAINT fk_companyCode
-      	    FOREIGN KEY(company_code) 
-	  		    REFERENCES companies(company_code),
-        CONSTRAINT fk_arinvoiceentry
-      	    FOREIGN KEY(ar_invoice_entry_id) 
-	  		    REFERENCES ar_invoice_entry(ar_invoice_entry_id)        
-     );
-                             
-create table ap_invoice_entry(
-        company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        entry_type_id integer default 4,
-        p_order_id integer references purchase_orders(p_order_id) not null,
-        ap_invoice_entry serial primary key not null,
-        invoice_id integer not null,
-        debit BOOLEAN NOT NULL,
-        credit BOOLEAN NOT NULL,
-        amount numeric(12,2),
-        CONSTRAINT fk_companyCode
-      	    FOREIGN KEY(company_code) 
-	  		    REFERENCES companies(company_code),
-	    CONSTRAINT fk_po
-            FOREIGN KEY(p_order_id) 
-	            REFERENCES purchase_orders(p_order_id)
-       );
-
-create table ap_payment(
-        company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        ap_invoice_entry_id integer not null,
-        item_id serial,
-        transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
-        general_ledger_number integer default 10001,
-        currency_id integer references currencies not null,
-        debit BOOLEAN NOT NULL,
-        credit BOOLEAN NOT NULL,
-        amount numeric(12,2),
-        CONSTRAINT fk_companyCode
-      	    FOREIGN KEY(company_code) 
-	  		    REFERENCES companies(company_code),
-	    CONSTRAINT fk_apinvoice
-            FOREIGN KEY(ap_invoice_entry_id) 
-	            REFERENCES ap_invoice_entry(ap_invoice_entry_id)       
-        );
-                             
-
-
-                             
-=======
->>>>>>> main
-
-create table if not exists general_ledger(
-        company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        entry_type_id integer default 1,
-        general_ledger_entry_id serial primary key,
-        CONSTRAINT fk_companyCode
-      	    FOREIGN KEY(company_code) 
-	  		    REFERENCES companies(company_code),
-        CONSTRAINT fk_entrytype
-            FOREIGN KEY(entry_type_id) 
-	            REFERENCES entry_type(entry_type_id)
-        );
- 
-
-create table if not exists general_ledger_item(
-        company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        general_ledger_entry_id integer not null,
-        item_id serial,
-        transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
-        general_ledger_number integer,
+        general_ledger_number integer not null,
         cc_id char(6) references cost_centres(cc_id), 
         wbs_code char(5) references wbs(wbs_code),
         currency_id integer references currencies not null,
@@ -506,9 +366,12 @@ create table if not exists general_ledger_item(
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 
 	  		    REFERENCES companies(company_code),
-        CONSTRAINT fk_generalledgerentry
-            FOREIGN KEY(general_ledger_entry_id) 
-	            REFERENCES  general_ledger( general_ledger_entry_id),
+        CONSTRAINT fk_journalentryid
+            FOREIGN KEY(je_id) 
+	            REFERENCES  journal_entry( je_id),
+        CONSTRAINT coasgln
+            FOREIGN KEY(general_ledger_number) 
+	            REFERENCES  chart_of_accounts(general_ledger_number),
         CONSTRAINT fk_costcentre
             FOREIGN KEY(cc_id) 
 	            REFERENCES cost_centres(cc_id),
@@ -520,32 +383,42 @@ create table if not exists general_ledger_item(
 	            REFERENCES currencies(currency_id)	
        );
 
-
+-- sales invoices booked to Financial statements via ar_invoice double entry
 create table if not exists ar_invoice(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        entry_type_id integer default 2,
-        ar_invoice_entry_id serial primary key not null,
+        entry_type_id varchar(3) default 'RIE',
+        customer_id char(6) check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
+		transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
+        rie_id serial primary key not null,
         invoice_id integer not null,
         general_ledger_number integer default 102001,
+	 	cc_id char(6) references cost_centres(cc_id),
         currency_id integer references currencies not null,
         debit_credit varchar(6) default 'debit',
         amount numeric(12,2),
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 
 	  		    REFERENCES companies(company_code),
-        CONSTRAINT fk_salesinvoice
+	     CONSTRAINT fk_customer
+          	FOREIGN KEY(customer_id) 
+	      		REFERENCES customer_names(customer_id),	  		    
+         CONSTRAINT fk_salesinvoice
       	    FOREIGN KEY(invoice_id) 
 	  		    REFERENCES sales_invoices(invoice_id),
-	    CONSTRAINT fk_currencyid
+	     CONSTRAINT fk_currencyid
             FOREIGN KEY(currency_id) 
-	            REFERENCES currencies(currency_id)	
+	            REFERENCES currencies(currency_id),
+		 CONSTRAINT fk_costcentre
+		   FOREIGN KEY(cc_id) 
+			REFERENCES cost_centres(cc_id)	
        );
 
 create table if not exists ar_receipt(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        entry_type_id integer default 3,
-        ar_invoice_entry_id serial primary key not null,
-        transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
+        entry_type_id varchar(3) default 'RRE',
+		customer_id char(6) check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
+		transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
+        rie_id serial primary key not null,
         general_ledger_number integer default 102001,
         currency_id integer references currencies not null,
         debit_credit varchar(6) default 'credit' NOT NULL,
@@ -553,9 +426,12 @@ create table if not exists ar_receipt(
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 
 	  		    REFERENCES companies(company_code),
+	     CONSTRAINT fk_customer
+          	FOREIGN KEY(customer_id) 
+	      		REFERENCES customer_names(customer_id),	  		    
         CONSTRAINT fk_arinvoice
-      	    FOREIGN KEY(ar_invoice_entry_id) 
-	  		    REFERENCES ar_invoice(ar_invoice_entry_id),
+      	    FOREIGN KEY(rie_id) 
+	  		    REFERENCES ar_invoice(rie_id),
 	    CONSTRAINT fk_currencyid
             FOREIGN KEY(currency_id) 
 	            REFERENCES currencies(currency_id)        
@@ -563,9 +439,11 @@ create table if not exists ar_receipt(
                              
 create table if not exists ap_invoice(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        entry_type_id integer default 4,
+        entry_type_id varchar(3) default 'PIE',
+        vendor_id char(5) check (vendor_id ~ '[A-Z]{2}[0-9]{3}' ),
+		transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
         p_order_id integer references purchase_orders(p_order_id) not null,
-        ap_invoice_entry_id serial primary key not null,
+        pie_id serial primary key not null,
         invoice_id integer not null,
         currency_id integer references currencies not null,
         general_ledger_number integer default 200001,
@@ -577,6 +455,9 @@ create table if not exists ap_invoice(
 	    CONSTRAINT fk_po
             FOREIGN KEY(p_order_id) 
 	            REFERENCES purchase_orders(p_order_id),
+	    CONSTRAINT fk_vendor
+          FOREIGN KEY(vendor_id) 
+	      REFERENCES vendors(vendor_id), 
 	    CONSTRAINT fk_currencyid
             FOREIGN KEY(currency_id) 
 	            REFERENCES currencies(currency_id)
@@ -584,10 +465,11 @@ create table if not exists ap_invoice(
 	  	  
 create table if not exists ap_payment(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-        entry_type_id integer default 5,
-        ap_invoice_entry_id integer not null,
+        entry_type_id varchar(3) default 'PPE',
+        vendor_id char(5) check (vendor_id ~ '[A-Z]{2}[0-9]{3}' ),
+		transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,	
+        pie_id integer not null,
         item_id serial,
-        transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
         general_ledger_number integer default 200001,
         currency_id integer references currencies not null,
         debit_credit varchar(6) default 'debit' NOT NULL,
@@ -595,9 +477,12 @@ create table if not exists ap_payment(
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 
 	  		    REFERENCES companies(company_code),
+	    CONSTRAINT fk_vendor
+          FOREIGN KEY(vendor_id) 
+	      REFERENCES vendors(vendor_id),	  		    
 	    CONSTRAINT fk_apinvoice
-            FOREIGN KEY(ap_invoice_entry_id) 
-	            REFERENCES ap_invoice(ap_invoice_entry_id)       
+            FOREIGN KEY(pie_id) 
+	            REFERENCES ap_invoice(pie_id)       
         );
                         
 /*
@@ -614,21 +499,6 @@ insert into coa_categories(coacat_id,coa_category_name)
 	(3,'equity'),
 	(5,'revenue'),
 	(6,'expenses');
-<<<<<<< HEAD
-	
-
-
-insert into currencies(currency_name, description)
- 	values('USD', 'American_dollar'),
-	       ('CNY', 'Chines_Yuan');
-		   
-
-
-insert into tax(company_code,tax_name, tax_rate, tax_area, tax_belongto,description)
-   values('US001','sales_tax', 0.10, 'US_Seattle','state','pec_of_sales');
-		  
-
-=======
 
 insert into currencies(company_code, currency_name, description, functional_currency)
  	values('US001','USD', 'American_dollar', 'Yes'),
@@ -636,7 +506,6 @@ insert into currencies(company_code, currency_name, description, functional_curr
 
 insert into tax(company_code,tax_name, tax_rate, tax_area, tax_belongto,description)
    values('US001','sales_tax', 0.10, 'US_Seattle','state','pec_of_sales');	  
->>>>>>> main
 
 insert into chart_of_accounts(company_code, general_ledger_number, general_ledger_name,
 							  coacat_id, currency_id)
@@ -669,10 +538,6 @@ insert into chart_of_accounts(company_code, general_ledger_number, general_ledge
 			('US001', 600009,'other_expense',6,1),
 			('US001', 600010,'interest_expense',6,1)
 			;	
-<<<<<<< HEAD
-
-=======
->>>>>>> main
 
 insert into product_categories(company_code, cat_name,subcat_id,subcat_name)
  	values('US001','hard_ware',1,'server'),
@@ -681,27 +546,6 @@ insert into product_categories(company_code, cat_name,subcat_id,subcat_name)
             ('US001','soft_ware', 2,'annual_subscribe'),
             ('US001','consulting', 1, 'one_off_payment');
 
-<<<<<<< HEAD
-
-insert into vendors (company_code, vendor_id,vendor_name, currency_id,address_line1, city)
-	values('US001', 'VBC001','vendor_vbc',1,'1st_street', 'seattle');
-
-
-
-insert into product_categories(cat_name)
- 	values('h_ware'),
-	       ('s_ware'),
-		   ('service');
-		   
-
-
-insert into products(company_code, cat_id, 
-					 product_name, product_units, product_unit_price, currency_id)
-		  values('US001', 1, 'server', 1, 250000,1);
-		  
-
-
-=======
 insert into business_type(business_type_name)
 	values('organization'),
 			('individual');
@@ -721,7 +565,6 @@ insert into products(company_code, cat_id,
                 ('US001', 2, 'smarteroffice', 'piece',1, 1200,1),
                 ('US001',3, 'consulting', 'hourly',1, 500, 1);
 		 
->>>>>>> main
 insert into profit_centres(company_code, pc_id,pc_name)
   values('US001', 'HSE001', 'hard_ware_server_SE'),
   		('US001', 'SSE001', 'vizwise_SE'),
@@ -732,30 +575,16 @@ insert into profit_centres(company_code, pc_id,pc_name)
 		('US001', 'CSE001', 'consulting'),
 		('US001', 'RDS001','research_development_sl');
   
-<<<<<<< HEAD
-
-
-insert into cost_centres(company_code, cc_id, name,pc_id)
-  values('US001', 'SE0001','hard_ware_SE_server', 'SE0001');
-  
-
-
-=======
 insert into cost_centres(company_code, cc_id, name, pc_id)
   values('US001', 'HSE01','server_SE', 'HSE001'),
   		('US001', 'SSE01', 'vizwise_SE', 'SSE001'),
 		('US001', 'SSE02', 'vizwise_online_annual_SE', 'SSE002'),
 		('US001', 'SSE03', 'vizwise_online_monthly_SE', 'SSE003');
   
->>>>>>> main
 
 insert into wbs(company_code,wbs_code, name, pc_id)
   values('US001', 'SL001','Slingshot', 'RDS001');
   
-<<<<<<< HEAD
-
- 
-=======
 insert into entry_type(entry_type_name, description)
     values('journal_entry', 'entries for general ledger'),
            ('ar_invoice', 'invoices issued to customers'),
@@ -763,10 +592,13 @@ insert into entry_type(entry_type_name, description)
            ('ap_invoice', 'invoices received from vendors'),
             ('ap_payment', 'fund payment to vendors');
 
+insert into general_ledger(company_code)
+        values('US001');
+
+
 */
 
 /*
->>>>>>> main
  insert into purchase_orders(company_code, vendor_id)
  values('US001','VBC001');
  
@@ -774,33 +606,12 @@ insert into entry_type(entry_type_name, description)
 insert into sales_orders(company_code, customer_id)
    values('US001','ABC001');
 
-<<<<<<< HEAD
 
 
-=======
-
-
->>>>>>> main
 insert into sales_orders_items(company_code, sales_order_id,
 							  product_id,units,unit_selling_price, currency_id,tax_code,shipped)
 	values('US001',1,1,1,520000,1,1,True);
 
-<<<<<<< HEAD
-
-
-insert into sales_invoices(company_code, sales_order_id, cc_id)
-	values('US001',1,'SE0001');
-	
--- select * from sales_invoices;
-insert into entry_type(entry_type_name, description)
-    values('journal_entry', 'record entries for general ledger'),
-           ('ar_invoice', 'record invoices issued to customers'),
-            ('ar_receipt', 'record fund received from customers'),
-           ('ap_invoice', 'record invoices received from vendors'),
-            ('ap_payment', 'record fund payment to vendors');
-
-=======
->>>>>>> main
 
 
 insert into sales_invoices(company_code, sales_order_id, cc_id)
