@@ -1,6 +1,6 @@
 entry_type_id,entry_type_name,description
-1,journal_entry,entries for general ledger
-2,ar_invoice,entries for invoices issued to customers
-3,ar_receipt,entries for fund received from customers
-4,ap_invoice,entries for invoices received from vendors
-5,ap_payment,entries for fund payment to vendors
+JE,journal_entry,entries for general ledger
+RIE,ar_invoice_entry,entries for invoices issued to customers
+RRE,ar_receipt_entry,entries for fund received from customers
+PIE,ap_invoice_entry,entries for invoices received from vendors
+PPE,ap_payment_entry,entries for fund payment to vendors
