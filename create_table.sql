@@ -14,6 +14,7 @@ drop table if exists business_type CASCADE;
 drop table if exists ap_invoice CASCADE;
 drop table if exists ap_payment CASCADE;
 drop table if exists ar_invoice CASCADE;
+drop table if exists ar_invoice_item CASCADE;
 drop table if exists ar_receipt CASCADE;
 drop table if exists entry_type CASCADE;
 drop table if exists general_ledger CASCADE;
@@ -24,6 +25,7 @@ drop table if exists chart_of_accounts CASCADE;
 drop table if exists profit_centres CASCADE;
 drop table if exists cost_centres CASCADE;
 drop table if exists wbs CASCADE;
+drop table if exists area_code cascade;
 drop table if exists vendors CASCADE;
 drop table if exists vendors_addresses CASCADE;
 drop table if exists customer_names CASCADE;
@@ -175,6 +177,16 @@ create table if not exists business_type(
 	   REFERENCES companies(company_code)
     );
 
+
+create table if not exists area_code(
+  	zip varchar(10) not null,
+	zipcode_name varchar(30),
+	city varchar(30),
+	state char(2),
+	county_name varchar(40),
+	area char(2)	
+	);
+
 create table if not exists customer_names (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	customer_id char(6) primary key check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
@@ -324,12 +336,17 @@ create table if not exists sales_invoices (
 	invoice_date DATE NOT NULL DEFAULT CURRENT_DATE,
 	invoice_id serial primary key not null,
     sales_order_id integer not null,
+	customer_id char(6) references customer_names(customer_id) not null,
+	amount numeric(12,2),
 	CONSTRAINT fk_companyCode
       	FOREIGN KEY(company_code) 
 	  		REFERENCES companies(company_code),
     CONSTRAINT fk_salesorders
       	FOREIGN KEY(sales_order_id) 
-	  		REFERENCES sales_orders(sales_order_id)
+	  		REFERENCES sales_orders(sales_order_id),
+	 CONSTRAINT fk_customer
+      	FOREIGN KEY(customer_id) 
+	  		REFERENCES customer_names(customer_id)
     );
 
 create table if not exists entry_type(
@@ -387,10 +404,23 @@ create table if not exists journal_entry_item(
 create table if not exists ar_invoice(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         entry_type_id varchar(3) default 'RIE',
-        customer_id char(6) check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
-		transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
         rie_id serial primary key not null,
-        invoice_id integer not null,
+		date DATE NOT NULL DEFAULT CURRENT_DATE,
+		invoice_id integer not null,
+        CONSTRAINT fk_companyCode
+      	    FOREIGN KEY(company_code) 
+	  		    REFERENCES companies(company_code),
+         CONSTRAINT fk_salesinvoice
+      	    FOREIGN KEY(invoice_id) 
+	  		    REFERENCES sales_invoices(invoice_id)	
+		);
+
+
+create table if not exists ar_invoice_item(
+        company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
+        rie_id integer not null,
+		description varchar(80),
+        customer_id char(6) check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
         general_ledger_number integer default 102001,
 	 	cc_id char(6) references cost_centres(cc_id),
         currency_id integer references currencies not null,
@@ -398,13 +428,16 @@ create table if not exists ar_invoice(
         amount numeric(12,2),
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 
-	  		    REFERENCES companies(company_code),
+	  		    REFERENCES companies(company_code),	    
+         CONSTRAINT fk_arinvoice
+      	    FOREIGN KEY(rie_id) 
+	  		    REFERENCES ar_invoice(rie_id),
+         CONSTRAINT fk_coano
+      	    FOREIGN KEY(general_ledger_number) 
+	  		    REFERENCES chart_of_accounts(general_ledger_number),
 	     CONSTRAINT fk_customer
           	FOREIGN KEY(customer_id) 
-	      		REFERENCES customer_names(customer_id),	  		    
-         CONSTRAINT fk_salesinvoice
-      	    FOREIGN KEY(invoice_id) 
-	  		    REFERENCES sales_invoices(invoice_id),
+	      		REFERENCES customer_names(customer_id),	  	
 	     CONSTRAINT fk_currencyid
             FOREIGN KEY(currency_id) 
 	            REFERENCES currencies(currency_id),
@@ -412,7 +445,8 @@ create table if not exists ar_invoice(
 		   FOREIGN KEY(cc_id) 
 			REFERENCES cost_centres(cc_id)	
        );
-
+	   
+	   
 create table if not exists ar_receipt(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         entry_type_id varchar(3) default 'RRE',
