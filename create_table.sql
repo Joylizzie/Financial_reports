@@ -11,11 +11,7 @@ set search_path TO ocean;
 drop table if exists companies CASCADE;
 drop table if exists coa_categories CASCADE;
 drop table if exists business_type CASCADE;
-drop table if exists ap_invoice CASCADE;
-drop table if exists ap_payment CASCADE;
-drop table if exists ar_invoice CASCADE;
-drop table if exists ar_invoice_item CASCADE;
-drop table if exists ar_receipt CASCADE;
+
 drop table if exists entry_type CASCADE;
 drop table if exists general_ledger CASCADE;
 drop table if exists general_ledger_item CASCADE;
@@ -37,6 +33,14 @@ drop table if exists purchase_orders_items;
 drop table if exists sales_orders CASCADE;
 drop table if exists sales_orders_items CASCADE;
 drop table if exists sales_invoices CASCADE;
+drop table if exists ap_invoice CASCADE;
+drop table if exists ap_invoice_item CASCADE;
+drop table if exists ap_payment CASCADE;
+drop table if exists ap_payment_item CASCADE;
+drop table if exists ar_invoice CASCADE;
+drop table if exists ar_invoice_item CASCADE;
+drop table if exists ar_receipt CASCADE;
+drop table if exists ar_receipt_item CASCADE;
 
 -- company_code should be country's name in two capital letters, plus three digits
 -- company_name
@@ -446,18 +450,15 @@ create table if not exists ar_invoice_item(
 			REFERENCES cost_centres(cc_id)	
        );
 	   
-	   
+
 create table if not exists ar_receipt(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         entry_type_id varchar(3) default 'RRE',
+        rre_id serial primary key not null,
+		date DATE NOT NULL DEFAULT CURRENT_DATE,		
+		rie_id integer not null,
 		customer_id char(6) check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
-		transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
-        rie_id serial primary key not null,
-        general_ledger_number integer default 102001,
-        currency_id integer references currencies not null,
-        debit_credit varchar(6) default 'credit' NOT NULL,
-        amount numeric(12,2),
-        CONSTRAINT fk_companyCode
+        CONSTRAINT fk_companyCode	
       	    FOREIGN KEY(company_code) 
 	  		    REFERENCES companies(company_code),
 	     CONSTRAINT fk_customer
@@ -465,24 +466,38 @@ create table if not exists ar_receipt(
 	      		REFERENCES customer_names(customer_id),	  		    
         CONSTRAINT fk_arinvoice
       	    FOREIGN KEY(rie_id) 
-	  		    REFERENCES ar_invoice(rie_id),
+	  		    REFERENCES ar_invoice(rie_id)	
+   );
+
+create table if not exists ar_receipt_item(
+        company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
+        rre_id integer references ar_receipt(rre_id) not null,
+        general_ledger_number integer default 102001,
+        currency_id integer references currencies not null,
+        debit_credit varchar(6) default 'credit' NOT NULL,
+        amount numeric(12,2),
+        CONSTRAINT fk_companyCode
+      	    FOREIGN KEY(company_code) 
+	  		    REFERENCES companies(company_code),
+        CONSTRAINT fk_arreceipt
+      	    FOREIGN KEY(rre_id) 
+	  		    REFERENCES ar_receipt(rre_id),
+         CONSTRAINT fk_coano
+      	    FOREIGN KEY(general_ledger_number) 
+	  		    REFERENCES chart_of_accounts(general_ledger_number),
 	    CONSTRAINT fk_currencyid
             FOREIGN KEY(currency_id) 
 	            REFERENCES currencies(currency_id)        
      );
-                             
+
 create table if not exists ap_invoice(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         entry_type_id varchar(3) default 'PIE',
-        vendor_id char(5) check (vendor_id ~ '[A-Z]{2}[0-9]{3}' ),
-		transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
-        p_order_id integer references purchase_orders(p_order_id) not null,
-        pie_id serial primary key not null,
-        invoice_id integer not null,
-        currency_id integer references currencies not null,
-        general_ledger_number integer default 200001,
-       	debit_credit varchar(6) default 'credit' NOT NULL,
-        amount numeric(12,2),
+	    pie_id serial primary key not null,
+        vendor_id char(5) check (vendor_id ~ '[A-Z]{2}[0-9]{3}' ) not null,
+		date DATE NOT NULL DEFAULT CURRENT_DATE,
+        p_order_id integer references purchase_orders(p_order_id),
+        invoice_id varchar(10) not null,
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 
 	  		    REFERENCES companies(company_code),
@@ -491,23 +506,45 @@ create table if not exists ap_invoice(
 	            REFERENCES purchase_orders(p_order_id),
 	    CONSTRAINT fk_vendor
           FOREIGN KEY(vendor_id) 
-	      REFERENCES vendors(vendor_id), 
+	      REFERENCES vendors(vendor_id)
+	);
+		
+create table if not exists ap_invoice_item(
+        company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
+		PIE_id integer not null,
+	 	cc_id char(6) references cost_centres(cc_id),
+		wbs_code char(5) references wbs(wbs_code),
+        currency_id integer references currencies not null,
+        general_ledger_number integer default 200001,
+       	debit_credit varchar(6) default 'credit' NOT NULL,
+        amount numeric(12,2),
+        CONSTRAINT fk_companyCode
+      	    FOREIGN KEY(company_code) 
+	  		    REFERENCES companies(company_code),
+        CONSTRAINT fk_apinvoice
+      	    FOREIGN KEY(pie_id) 
+	  		    REFERENCES ap_invoice(pie_id),	
+		 CONSTRAINT fk_costcentre
+		   FOREIGN KEY(cc_id) 
+			REFERENCES cost_centres(cc_id),
+	    CONSTRAINT fk_wbs
+            FOREIGN KEY(wbs_code) 
+	            REFERENCES wbs(wbs_code),
+         CONSTRAINT fk_coano
+      	    FOREIGN KEY(general_ledger_number) 
+	  		    REFERENCES chart_of_accounts(general_ledger_number),	
 	    CONSTRAINT fk_currencyid
             FOREIGN KEY(currency_id) 
 	            REFERENCES currencies(currency_id)
       );
-	  	  
+
 create table if not exists ap_payment(
-        company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
+		company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         entry_type_id varchar(3) default 'PPE',
-        vendor_id char(5) check (vendor_id ~ '[A-Z]{2}[0-9]{3}' ),
-		transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,	
-        pie_id integer not null,
-        item_id serial,
-        general_ledger_number integer default 200001,
-        currency_id integer references currencies not null,
-        debit_credit varchar(6) default 'debit' NOT NULL,
-        amount numeric(12,2),
+		ppe_id serial primary key,
+		date DATE NOT NULL DEFAULT CURRENT_DATE,
+		PIE_id integer not null,
+        vendor_id char(5) check (vendor_id ~ '[A-Z]{2}[0-9]{3}' ) not null,
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 
 	  		    REFERENCES companies(company_code),
@@ -516,7 +553,26 @@ create table if not exists ap_payment(
 	      REFERENCES vendors(vendor_id),	  		    
 	    CONSTRAINT fk_apinvoice
             FOREIGN KEY(pie_id) 
-	            REFERENCES ap_invoice(pie_id)       
+	            REFERENCES ap_invoice(pie_id)   
+	);
+	
+	
+create table if not exists ap_payment_item(
+		company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
+		ppe_id integer not null,
+        general_ledger_number integer default 200001,
+        currency_id integer references currencies not null,
+        debit_credit varchar(6) default 'debit' NOT NULL,
+        amount numeric(12,2),
+        CONSTRAINT fk_companyCode
+      	    FOREIGN KEY(company_code) 
+	  		    REFERENCES companies(company_code),
+         CONSTRAINT fk_coano
+      	    FOREIGN KEY(general_ledger_number) 
+	  		    REFERENCES chart_of_accounts(general_ledger_number),
+	    CONSTRAINT fk_appayment
+            FOREIGN KEY(ppe_id) 
+	            REFERENCES ap_payment(ppe_id)       
         );
                         
 /*
