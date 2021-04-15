@@ -1,9 +1,7 @@
 import os
 import psycopg2
 import datetime
-import random
 import pandas as pd
-import numpy as np
 import csv
 
 
@@ -73,7 +71,7 @@ def pl(conn, start_date, end_date):
     #expenses = get_total_expenses_api(conn, start_date, end_date)
     #total_expenses = sum(expense for (_,_,expense) in expenses)
 
-    with open(os.path.join('data', 'pl.csv'), 'w') as pl:
+    with open(os.path.join('reports', 'p&l.csv'), 'w') as pl:
         name = 'Ocean Stream profit and loss - Year 2021' 
         pl_writer = csv.writer(pl)   
         pl_writer.writerow(['Ocean Stream profit and loss - Year 2021\n\n'])
@@ -85,7 +83,7 @@ def pl(conn, start_date, end_date):
          #   pl_writer.writerow([gl_name, expense])
         #pl_writer.writerow(['total_expenses', total_expenses)])
         #pl_writer.writrow(['operating income', revenue - cost - total_expenses])    
-
+    print('Done writting')
 
         
 if __name__ == '__main__':
