@@ -1,8 +1,17 @@
+
 set -e
 psql --host=localhost -U joy2020 --dbname=postgres  -a -f create_db.sql
-psql --host=localhost -U joy2020  --dbname=ocean_stream -a -f create_table.sql
-cp data/customers.csv /tmp
-cp data/customer_names.csv /tmp
-cp data/sales_orders.csv /tmp
-psql --host=localhost -U joy2020 --dbname=ocean_stream -d ocean_stream -a -f insert_csv.sql
-
+psql --host=localhost -U joy2020  --dbname=pacific -a -f create_table.sql
+cp data/companies.csv /tmp
+cp data/business_type.csv /tmp
+cp data/entry_type.csv /tmp
+cp data/currencies.csv /tmp
+cp data/coa_categories.csv /tmp
+cp data/chart_of_accounts.csv /tmp
+cp data/profit_centres.csv /tmp
+cp data/cost_centres.csv /tmp
+cp data/product_categories.csv /tmp
+cp data/products.csv /tmp
+cp data/tax.csv /tmp
+cp data/wbs.csv /tmp
+psql --host=localhost -U joy2020 --dbname=pacific -a -f insert_predefined_values 
