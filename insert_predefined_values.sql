@@ -45,10 +45,6 @@ COPY tax
 FROM
     '/tmp/tax.csv' DELIMITER ',' CSV HEADER;
 
-COPY vendors
-FROM
-    '/tmp/vendors.csv' DELIMITER ',' CSV HEADER;
-
 COPY wbs
 FROM
     '/tmp/wbs.csv' DELIMITER ',' CSV HEADER;
