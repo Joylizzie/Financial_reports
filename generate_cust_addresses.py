@@ -49,8 +49,8 @@ def create_csv(n, data_file, tup_gen, header,out_file):
 
 if __name__ == '__main__':
     create_csv(n= 3, 
-       data_file = '/home/lizhi/projects/lizziezh/auto_FR/data/list-cities-washington-198j.csv',
-       out_file = '/home/lizhi/projects/lizziezh/auto_FR/data/customer_addresses.csv',
+       data_file = '/home/lizhi/projects/joylizzie/Financial_reports/data/list-cities-washington-198j.csv',
+       out_file = '/home/lizhi/projects/joylizzie/Financial_reports/data/customer_addresses.csv',
        tup_gen = generate_customer_addresses,
        header = ['company_code','customer_id', 'address_line1','city','state','country','postcode','phone_number','email_address'])
  

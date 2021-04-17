@@ -35,8 +35,8 @@ if __name__ == '__main__':
     
     create_csv(
             n = 30000, 
-            data_file = '/home/lizhi/projects/lizziezh/auto_FR/data/list-cities-washington-198j.csv',
-            out_file = '/home/lizhi/projects/lizziezh/auto_FR/data/customer_names.csv',
+            data_file = '/home/lizhi/projects/joylizzie/Financial_reports/data/list-cities-washington-198j.csv',
+            out_file = '/home/lizhi/projects/joylizzie/Financial_reports/data/customer_names.csv',
             tup_gen = generate_customer_names,
             header = ['company_code','customer_id', 'business_type_id','customer_name', 'general_ledger_number', 'currency_id'])
 
