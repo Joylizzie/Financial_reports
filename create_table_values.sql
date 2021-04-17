@@ -49,3 +49,8 @@ COPY wbs
 FROM
     '/tmp/wbs.csv' DELIMITER ',' CSV HEADER;
 
+COPY area_code(zip, zipcode_name, city, state, county_name, area)
+FROM '/tmp/area_code.csv'
+DELIMITER ','
+CSV HEADER;
+
