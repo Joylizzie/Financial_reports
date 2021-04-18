@@ -10,10 +10,10 @@ import make_random_data
 random.seed(5)
 
 
-def generate_customer_addresses(n, data_file):
+def generate_customer_addresses(data_file):
     df = pd.read_csv('data/customer_names.csv', usecols=['customer_id'])
+    n = len(df['customer_id'])
     customer_ids_lst = df['customer_id'].values.tolist()
-    #address_lst = list(address_line1s(n))
     cities_list = make_random_data.make_random_cities(path = 'data/wash_cities.csv', num = n)
     customer_surnames = make_random_data.make_random_surnames(path = 'data/surnames.csv', num = n)
     customer_first_names = make_random_data.make_random_first_names(path = 'data/first_names.csv', num = n)
@@ -37,19 +37,18 @@ def generate_customer_addresses(n, data_file):
              ]
 
 # write above customer addresses into csv file then use bash to upload into database
-def create_csv(n, data_file, tup_gen, header,out_file):
-    tups = tup_gen(n, data_file)
+def create_csv(data_file, tup_gen, header,out_file):
+    tups = tup_gen(data_file)
     with open(os.path.join('data', out_file), 'w') as write_obj:
         csv_writer = csv.writer(write_obj)
         csv_writer.writerow(header)
-        for i in range(n):
+        for i in range(len(tups)):
             csv_writer.writerow(tups[i])
     print('Done writing')
       
 
 if __name__ == '__main__':
-    create_csv(n= 3, 
-       data_file = '/home/lizhi/projects/joylizzie/Financial_reports/data/list-cities-washington-198j.csv',
+    create_csv(data_file = '/home/lizhi/projects/joylizzie/Financial_reports/data/list-cities-washington-198j.csv',
        out_file = '/home/lizhi/projects/joylizzie/Financial_reports/data/customer_addresses.csv',
        tup_gen = generate_customer_addresses,
        header = ['company_code','customer_id', 'address_line1','city','state','country','postcode','phone_number','email_address'])

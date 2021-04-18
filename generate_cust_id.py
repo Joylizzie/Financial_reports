@@ -1,6 +1,8 @@
+import os
 import string
 import random
-import pandas as pd
+import csv
+
 random.seed(5)
 
 # generate 3 random uppercase letters
@@ -25,29 +27,25 @@ def customer_ids(n):
             continue
         else:
             customer_ids_set.add(new_customer_id)
-            count += 1
+            count += 1      
     return customer_ids_set 
-
-# generate random address with given format of address
-def address_line1s(n):
-    sn = ['S','N']
-    ew = ['E', 'W']
-    count = 0  
-    address_set = set() 
-    while count < n:
-        randomd = random.choice(sn) + random.choice(ew)
-        new_address = f'{count} {count}th street {randomd}'
-        if new_address in address_set:
-            continue
-        else:
-            address_set.add(new_address) 
-            count += 1
-    return address_set
     
 
-# randomly select a city from a given list(here is cities in Washington state)            
-def citys(datafile,n):
-    cities = pd.read_csv(datafile)
-    t = [x for x in cities["County"].unique() if not pd.isna(x)]
-    return [random.choice(t) for _ in range(n)]
+def to_csv(n, out_file):
+    cust_ids_lst = list(customer_ids(n))
+    company_code = 'US001'
+    with open(os.path.join('data', out_file), 'w') as cust_ids:
+        csv_writer = csv.writer(cust_ids)
+        csv_writer.writerow(header)
+        for cust_id in cust_ids_lst:
+            csv_writer.writerow([company_code, cust_id]) # [] must be around cust_id, otherwise it will be each character separated by coma. 
+    print('Done writing') 
+
+    
+if __name__ == '__main__':
+    n = 30000
+    out_file = '/home/lizhi/projects/joylizzie/Financial_reports/data/customer_ids.csv'
+    header = ['company_code', 'customer_id']
+    to_csv(n, out_file)
+    
 
