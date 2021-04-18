@@ -108,7 +108,7 @@ def rie_cc(a, b):
 
     
 if __name__ == '__main__':
-    db = 'pacific'
+    db = 'ocean_stream'
     pw = os.environ['POSTGRES_PW']
     user_str = os.environ['POSTGRES_USER']
     conn = _get_conn(pw, user_str)
