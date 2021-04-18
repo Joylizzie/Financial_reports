@@ -3,7 +3,7 @@ import psycopg2
 import random
 import datetime
 import csv
-from common import randomdate
+from random_date import randomdate
 
 
 # get connection via psycopg2
@@ -38,31 +38,14 @@ def _to_csv(n, conn, outfile):
             csv_writer.writerow(tups[i])
         print('Done writing')
 
-# OR connect db and insert the above generated values into db directly.
-# Note, when use random function, the values generated in different run would be different, not recommend to use  this way           
-def insert_value_tuple(conn, sql_insert):
-    tups = generate_value_tuples(conn) 
-    cur = conn.cursor()
-    try:
-        for tup in tups:
-            cur.execute(sql_insert, tups)
-        conn.commit()
 
-    except (Exception, psycopg2.Error) as error:
-        print("Error while executing progamme", error)
-
-    finally:
-        # closing database connection.
-        if (conn):
-            conn.close()
-            print("PostgreSQL connection is closed")
 
 if __name__ == '__main__':
-    db = 'pacific'
+    db = 'ocean_stream'
     pw = os.environ['POSTGRES_PW']
     user_str = os.environ['POSTGRES_USER']
     conn = _get_conn(pw, user_str)
     start_date = datetime.date(2021, 3, 1)
     end_date = datetime.date(2021, 3, 31)
-    n = 18000
+    n = 10000
     _to_csv(n, conn, outfile='pre_sales_orders.csv')
