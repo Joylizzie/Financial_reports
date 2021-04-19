@@ -2,3 +2,4 @@ __pycache__/*
 temp.py
 temp.sh
 temp.sql
+data/customers_full.csv
