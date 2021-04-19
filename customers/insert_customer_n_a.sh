@@ -1,8 +1,8 @@
 #!/bin/sh
 
-python generate_cust_ids.py
-python generate_cust_names.py
-python generate_cust_addresses.py
+#python customers/generate_cust_ids.py
+#python customers/generate_cust_names.py
+#python customers/generate_cust_addresses.py
 
 cp data/customer_names.csv /tmp
 cp data/customer_addresses.csv /tmp
