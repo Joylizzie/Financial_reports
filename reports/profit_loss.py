@@ -71,7 +71,7 @@ def pl(conn, start_date, end_date):
     #total_expenses = sum(expense for (_,_,expense) in expenses)
     
     out_file = start_date.strftime("%m") + "_" + start_date.strftime("%Y")
-    with open(os.path.join('reporting_results', f'p&l{out_file}.csv'), 'w') as pl:
+    with open(os.path.join('reporting_results', f'pl_{out_file}.csv'), 'w') as pl:
         name = 'Ocean Stream profit and loss - Year 2021' 
         pl_writer = csv.writer(pl)   
         pl_writer.writerow(['Ocean Stream profit and loss - Year 2021\n\n'])
@@ -87,7 +87,7 @@ def pl(conn, start_date, end_date):
 
         
 if __name__ == '__main__':
-    db = 'pacific'
+    db = 'ocean_stream'
     pw = os.environ['POSTGRES_PW']
     user_str = os.environ['POSTGRES_USER']
     conn = _get_conn(pw, user_str)
