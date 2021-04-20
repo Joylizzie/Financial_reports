@@ -82,7 +82,8 @@ def pl(conn, start_date, end_date):
         #for (gl_num, gl_name, expense) in expenses:
          #   pl_writer.writerow([gl_name, expense])
         #pl_writer.writerow(['total_expenses', total_expenses)])
-        #pl_writer.writrow(['operating income', revenue - cost - total_expenses])    
+        #pl_writer.writrow(['operating income', revenue - cost - total_expenses])
+        print('pl csv done writing')   
 
 
         
