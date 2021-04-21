@@ -13,20 +13,16 @@ def _get_conn(pw, user_str):
     conn.autocommit = False
     return conn
 
-
-def get_total_revenue(conn, start_date, end_date):
-    sql = """select sum(ai.amount) from ar_invoice_item ai
-               inner join ar_invoice ar
-               on ai.rie_id = ar.rie_id                
-               where general_ledger_number = 501001
-               and ai.company_code = 'US001'
-               and ar.date between %s and %s;
-        """ 
+# get (debit - credit) amount during start and end date
+def get_t_list(conn, coacat_id_tup, start_date, end_date):
+    sql_file = open('reports/t_list_asset.sql', 'r')
+    sql = sql_file.read()
     with conn.cursor() as curs:
-        curs.execute(sql,(start_date, end_date))  #cursor closed after the execute action
-        (revenue) = curs.fetchone()
+        curs.execute(sql, {'start_date':start_date, 'end_date':end_date, 'coacat_id_tup':coacat_id_tup})  #cursor closed after the execute action
+        t_list = curs.fetchall()
     conn.commit
-    return revenue[0] # get the first item in the tuple
+    print(t_list)
+    return t_list 
     
 # the tables in get_total_cost and get_total_expenses are not finalized yet and no data too. 
 '''
@@ -64,26 +60,27 @@ def get_total_expenses_api(conn, start_date, end_date):
     return total_expenses
 '''
 
-def pl(conn, start_date, end_date):
-    revenue = get_total_revenue(conn, start_date, end_date)
+def bs(conn, coacat_id, start_date, end_date):
+    t = get_tlist(conn, start_date, end_date)
     #cost = get_total_cost(conn, start_date, end_date)
     #expenses = get_total_expenses_api(conn, start_date, end_date)
     #total_expenses = sum(expense for (_,_,expense) in expenses)
     
-    out_file = start_date.strftime("%m") + "_" + start_date.strftime("%Y")
-    with open(os.path.join('reporting_results', f'pl_{out_file}.csv'), 'w') as pl:
-        name = 'Ocean Stream profit and loss - Year 2021' 
-        pl_writer = csv.writer(pl)   
-        pl_writer.writerow(['Ocean Stream profit and loss - Year 2021\n\n'])
-        pl_writer.writerow(['',f'{start_date.strftime("%b")}'.center(15)])
-        pl_writer.writerow(['Revenue', f'{revenue:3,.2f}'.rjust(15)]) # number will be shown in 2 decimal
+    balance_at = end_date.strftime("%m") + "_" + end_date.strftime("%Y")
+    with open(os.path.join('reporting_results', f'bs_{out_file}.csv'), 'w') as bs:
+        name = 'Ocean Stream Balance Sheet ' 
+        bs_writer = csv.writer(bs)   
+        bs_writer.writerow([f'{name}\n\n'])
+        bs_writer.writerow(['',f'as of {end_date}'.rjust(15)])
+        for amount in t:
+            bs_writer.writerow(['amount', f'{t[8]:3,.2f}'.rjust(15)]) # number will be shown in 2 decimal
         #pl_writer.writerow(['Cost', f'{cost:3,.2f}'.rjust(15)])
         #pl_writer.writerow(['Gross margin', f'{revenue - cost}'])
         #for (gl_num, gl_name, expense) in expenses:
          #   pl_writer.writerow([gl_name, f'{expense:3,.2f}'])
         #pl_writer.writerow(['total_expenses', total_expenses)])
         #pl_writer.writrow(['operating income', revenue - cost - total_expenses])
-        print('pl csv done writing')   
+        print('balance sheet csv done writing')   
 
 
         
@@ -92,6 +89,7 @@ if __name__ == '__main__':
     pw = os.environ['POSTGRES_PW']
     user_str = os.environ['POSTGRES_USER']
     conn = _get_conn(pw, user_str)
+    coacat_id_tup = (2,3)
     start_date = datetime.date(2021,3,1)
     end_date = datetime.date(2021,3,31)
-    pl(conn, start_date, end_date)
+    get_t_list(conn, coacat_id_tup, start_date, end_date)
