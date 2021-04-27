@@ -1,8 +1,12 @@
 -- combine double entries posted in journal_entry, ar and ap
 -- double entries from je
-select --tmp.coacat_id,
-	   tmp.general_ledger_number,
-	   coa.general_ledger_name,
+select  --coa.coacat_id,
+        cc.coa_category_name,
+        --coa.sub_coacat_id,
+        sub_coa.sub_coacat_id_name,
+        coa.bs_pl_cat,
+	   --tmp.general_ledger_number,
+	   --coa.general_ledger_name,
 	   sum(case when tmp.debit_credit = 'credit' then -tmp.amount else tmp.amount end)
 from
     (
@@ -112,10 +116,21 @@ from
 ) tmp
 inner join chart_of_accounts coa
 on coa.general_ledger_number = tmp.general_ledger_number
+inner join coa_categories cc
+on cc.coacat_id = coa.coacat_id
+inner join sub_coa_categories sub_coa
+on sub_coa.sub_coacat_id = coa.sub_coacat_id
     --where tmp.company_code = 'US001'
     --and tmp.date between %(start_date)s and %(end_date)s
     --and coa.coacat_id in %(coacat_id_tup)s
-group by tmp.coacat_id,
-		 tmp.general_ledger_number,
-		 coa.general_ledger_name
---order by entry_type_id, entry_id, debit_credit
+group by rollup( 
+                 cc.coa_category_name,
+                  sub_coa.sub_coacat_id_name,
+                --coa.sub_coacat_id,
+        --rollup(  
+                coa.bs_pl_cat
+                 --tmp.coacat_id,
+		         --tmp.general_ledger_number,
+		         --coa.general_ledger_name
+		         )
+order by cc.coa_category_name, sub_coa.sub_coacat_id_name;

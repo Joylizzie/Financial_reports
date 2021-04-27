@@ -14,3 +14,4 @@ psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt
 python je_double_entries/pre_je_id_se.py
 bash je_double_entries/insert_je_capital.sh
 python reports/profit_loss.py
+python reports/balance_sheet.py

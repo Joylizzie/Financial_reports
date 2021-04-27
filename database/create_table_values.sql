@@ -16,6 +16,10 @@ FROM
 COPY coa_categories
 FROM
     '/tmp/coa_categories.csv' DELIMITER ',' CSV HEADER;
+    
+COPY sub_coa_categories
+FROM
+    '/tmp/sub_coa_categories.csv' DELIMITER ',' CSV HEADER;
 
 COPY currencies
 FROM

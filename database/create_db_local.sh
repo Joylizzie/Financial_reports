@@ -7,6 +7,7 @@ cp data/business_type.csv /tmp
 cp data/entry_type.csv /tmp
 cp data/currencies.csv /tmp
 cp data/coa_categories.csv /tmp
+cp data/sub_coa_categories.csv /tmp
 cp data/chart_of_accounts.csv /tmp
 cp data/profit_centres.csv /tmp
 cp data/cost_centres.csv /tmp

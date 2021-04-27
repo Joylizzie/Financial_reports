@@ -10,8 +10,8 @@ set search_path TO ocean;
 
 drop table if exists companies CASCADE;
 drop table if exists coa_categories CASCADE;
+drop table if exists sub_coa_categories CASCADE;
 drop table if exists business_type CASCADE;
-
 drop table if exists entry_type CASCADE;
 drop table if exists general_ledger CASCADE;
 drop table if exists general_ledger_item CASCADE;
@@ -65,8 +65,19 @@ create table if not exists currencies(
 --profit_loss category: revenue, cost_of_goods, gross_margin, operation_expenses
 create table if not exists coa_categories(
 	coacat_id integer primary key, 
-	coa_category_name varchar(15) not null
+	coa_category_name varchar(15) not null	
     );
+    
+create table if not exists sub_coa_categories(
+    sub_coacat_id serial primary key,
+    sub_coacat_id_name varchar(40),
+	coacat_id integer not null, 
+	coa_category_name varchar(15) not null,
+	CONSTRAINT fk_coa_catid
+      FOREIGN KEY(coacat_id) 
+	  REFERENCES coa_categories(coacat_id)
+    );    
+    
 	
 create table if not exists tax(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
@@ -86,6 +97,8 @@ create table if not exists chart_of_accounts(
 	general_ledger_number integer check(general_ledger_number between 100000 and 999999) unique not null,
 	general_ledger_name varchar(30) unique not null,
 	coacat_id integer references coa_categories(coacat_id) not null,
+    sub_coacat_id integer references sub_coa_categories(sub_coacat_id) not null,	
+	bs_pl_cat varchar(60),
 	currency_id integer references currencies(currency_id),
 	CONSTRAINT fk_companyCode
       FOREIGN KEY(company_code) 
@@ -93,6 +106,9 @@ create table if not exists chart_of_accounts(
 	CONSTRAINT fk_coacategory
       FOREIGN KEY(coacat_id) 
 	  REFERENCES coa_categories(coacat_id),
+	CONSTRAINT fk_subcoacat
+      FOREIGN KEY(sub_coacat_id) 
+	  REFERENCES sub_coa_categories(sub_coacat_id),	  
 	constraint fk_currency
 		foreign key(currency_id)
 			references currencies(currency_id)
