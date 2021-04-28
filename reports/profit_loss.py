@@ -75,12 +75,12 @@ def pl(conn, start_date, end_date):
         name = 'Ocean Stream profit and loss - Year 2021' 
         pl_writer = csv.writer(pl)   
         pl_writer.writerow(['Ocean Stream profit and loss - Year 2021\n\n'])
-        pl_writer.writerow(['',f'{start_date.strftime("%b")}'])
-        pl_writer.writerow(['Revenue', f'{revenue}'])
-        #pl_writer.writerow(['Cost', f'{cost}'])
+        pl_writer.writerow(['',f'{start_date.strftime("%b")}'.center(15)])
+        pl_writer.writerow(['Revenue', f'{revenue:3,.2f}'.rjust(15)]) # number will be shown in 2 decimal
+        #pl_writer.writerow(['Cost', f'{cost:3,.2f}'.rjust(15)])
         #pl_writer.writerow(['Gross margin', f'{revenue - cost}'])
         #for (gl_num, gl_name, expense) in expenses:
-         #   pl_writer.writerow([gl_name, expense])
+         #   pl_writer.writerow([gl_name, f'{expense:3,.2f}'])
         #pl_writer.writerow(['total_expenses', total_expenses)])
         #pl_writer.writrow(['operating income', revenue - cost - total_expenses])
         print('pl csv done writing')   

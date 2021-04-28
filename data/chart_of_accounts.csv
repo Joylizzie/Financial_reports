@@ -1,29 +1,31 @@
-"company_code","general_ledger_number","general_ledger_name","coacat_id","currency_id"
-"US001",100001,"checking_account",1,1
-"US001",101001,"inventory",1,1
-"US001",102001,"account_receivables",1,1
-"US001",103001,"prepaied_expenses",1,1
-"US001",104001,"property_plant_equipment",1,1
-"US001",104002,"accum_depreciation",1,1
-"US001",105001,"other_assets",1,1
-"US001",200001,"accounts_paybles",2,1
-"US001",201001,"accrued_expenses",2,1
-"US001",202001,"unearned_revenue",2,1
-"US001",203001,"tax_payable",2,1
-"US001",204001,"other_payables",2,1
-"US001",205001,"long_term_debt",2,1
-"US001",206001,"other_long_term_libilities",2,1
-"US001",301001,"equity_capital",3,1
-"US001",302002,"retaining_earnings",3,1
-"US001",501001,"revenue",5,1
-"US001",502001,"cost_of_goods_sold",5,1
-"US001",600001,"research_development",6,1
-"US001",600002,"advertising",6,1
-"US001",600003,"rent",6,1
-"US001",600004,"utilities",6,1
-"US001",600005,"wages",6,1
-"US001",600006,"office_supplies",6,1
-"US001",600007,"depreciation",6,1
-"US001",600008,"insurance",6,1
-"US001",600009,"other_expense",6,1
-"US001",600010,"interest_expense",6,1
+company_code,general_ledger_number,general_ledger_name,coacat_id,sub_coacat_id,bs_pl_cat,currency_id
+US001,100001,Checking account,1,1,Cash and cash equivalent,1
+US001,100002,Saving account,1,1,Cash and cash equivalent,1
+US001,101001,Inventory,1,1,Inventory,1
+US001,102001,Account receivables,1,1,Account receivables,1
+US001,103001,Prepaid expenses,1,1,Prepaid expenses,1
+US001,104001,Property plant equipment,1,2,Property plane and equipment,1
+US001,104002,Accumulated depreciation,1,2,Accumulated depreciation,1
+US001,105001,Other assets,1,2,Other assets,1
+US001,200001,Account payables,2,3,Account payables,1
+US001,201001,Accrued expenses,2,3,Accrued expenses,1
+US001,202001,Unearned revenue,2,3,Unearned revenue,1
+US001,203001,Tax payable,2,3,Tax payable,1
+US001,204001,Other payables,2,3,Other payables,1
+US001,205001,Long term debit,2,4,Long term debit,1
+US001,206001,Other long term liabilities,2,4,Other long term liabilities,1
+US001,301001,Equity capital,3,5,Equity capital,1
+US001,302002,Retained earnings,3,6,Retained earnings,1
+US001,501001,Revenue,5,7,Revenue,1
+US001,502001,Cost of goods sold,5,8,Cost of goods sold,1
+US001,601001,Research development,6,9,Research development,1
+US001,601100,Travel,6,9,Travel expense,1
+US001,602001,Advertising,6,9,Marketing expense,1
+US001,603001,Rental,6,9,Rental,1
+US001,603002,Unitilities,6,9,Unitilities,1
+US001,604001,Wages,6,9,Wages,1
+US001,605001,Office supplies,6,9,Office supplies,1
+US001,606001,Depreciation,6,9,Depreciation,1
+US001,607001,Insurance,6,9,Insurance,1
+US001,608001,Other expense,6,9,Other expense,1
+US001,609001,Interest expense,6,9,Interest expense,1

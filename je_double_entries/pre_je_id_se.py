@@ -1,6 +1,5 @@
 import os
 import psycopg2
-from psyco_conn_ocean_pw_pc import _get_conn, run_program
 
 
 def _get_conn(pw, user_str):
