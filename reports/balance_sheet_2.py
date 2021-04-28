@@ -102,10 +102,8 @@ def read_write_bs(conn, coacat_id_tup, start_date, end_date):
     with open('reporting_results/blank_bs.csv', 'r') as bs:
         bs_reader = csv.reader(bs, delimiter=',')
         print(list(bs_reader))
- 
-        #print(type(row))
-        #print(row[2])
-            # read the rows without numbers to be added and append them to the list above
+        for row in bs_reader:    
+            # read the rows without numbers to be added and append them to the list above          
             if row[0] in ['Ocean Stream','Balance Sheet', 'USD $', 'Assets',  'Liabilities', 'Shareholder\'s Equity']:
                 new_row = [row[0], '', '','']
                 new_rows_list.append(new_row)
@@ -115,7 +113,7 @@ def read_write_bs(conn, coacat_id_tup, start_date, end_date):
             if row[3] is not None or '':
                 new_row = ['', '', '',row[3]]
                 new_rows_list.append(new_row)
-            # read the rows with numbers to be added and append them to the list above
+            # read the rows with numbers to be added and append them to the list above            
             for tup in t_list:             
                 if row[1] in ['Total current assets' , 'Total current liabilities']:
                     new_row = ['', row[1], '',tup[3]]
@@ -123,28 +121,18 @@ def read_write_bs(conn, coacat_id_tup, start_date, end_date):
                 if row[0] in ['Total Assets','Total Liabilities', 'Total Shareholder\'s Equity', 'Total Liabilities & Total Shareholder\'s Equity']:
                     new_row = [row[0], '', '',tup[3]]
                     new_rows_list.append(new_row)                                   
-                #if row[0] is '' and row[1] is '' and row[2] == tup[2]:
-                    #print(f'row[2] = {row[2]}')
-                    #print('foo')
-                    #print(f'tup[2] = {tup[2]}\n')
-                  #  new_row = ['', '', tup[2],tup[3]]
-                  #  new_rows_list.append(new_row)
+                if row[0] is '' and row[1] is '' and row[2] == tup[2]:
+                    new_row = ['', '', tup[2],tup[3]]
+                    new_rows_list.append(new_row)
+            print(new_rows_list)
 
-        print(new_rows_list)
-
-    # write above new_rows_list to a new file
-    balance_at = end_date.strftime("%m") + "_" + end_date.strftime("%Y")
-    with open(os.path.join('reporting_results', f'bs_{balance_at}.csv'), 'w') as bs:
-        bs_writer = csv.writer(bs)
-        bs_writer.writerows(new_rows_list)
-        print('bs done writing')
-    #for (bs_pl_cat, amount) in t:
-     #   bs_writer.writerow([bs_pl_cat, f'{amount:3,.2f}'])                    
-    #for (coa_cat, sub_coa_cat, bs_pl_cat, amount) in t:
-        #bs_writer.writerow([bs_pl_cat,gl_num,gl_name, f'{amount:3,.2f}'])           
-        #bs_writer.writerow([coa_cat, sub_coa_cat, bs_pl_cat, f'{amount:3,.2f}'])        
-
-
+            # write above new_rows_list to a new file
+            balance_at = end_date.strftime("%m") + "_" + end_date.strftime("%Y")
+            with open(os.path.join('reporting_results', f'bs_{balance_at}.csv'), 'w') as bs:
+                bs_writer = csv.writer(bs)
+                bs_writer.writerows(new_rows_list)
+                print('bs done writing')
+        
 if __name__ == '__main__':
     # parameters:
     db = 'ocean_stream'

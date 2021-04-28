@@ -89,8 +89,7 @@ def conv_None(conn, coacat_id_tup, start_date, end_date):
     t_list = []
     for tup in t_list_w_None:
         tup = tuple('' if v is None else v for v in tup)
-        t_list.append(tup)
-  
+        t_list.append(tup)  
     #print(t_list)
     return t_list          
 
@@ -105,9 +104,7 @@ def read_write_bs(conn, coacat_id_tup, start_date, end_date):
         # initiate a empty list for holding the context to be written in a new balance sheet
         new_rows_list = []
         for row in bs_reader:    
-            #print(type(row))
-            print(row)
-            
+            print(row)            
             if row[0] in ['Ocean Stream','Balance Sheet', 'USD $', 'Assets',  'Liabilities', 'Shareholder\'s Equity']:
                 new_row = [row[0], '', '','']
                 new_rows_list.append(new_row)
@@ -117,21 +114,16 @@ def read_write_bs(conn, coacat_id_tup, start_date, end_date):
             if row[3] is not None or '':
                 new_row = ['', '', '',row[3]]
                 new_rows_list.append(new_row)
-        
-            elif:
-                for tup in t_list:             
+            for tup in t_list:                                     
                     if row[1] in ['Total current assets' , 'Total current liabilities']:
                         new_row = ['', row[1], '',tup[3]]
                         new_rows_list.append(new_row)                           
                     if row[0] in ['Total Assets','Total Liabilities', 'Total Shareholder\'s Equity', 'Total Liabilities & Total Shareholder\'s Equity']:
                         new_row = [row[0], '', '',tup[3]]
                         new_rows_list.append(new_row)                                   
-                    #if row[0] is '' and row[1] is '' and row[2] == tup[2]:
-                        #print(f'row[2] = {row[2]}')
-                        #print('foo')
-                        #print(f'tup[2] = {tup[2]}\n')
-                      #  new_row = ['', '', tup[2],tup[3]]
-                      #  new_rows_list.append(new_row)
+                    if row[0] is '' and row[1] is '' and row[2] == tup[2]:
+                        new_row = ['', '', tup[2],tup[3]]
+                        new_rows_list.append(new_row)
 
             print(new_rows_list)
 
