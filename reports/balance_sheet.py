@@ -92,37 +92,47 @@ def blank_bs(conn, coacat_id_tup, start_date, end_date):
         bbs_writer.writerow(['',f'Retained Earnings','',''])
         bbs_writer.writerow([f'Total Shareholder\'s Equity ','','',''])
         bbs_writer.writerow(['','','',''])
-        bbs_writer.writerow([f'Total Liabilities & Total Shareholder\'s Equity ','','',''])     
+        bbs_writer.writerow([f'Total Liabilities & Total Shareholder\'s Equity','','',''])     
  
         print('blank balance sheet csv done writing')  
          
 
 def read_write_bs(conn, coacat_id_tup, start_date, end_date):
-    dict_t = get_t_dict(conn, coacat_id_tup, start_date, end_date)
-    print(dict_t)
+    t_list = get_t_dict(conn, coacat_id_tup, start_date, end_date)
+    print(t_list)
     with open('reporting_results/blank_bs.csv', 'r') as bs:
         bs_reader = csv.reader(bs, delimiter=',')
         new_rows_list = []
         for row in bs_reader:
             #print(row)
-            #print(row[2])        
-            for tup in dict_t:
-                if row[0] is not '':
-                    new_row = [row[0]]
+            #print(row[2])
+             # read the rows without numbers to be added and append them to the list above
+            if row[0] in ['Ocean Stream','Balance Sheet', 'USD $', 'Assets',  'Liabilities', 'Shareholder\'s Equity']:
+                new_row = [row[0], '', '','']
+                new_rows_list.append(new_row)
+            if row[1] in ['Current assets', 'Current liabilities']:
+                    new_row = ['', row[1], '','']
+                    new_rows_list.append(new_row)       
+            if row[3] is not None or '':
+                new_row = ['', '', '',row[3]]
+                new_rows_list.append(new_row)       
+            for tup in t_list:
+                if tup[1] == row[2]:
+                    new_row = [row[0],row[1],row[2], tup[1]]
                     new_rows_list.append(new_row)
-                if row[1] is not '':
-                    new_row = [row[1]]
-                    new_rows_list.append(new_row)                                         
-                if row[0] is '' and row[1] is '' and row[2] in dict_t.keys():
-                    new_row = [row[0], row[1], row[2],dict_t[row[2]]]
-                    new_rows_list.append(new_row)
-   
+#                if row[1] is not '':
+#                    new_row = [row[1]]
+#                    new_rows_list.append(new_row)                                         
+#                if row[0] is '' and row[1] is '' and row[2] in dict_t.keys():
+#                    new_row = [row[0], row[1], row[2],dict_t[row[2]]]
+#                    new_rows_list.append(new_row)
+        print(new_rows_list)
          
-    # write to a new file
-    balance_at = end_date.strftime("%m") + "_" + end_date.strftime("%Y")
-    with open(os.path.join('reporting_results', f'bs_{balance_at}.csv'), 'w') as bs:
-        bs_writer = csv.writer(bs)
-        bs_writer.writerows(new_rows_list)
+        # write to a new file
+        balance_at = end_date.strftime("%m") + "_" + end_date.strftime("%Y")
+        with open(os.path.join('reporting_results', f'bs_{balance_at}.csv'), 'w') as bs:
+            bs_writer = csv.writer(bs)
+            bs_writer.writerows(new_rows_list)
     #for (bs_pl_cat, amount) in t:
      #   bs_writer.writerow([bs_pl_cat, f'{amount:3,.2f}'])                    
     #for (coa_cat, sub_coa_cat, bs_pl_cat, amount) in t:

@@ -60,7 +60,7 @@ def blank_bs(conn, coacat_id_tup, start_date, end_date):
         bbs_writer.writerow(['','','Retained Earnings',''])
         bbs_writer.writerow(['Total Shareholder\'s Equity','','',''])
         bbs_writer.writerow(['','','',''])
-        bbs_writer.writerow(['Total Liabilities & Total Shareholder\'s Equity ','','',''])     
+        bbs_writer.writerow(['Total Liabilities & Total Shareholder\'s Equity','','',''])     
  
         print('blank balance sheet csv done writing')  
 
@@ -96,38 +96,44 @@ def conv_None(conn, coacat_id_tup, start_date, end_date):
 
 def read_write_bs(conn, coacat_id_tup, start_date, end_date):
     # a list of tuples with string, empty and numbers
-    t_list = conv_None(conn, coacat_id_tup, start_date, end_date)    
-    # read blank balance sheet to memeory
+    t_list = conv_None(conn, coacat_id_tup, start_date, end_date)
+    print(t_list) 
+    print('----------')   
+    # read blank balance sheet to memory
     with open('reporting_results/blank_bs.csv', 'r') as bs:
         bs_reader = csv.reader(bs, delimiter=',')
         # initiate a empty list for holding the context to be written in a new balance sheet
         new_rows_list = []
         for row in bs_reader:    
-        #print(type(row))
-        #print(row[2])
+            #print(type(row))
+            print(row)
             
-            if row[0] in ['Ocean Stream','Balance Sheet', 'USD $', 'Assets', 'Liabilities', 'Shareholder\'s Equity']:
+            if row[0] in ['Ocean Stream','Balance Sheet', 'USD $', 'Assets',  'Liabilities', 'Shareholder\'s Equity']:
                 new_row = [row[0], '', '','']
                 new_rows_list.append(new_row)
+            if row[1] in ['Current assets', 'Current liabilities']:
+                    new_row = ['', row[1], '','']
+                    new_rows_list.append(new_row)       
             if row[3] is not None or '':
                 new_row = ['', '', '',row[3]]
                 new_rows_list.append(new_row)
-            """    
-            for tup in t_list:             
-                if row[1] in ['Current assets', 'Total current assets' 'Current liabilities', 'Total current liabilities']:
-                    new_row = ['', row[1], '',tup[3]]
-                    new_rows_list.append(new_row)                           
-                if row[0] == 'Total*':
-                    new_row = [row[0], '', '',tup[3]]
-                    new_rows_list.append(new_row)                                   
-                if row[2] == tup[2]:
-                    #print(f'row[2] = {row[2]}')
-                    #print('foo')
-                    #print(f'tup[2] = {tup[2]}\n')
-                    new_row = [row[0], row[1], tup[2],tup[3]]
-                    new_rows_list.append(new_row)
-          """
-        print(new_rows_list)
+        
+            elif:
+                for tup in t_list:             
+                    if row[1] in ['Total current assets' , 'Total current liabilities']:
+                        new_row = ['', row[1], '',tup[3]]
+                        new_rows_list.append(new_row)                           
+                    if row[0] in ['Total Assets','Total Liabilities', 'Total Shareholder\'s Equity', 'Total Liabilities & Total Shareholder\'s Equity']:
+                        new_row = [row[0], '', '',tup[3]]
+                        new_rows_list.append(new_row)                                   
+                    #if row[0] is '' and row[1] is '' and row[2] == tup[2]:
+                        #print(f'row[2] = {row[2]}')
+                        #print('foo')
+                        #print(f'tup[2] = {tup[2]}\n')
+                      #  new_row = ['', '', tup[2],tup[3]]
+                      #  new_rows_list.append(new_row)
+
+            print(new_rows_list)
 
     # write above new_rows_list to a new file
     balance_at = end_date.strftime("%m") + "_" + end_date.strftime("%Y")
