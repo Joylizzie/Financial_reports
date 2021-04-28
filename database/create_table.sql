@@ -65,7 +65,7 @@ create table if not exists currencies(
 --profit_loss category: revenue, cost_of_goods, gross_margin, operation_expenses
 create table if not exists coa_categories(
 	coacat_id integer primary key, 
-	coa_category_name varchar(15) not null	
+	coa_category_name varchar(20) not null	
     );
     
 create table if not exists sub_coa_categories(
@@ -394,6 +394,7 @@ create table if not exists journal_entry_item(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         je_id integer not null,
         transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
+        description varchar(80),
         general_ledger_number integer not null,
         cc_id char(6) references cost_centres(cc_id), 
         wbs_code char(5) references wbs(wbs_code),
@@ -488,6 +489,7 @@ create table if not exists ar_receipt(
 create table if not exists ar_receipt_item(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         rre_id integer references ar_receipt(rre_id) not null,
+        description varchar(80),
         general_ledger_number integer default 102001,
         currency_id integer references currencies not null,
         debit_credit varchar(6) default 'credit' NOT NULL,
@@ -527,11 +529,12 @@ create table if not exists ap_invoice(
 		
 create table if not exists ap_invoice_item(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-		PIE_id integer not null,
+		pie_id integer not null,
+        description varchar(80),
+        general_ledger_number integer default 200001,
 	 	cc_id char(6) references cost_centres(cc_id),
 		wbs_code char(5) references wbs(wbs_code),
         currency_id integer references currencies not null,
-        general_ledger_number integer default 200001,
        	debit_credit varchar(6) default 'credit' NOT NULL,
         amount numeric(12,2),
         CONSTRAINT fk_companyCode
@@ -559,7 +562,7 @@ create table if not exists ap_payment(
         entry_type_id varchar(3) default 'PPE',
 		ppe_id serial primary key,
 		date DATE NOT NULL DEFAULT CURRENT_DATE,
-		PIE_id integer not null,
+		pie_id integer not null,
         vendor_id char(5) check (vendor_id ~ '[A-Z]{2}[0-9]{3}' ) not null,
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 
@@ -576,6 +579,7 @@ create table if not exists ap_payment(
 create table if not exists ap_payment_item(
 		company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 		ppe_id integer not null,
+		description varchar(80),
         general_ledger_number integer default 200001,
         currency_id integer references currencies not null,
         debit_credit varchar(6) default 'debit' NOT NULL,
