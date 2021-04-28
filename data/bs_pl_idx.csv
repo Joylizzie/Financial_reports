@@ -1,0 +1,31 @@
+bs_pl_index,bs_pl_cat
+1,Cash and cash equivalent
+1,Cash and cash equivalent
+2,Inventory
+3,Account receivables
+4,Prepaid expenses
+11,Property plane and equipment
+12,Accumulated depreciation
+15,Other assets
+20,Account payables
+21,Accrued expenses
+22,Unearned revenue
+23,Tax payable
+29,Other payables
+30,Long term debit
+35,Other long term liabilities
+40,Equity capital
+41,Retained earnings
+50,Revenue
+55,Cost of goods sold
+60,Research development
+61,Travel expense
+62,Marketing expense
+63,Rental
+64,Unitilities
+65,Wages
+66,Office supplies
+67,Depreciation
+68,Insurance
+69,Other expense
+70,Interest expense
