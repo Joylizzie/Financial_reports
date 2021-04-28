@@ -1,3 +1,3 @@
-company_code,je_id,transaction_date,general_ledger_number,cc_id,wbs_code,currency_id,debit_credit,amount
-US001,1,2021-03-01,100001,,,1,debit,10000000
-US001,1,2021-03-01,301001,,,1,credit,10000000
+company_code,je_id,transaction_date,description,general_ledger_number,cc_id,wbs_code,currency_id,debit_credit,amount
+US001,1,2021-03-01,,100001,,,1,debit,10000000
+US001,1,2021-03-01,,301001,,,1,credit,10000000
