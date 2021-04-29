@@ -66,7 +66,7 @@ def blank_bs(conn, coacat_id_tup, start_date, end_date):
 
 # Get (debit - credit) amount by category with rollup during start and end date
 def get_t_list(conn, coacat_id_tup, start_date, end_date):
-    sql_file = open('reports/t_list_asset.sql', 'r')
+    sql_file = open('reports/t_list_bs.sql', 'r')
     sql = sql_file.read()
     #print(sql)
     with conn.cursor() as curs:
@@ -75,7 +75,7 @@ def get_t_list(conn, coacat_id_tup, start_date, end_date):
     #print(t_list_w_None)
     conn.commit()
     # write to csv file 
-    with open(os.path.join('reporting_results', 't_list_None.csv'), 'w') as write_obj:
+    with open(os.path.join('reporting_results', 'bs_t_list_None.csv'), 'w') as write_obj:
         csv_writer = csv.writer(write_obj)
         for item in t_list_w_None:
             csv_writer.writerow(item)

@@ -13,13 +13,17 @@ COPY entry_type
 FROM
     '/tmp/entry_type.csv' DELIMITER ',' CSV HEADER;    
 
-COPY coa_categories
+COPY coa_categories(coacat_id,coa_category_name)
 FROM
     '/tmp/coa_categories.csv' DELIMITER ',' CSV HEADER;
     
-COPY sub_coa_categories
+COPY sub_coa_categories(sub_coacat_id, sub_coacat_name, coacat_id)
 FROM
     '/tmp/sub_coa_categories.csv' DELIMITER ',' CSV HEADER;
+    
+COPY bs_pl_idx(bs_pl_index, bs_pl_cat_name,coacat_id, sub_coacat_id)
+FROM
+    '/tmp/bs_pl_idx.csv' DELIMITER ',' CSV HEADER;    
 
 COPY currencies
 FROM
