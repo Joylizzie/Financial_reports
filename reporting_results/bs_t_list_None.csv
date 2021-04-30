@@ -1,15 +1,17 @@
-Assets,Current assets,Account receivables,0.00
-Assets,Current assets,Cash and cash equivalent,112749010.00
-Assets,Current assets,,112749010.00
-Assets,,,112749010.00
-Expenses,Expenses,Rental,529990.00
-Expenses,Expenses,,529990.00
-Expenses,,,529990.00
-Liabilities,Current libilities,Account payables,-529990.00
-Liabilities,Current libilities,Tax payable,-10247390.00
-Liabilities,Current libilities,,-10777380.00
-Liabilities,,,-10777380.00
-Revenue,Revenue,Revenue,-102473900.00
-Revenue,Revenue,,-102473900.00
-Revenue,,,-102473900.00
-,,,27720.00
+1,Assets,1,Current assets,1,Cash and cash equivalent,112749010.00
+1,Assets,1,Current assets,1,,112749010.00
+1,Assets,1,Current assets,3,Account receivables,0.00
+1,Assets,1,Current assets,3,,0.00
+1,Assets,1,Current assets,,,112749010.00
+1,Assets,1,,,,112749010.00
+1,Assets,,,,,112749010.00
+1,,,,,,112749010.00
+2,Liabilities,3,Current libilities,20,Account payables,-529990.00
+2,Liabilities,3,Current libilities,20,,-529990.00
+2,Liabilities,3,Current libilities,23,Tax payable,-10247390.00
+2,Liabilities,3,Current libilities,23,,-10247390.00
+2,Liabilities,3,Current libilities,,,-10777380.00
+2,Liabilities,3,,,,-10777380.00
+2,Liabilities,,,,,-10777380.00
+2,,,,,,-10777380.00
+,,,,,,101971630.00

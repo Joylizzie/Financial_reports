@@ -5,6 +5,7 @@ import datetime
 import csv
 
 
+
 # Get connection
 def _get_conn(pw, user_str):
     conn = psycopg2.connect(host="localhost",
@@ -16,8 +17,8 @@ def _get_conn(pw, user_str):
 
 
 # write a blank balance sheet    
-def blank_bs(conn, coacat_id_tup, start_date, end_date):
-    
+#def blank_bs(conn, coacat_id_tup, start_date, end_date):
+def blank_bs(end_date):    
     with open(os.path.join('reporting_results', 'blank_bs.csv'), 'w') as bbs:
         # Equation: Assets = shareholder's equity + Liabilities
         # Head part of balance sheet
@@ -51,7 +52,7 @@ def blank_bs(conn, coacat_id_tup, start_date, end_date):
         bbs_writer.writerow(['','','Accrued expenses',''])
         bbs_writer.writerow(['','','Unearned revenue',''])       
         bbs_writer.writerow(['','Total current liabilities','',''])
-        bbs_writer.writerow(['','','','',''])
+        #bbs_writer.writerow(['','','','',''])
         bbs_writer.writerow(['Total Liabilities','','',''])
         #bbs_writer.writerow(['','','','',''])
         # shareholders equity
@@ -63,6 +64,18 @@ def blank_bs(conn, coacat_id_tup, start_date, end_date):
         bbs_writer.writerow(['Total Liabilities & Total Shareholder\'s Equity','','',''])     
  
         print('blank balance sheet csv done writing')  
+
+def add_sum(blank_bs):
+    sum_current_assets = 0
+    sum_Total_assets = 0
+    sum_current_liabilities = 0
+    sum_Total_Liabilities = 0
+    with open('reporting_results/blank_bs.csv', 'r') as bs:
+        bs_reader = csv.reader(bs, delimiter=',')
+        print(list(bs_reader))
+#        for row in bs_reader:
+#            if row
+
 
 # Get (debit - credit) amount by category with rollup during start and end date
 def get_t_list(conn, coacat_id_tup, start_date, end_date):
@@ -144,6 +157,6 @@ if __name__ == '__main__':
     end_date = datetime.date(2021,3,31)
     # call functions
     #get_t_list(conn, coacat_id_tup, start_date, end_date)
-    #blank_bs(conn, coacat_id_tup, start_date, end_date)
+    blank_bs(end_date)
     #conv_None(conn, coacat_id_tup, start_date, end_date)
     read_write_bs(conn, coacat_id_tup, start_date, end_date)

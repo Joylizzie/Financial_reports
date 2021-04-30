@@ -1,10 +1,10 @@
 -- combine double entries posted in journal_entry, ar and ap
 -- double entries from je
-select  coa.coacat_id,
-        cc.coa_category_name,
-        coa.sub_coacat_id,
-        sub_coa.sub_coacat_name,
-        coa.bs_pl_index,
+select  --coa.coacat_id,
+        --cc.coa_category_name,
+        --coa.sub_coacat_id,
+        --sub_coa.sub_coacat_name,
+        --coa.bs_pl_index,
         bpi.bs_pl_cat_name,
 	   --tmp.general_ledger_number,
 	   --coa.general_ledger_name,
@@ -126,22 +126,24 @@ on  bpi.bs_pl_index = coa.bs_pl_index
     --where tmp.company_code = 'US001'
     --and tmp.date between %(start_date)s and %(end_date)s
     --and coa.coacat_id in %(coacat_id_tup)s
-group by rollup(coa.coacat_id,
-                cc.coa_category_name,
-                coa.sub_coacat_id,
-                sub_coa.sub_coacat_name,
+where coa.bs_pl_index between 1 and 10
+group by --coa.coacat_id,
+                --cc.coa_category_name,
+                --coa.sub_coacat_id,
+               --sub_coa.sub_coacat_name,
                 coa.bs_pl_index,    
-                bpi.bs_pl_cat_name
-        --rollup(  
-                
+               bpi.bs_pl_cat_name
+        --rollup(coa.sub_coacat_id,
+               --sub_coa.sub_coacat_name,
+                --coa.bs_pl_index,    
+                --bpi.bs_pl_cat_name                 
                  --tmp.coacat_id,
 		         --tmp.general_ledger_number,
 		         --coa.general_ledger_name
-		         )
-order by coa.coacat_id,
-        cc.coa_category_name,
-        coa.sub_coacat_id,
-        sub_coa.sub_coacat_name,
+		       --)
+order by --coa.sub_coacat_id, sub_coa.sub_coacat_name;
+       --coa.coacat_id,
+        --cc.coa_category_name,
         coa.bs_pl_index,  
         bpi.bs_pl_cat_name;
           --coa.coacat_id,coa.sub_coacat_id,bpi.bs_pl_index;
