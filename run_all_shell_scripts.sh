@@ -19,9 +19,14 @@ bash ar_in_to_receipt/insert_ar_invoice_credit.sh
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt/pre_ar_receipt_id.sql
 # ar_receipt_item double entries for both debit and credit side  
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt/pre_ar_receipt_item.sql
-# je double entry id
-python je_double_entries/pre_je_id_se.py
-# je double entry posting
+
+# je double entry postings
 bash je_double_entries/insert_je_capital.sh
-#python reports/profit_loss.py
-#python reports/balance_sheet.py
+bash je_double_entries/insert_je_2.sh
+
+# ap invoice double entry postings
+bash po_in_py/insert_po_in_ap.sh
+
+# financial statement 
+python reports/profit_loss.py
+python reports/balance_sheet_2.py

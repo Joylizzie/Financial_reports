@@ -1,10 +1,11 @@
 -- combine double entries posted in journal_entry, ar and ap
 -- double entries from je
-select  --coa.coacat_id,
+select  coa.coacat_id,
         cc.coa_category_name,
-        --coa.sub_coacat_id,
-        sub_coa.sub_coacat_id_name,
-        coa.bs_pl_cat,
+        coa.sub_coacat_id,
+        sub_coa.sub_coacat_name,
+        coa.bs_pl_index,
+        bpi.bs_pl_cat_name,
 	   --tmp.general_ledger_number,
 	   --coa.general_ledger_name,
 	   sum(case when tmp.debit_credit = 'credit' then -tmp.amount else tmp.amount end)
@@ -120,17 +121,27 @@ inner join coa_categories cc
 on cc.coacat_id = coa.coacat_id
 inner join sub_coa_categories sub_coa
 on sub_coa.sub_coacat_id = coa.sub_coacat_id
+inner join bs_pl_idx bpi
+on  bpi.bs_pl_index = coa.bs_pl_index
     --where tmp.company_code = 'US001'
     --and tmp.date between %(start_date)s and %(end_date)s
     --and coa.coacat_id in %(coacat_id_tup)s
-group by rollup( 
-                 cc.coa_category_name,
-                  sub_coa.sub_coacat_id_name,
-                --coa.sub_coacat_id,
+group by rollup(coa.coacat_id,
+                cc.coa_category_name,
+                coa.sub_coacat_id,
+                sub_coa.sub_coacat_name,
+                coa.bs_pl_index,    
+                bpi.bs_pl_cat_name
         --rollup(  
-                coa.bs_pl_cat
+                
                  --tmp.coacat_id,
 		         --tmp.general_ledger_number,
 		         --coa.general_ledger_name
 		         )
-order by cc.coa_category_name, sub_coa.sub_coacat_id_name;
+order by coa.coacat_id,
+        cc.coa_category_name,
+        coa.sub_coacat_id,
+        sub_coa.sub_coacat_name,
+        coa.bs_pl_index,  
+        bpi.bs_pl_cat_name;
+          --coa.coacat_id,coa.sub_coacat_id,bpi.bs_pl_index;
