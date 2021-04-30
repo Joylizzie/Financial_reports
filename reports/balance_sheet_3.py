@@ -43,8 +43,8 @@ def t_to_bs(conn, coacat_id_tup, start_date, end_date):
     df = pd.read_csv('reporting_results/blank_bs.csv', header=None)
     print(df.iloc[:,2])
     t_dict = get_t_list(conn, coacat_id_tup, start_date, end_date)
-    for item in df.iloc[:,2]:
-        for k in t_dict.keys():
+    for k in t_dict.keys():
+        for item in df.iloc[:,2]:
             if item == k:
                 df.replace(to_replace=np.nan,value=t_dict.get(k), inplace=True)
     print(df)
