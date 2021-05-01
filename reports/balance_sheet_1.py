@@ -15,54 +15,7 @@ def _get_conn(pw, user_str):
     return conn
 
 
-# write a blank balance sheet    
-def blank_bs(conn, coacat_id_tup, start_date, end_date):
-    
-    with open(os.path.join('reporting_results', f'blank_bs.csv'), 'w') as bbs:
-        # Equation: Assets = shareholder's equity + Liabilities
-        # Head part of balance sheet
-        name = 'Ocean Stream' 
-        bbs_writer = csv.writer(bbs)   
-        bbs_writer.writerow([f'{name}','', '', ''])
-        bbs_writer.writerow(['Balance Sheet', '', '', ''])
-        bbs_writer.writerow(['USD $', '', '', ''])
-        bbs_writer.writerow(['','','',f'as of {end_date}'.rjust(15)])  
-        
-        # Body of balance sheet
-        # Assets    
-        bbs_writer.writerow(['Assets','','',''])
-        bbs_writer.writerow(['','Current assets','',''])
-        bbs_writer.writerow(['','','Cash and cash equivalent',''])
-        bbs_writer.writerow(['','','Inventory',''])
-        bbs_writer.writerow(['','','Account receivables',''])
-        bbs_writer.writerow(['','','Prepaid expenses',''])        
-        bbs_writer.writerow(['','','','',''])        
-        bbs_writer.writerow(['', 'Total current assets','',''])
-        bbs_writer.writerow(['','','','',''])
-        bbs_writer.writerow(['','','Property and Equipment',''])
-        bbs_writer.writerow(['', '', '- Accumulated depreciation',''])
-        bbs_writer.writerow(['','','Other assets',''])        
-        bbs_writer.writerow(['Total Assets','','',''])
-        bbs_writer.writerow(['','','',''])
-        # Liabilities
-        bbs_writer.writerow(['Liabilities','','',''])
-        bbs_writer.writerow(['','Current liabilities','',''])
-        bbs_writer.writerow(['','','Accounts Payable',''])
-        bbs_writer.writerow(['','','Accrued expenses',''])
-        bbs_writer.writerow(['','','Unearned revenue',''])       
-        bbs_writer.writerow(['','Total current liabilities','',''])
-        bbs_writer.writerow(['','','','',''])
-        bbs_writer.writerow(['Total Liabilities','','',''])
-        bbs_writer.writerow(['','','','',''])
-        # shareholders equity
-        bbs_writer.writerow(['Shareholder\'s Equity','','','']) 
-        bbs_writer.writerow(['','','Equity Capital','']) 
-        bbs_writer.writerow(['','','Retained Earnings',''])
-        bbs_writer.writerow(['Total Shareholder\'s Equity','','',''])
-        bbs_writer.writerow(['','','',''])
-        bbs_writer.writerow(['Total Liabilities & Total Shareholder\'s Equity','','',''])     
- 
-        print('blank balance sheet csv done writing')  
+  
 
 # Get (debit - credit) amount by category with rollup during start and end date
 def get_t_list(conn, coacat_id_tup, start_date, end_date):
