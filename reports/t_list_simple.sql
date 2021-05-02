@@ -2,7 +2,7 @@
    2.The amount is grouped by bs_pl_index
    3.Filted by company_code
    4.Signed bs_pl_index as variale so that python can use it
-
+  
 */
 
 select bpi.bs_pl_cat_name,

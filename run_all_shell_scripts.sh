@@ -29,4 +29,4 @@ bash po_in_py/insert_po_in_ap.sh
 
 # financial statement 
 python reports/profit_loss.py
-python reports/balance_sheet_2.py
+python reports/1_balance_sheet.py
