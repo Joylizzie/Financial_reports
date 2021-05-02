@@ -30,3 +30,5 @@ bash po_in_py/insert_po_in_ap.sh
 # financial statement 
 python reports/profit_loss.py
 python reports/1_balance_sheet.py
+python reports/2_balance_sheet.py
+python reports/3_balance_sheet.py
