@@ -39,14 +39,14 @@ def get_t_list(conn):
     
     # put the query results to dictionary 
     t_dict = {}
-    for row in bs_res_t_list:
+    for row in t:
         t_dict[row[0]] = row[1]
     print(t_dict)
     
     # write the query results to csv file
     with open(os.path.join('reporting_results', '3_bs_t_list.csv'), 'w') as write_obj:
         csv_writer = csv.writer(write_obj)
-        for item in bs_res_t_list:
+        for item in t:
             csv_writer.writerow(item)
     
     # return the query results for functions   

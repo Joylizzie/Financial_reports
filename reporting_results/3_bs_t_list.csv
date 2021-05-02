@@ -1,5 +1,2 @@
-Cash and cash equivalent,122749010.00
-Account receivables,0.00
-Account payables,529990.00
-Tax payable,10247390.00
-Equity capital,10000000.00
+"('Cash and cash equivalent', Decimal('122749010.00'))","('Account receivables', Decimal('0.00'))"
+"('Account payables', Decimal('529990.00'))","('Tax payable', Decimal('10247390.00'))","('Equity capital', Decimal('10000000.00'))"
