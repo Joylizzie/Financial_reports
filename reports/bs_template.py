@@ -6,7 +6,7 @@ import csv
    
 def blank_bs(end_date):
     
-    with open(os.path.join('in_progress', f'bs_template.csv'), 'w') as bbs:
+    with open(os.path.join('reporting_results', f'bs_template.csv'), 'w') as bbs:
         # Equation: Assets = shareholder's equity + Liabilities
         # Head part of balance sheet
         name = 'Ocean Stream' 
@@ -24,12 +24,15 @@ def blank_bs(end_date):
         bbs_writer.writerow(['','','Inventory'])
         bbs_writer.writerow(['','','Account receivables'])
         bbs_writer.writerow(['','','Prepaid expenses',''])        
-        bbs_writer.writerow(['','','',''])        
+        bbs_writer.writerow(['','',''])        
         bbs_writer.writerow(['', 'Total current assets',''])
-        bbs_writer.writerow(['','','',''])
+        bbs_writer.writerow(['','',''])
+        bbs_writer.writerow(['','Noncurrent assets',''])        
         bbs_writer.writerow(['','','Property and Equipment'])
         bbs_writer.writerow(['', '', '- Accumulated depreciation'])
-        bbs_writer.writerow(['','','Other assets'])        
+        bbs_writer.writerow(['','','Net Property and Equipment'])       
+        bbs_writer.writerow(['','','Other assets'])
+        bbs_writer.writerow(['','Total Noncurrent assets',''])                         
         bbs_writer.writerow(['Total Assets','',''])
         bbs_writer.writerow(['','','',''])
         # Liabilities
@@ -45,7 +48,7 @@ def blank_bs(end_date):
         bbs_writer.writerow(['','','',''])
         # shareholders equity
         bbs_writer.writerow(['Shareholder\'s Equity','','']) 
-        bbs_writer.writerow(['','','Tax payable']) 
+        bbs_writer.writerow(['','','Equity capital']) 
         bbs_writer.writerow(['','','Retained Earnings'])
         bbs_writer.writerow(['Total Shareholder\'s Equity','',''])
         bbs_writer.writerow(['','','',''])

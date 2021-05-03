@@ -2,6 +2,7 @@ import os
 import psycopg2
 import datetime
 import csv
+import itertools
 
 
 # Don't repeat myself - combine read sql queries from one connection.
@@ -33,13 +34,15 @@ def get_t_list(conn):
         t.append(curs.fetchall())
         curs.execute(open('reports/t_list_simple_2_2.sql','r').read(), {'bs_pl_index_tup': bs_pl_index_tup_2})
         t.append(curs.fetchall())
- 
-        #print(t)
+        
+        # flat t to a list of tuples
+        bs_t = list(itertools.chain(*t))
+        #print(bs_t)
     conn.commit()
     
     # put the query results to dictionary 
     t_dict = {}
-    for row in t:
+    for row in bs_t:
         t_dict[row[0]] = row[1]
     print(t_dict)
     
