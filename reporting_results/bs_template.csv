@@ -8,12 +8,15 @@ Assets,,
 ,,Inventory
 ,,Account receivables
 ,,Prepaid expenses,
-,,,
+,,
 ,Total current assets,
-,,,
+,,
+,Noncurrent assets,
 ,,Property and Equipment
 ,,- Accumulated depreciation
+,,Net Property and Equipment
 ,,Other assets
+,Total Noncurrent assets,
 Total Assets,,
 ,,,
 Liabilities,,
@@ -27,7 +30,7 @@ Liabilities,,
 Total Liabilities,,
 ,,,
 Shareholder's Equity,,
-,,Tax payable
+,,Equity capital
 ,,Retained Earnings
 Total Shareholder's Equity,,
 ,,,
