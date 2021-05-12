@@ -3,7 +3,6 @@ import psycopg2
 import random
 import datetime
 import csv
-from random_date import randomdate
 
 
 # get connection via psycopg2
@@ -14,6 +13,15 @@ def _get_conn(pw, user_str):
                             password=pw)
     conn.autocommit = False
     return conn
+
+# choose random date bwtween start and end date
+def randomdate(start_date, end_date):
+    # calculate time between start_date and end_date, then convert the time to days
+    days_between_dates = (end_date - start_date).days
+    # select random day in above days
+    random_number_of_days = random.randrange(days_between_dates)
+    random_date = start_date + datetime.timedelta(days=random_number_of_days)
+    return random_date
 
 # fetch existing customer_ids in database where the company_code is 'US001'
 # generate sale order tuples

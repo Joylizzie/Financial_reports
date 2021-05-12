@@ -28,7 +28,7 @@ def get_t_list(conn, bs_pl_index_tup):
     # put the query results to dictionary 
     t_dict = {}
     for row in bs_ca_t_list:
-        t_dict[row[0]] = row[1]
+        t_dict[row[0]] = row[2]
     #print(t_dict)
     
     # write the query results to csv file
