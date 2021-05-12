@@ -10,6 +10,7 @@ set search_path TO ocean;
 
 drop table if exists companies CASCADE;
 drop table if exists coa_categories CASCADE;
+drop table if exists fiscal_months CASCADE;
 drop table if exists sub_coa_categories CASCADE;
 drop table if exists bs_pl_idx CASCADE;
 drop table if exists business_type CASCADE;
@@ -90,6 +91,14 @@ create table if not exists bs_pl_idx(
       FOREIGN KEY(sub_coacat_id) 
 	  REFERENCES sub_coa_categories(sub_coacat_id)
     );
+    
+create table if not exists fiscal_months(
+    id serial PRIMARY key NOT NULL,
+    year integer NOT NULL,
+    month integer NOT NULL,
+    start_date date unique NOT NULL,
+    end_date date unique NOT NULL
+    );    
     	
 create table if not exists tax(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
@@ -254,7 +263,7 @@ create table if not exists customer_addresses (
 
 create table if not exists product_categories(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-	cat_id serial primary key,
+	cat_id char(1) primary key,
 	cat_name varchar(20) not null,
 	subcat_id integer,
 	subcat_name varchar(20),
@@ -266,7 +275,7 @@ create table if not exists product_categories(
 create table if not exists products (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	product_id serial primary key not null,
-	cat_id integer references product_categories(cat_id) not null,
+	cat_id char(1) references product_categories(cat_id) not null,
 	product_name varchar(60) not null,
 	product_unit_name varchar(30),
 	product_units integer,
@@ -393,7 +402,6 @@ create table if not exists entry_type(
 create table if not exists journal_entry(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         entry_type_id varchar(3) default 'JE',
-        transaction_date DATE NOT NULL,
         je_id serial primary key,
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 

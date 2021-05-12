@@ -157,6 +157,8 @@ def sum_cat(conn, end_date):
         if sum_a != sum_ls:
             row = ['Check!!', 'Balance Sheet', 'isn\'t balanced','check and correct!']               
             bs_writer.writerow(row)
+            row = ['The difference is:','','', sum_a-sum_ls]
+            bs_writer.writerow(row)
                     
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 
-# je double entry id
+# je double entry postings
 python je_double_entries/pre_je_id_se.py
 
 cp je_double_entries/je_item_capital.csv /tmp

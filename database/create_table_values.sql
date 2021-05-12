@@ -9,6 +9,10 @@ COPY business_type
 FROM
     '/tmp/business_type.csv' DELIMITER ',' CSV HEADER;
     
+COPY fiscal_months(year, month, start_date, end_date)
+FROM
+    '/tmp/fiscal_months.csv' DELIMITER ',' CSV HEADER;    
+    
 COPY entry_type
 FROM
     '/tmp/entry_type.csv' DELIMITER ',' CSV HEADER;    
@@ -41,11 +45,11 @@ COPY cost_centres
 FROM
     '/tmp/cost_centres.csv' DELIMITER ',' CSV HEADER;
 
-COPY product_categories
+COPY product_categories(company_code, cat_id, cat_name, subcat_id, subcat_name)
 FROM
     '/tmp/product_categories.csv' DELIMITER ',' CSV HEADER;
 
-COPY products
+COPY products(company_code, product_id, cat_id, product_name, product_unit_name, product_units, product_unit_price, currency_id)
 FROM
     '/tmp/products.csv' DELIMITER ',' CSV HEADER;
 

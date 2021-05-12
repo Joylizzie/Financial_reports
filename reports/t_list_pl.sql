@@ -14,7 +14,7 @@ from
     select je.company_code, 
 		    je.entry_type_id, 
 		    je.je_id as entry_id,
-		    je.transaction_date as date,
+		    jei.transaction_date as date,
 		    jei.general_ledger_number,
 		    jei.cc_id as cost_centre,
 		    jei.wbs_code,
@@ -28,7 +28,7 @@ from
     inner join chart_of_accounts coa
     on coa.general_ledger_number = jei.general_ledger_number
     where je.company_code = 'US001'
-    and je.transaction_date between %(start_date)s and %(end_date)s
+    and jei.transaction_date between %(start_date)s and %(end_date)s
     and coa.coacat_id in %(coacat_id_tup)s
     -- double entries from ar_invoice
     union all

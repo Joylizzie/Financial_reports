@@ -8,18 +8,21 @@ Assets,,
 ,,Inventory
 ,,Account receivables,0.00
 ,,Prepaid expenses,
-,,,
+,,
 ,Total current assets,
-,,,
+,,
+,Noncurrent assets,
 ,,Property and Equipment
 ,,- Accumulated depreciation
+,,Net Property and Equipment
 ,,Other assets
+,Total Noncurrent assets,
 Total Assets,,
 ,,,
 Liabilities,,
 ,Current liabilities,
 ,,Account payables,529990.00
-,,Tax payable,10247390.00
+,,Tax payable,10249910.00
 ,,Accrued expenses
 ,,Unearned revenue
 ,Total current liabilities,
@@ -27,7 +30,7 @@ Liabilities,,
 Total Liabilities,,
 ,,,
 Shareholder's Equity,,
-,,Tax payable,10247390.00
+,,Equity capital,10000000.00
 ,,Retained Earnings
 Total Shareholder's Equity,,
 ,,,

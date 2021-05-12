@@ -4,22 +4,25 @@ USD $,,
 ,,,as of 2021-03-31
 Assets,,
 ,Current assets,
-,,Cash and cash equivalent,122749010.00
+,,Cash and cash equivalent,100002
 ,,Inventory
-,,Account receivables,0.00
+,,Account receivables,102001
 ,,Prepaid expenses,
-,,,
+,,
 ,Total current assets,
-,,,
+,,
+,Noncurrent assets,
 ,,Property and Equipment
 ,,- Accumulated depreciation
+,,Net Property and Equipment
 ,,Other assets
+,Total Noncurrent assets,
 Total Assets,,
 ,,,
 Liabilities,,
 ,Current liabilities,
-,,Account payables,-529990.00
-,,Tax payable,-10247390.00
+,,Account payables,200001
+,,Tax payable,203001
 ,,Accrued expenses
 ,,Unearned revenue
 ,Total current liabilities,
@@ -27,7 +30,7 @@ Liabilities,,
 Total Liabilities,,
 ,,,
 Shareholder's Equity,,
-,,Tax payable,-10247390.00
+,,Equity capital,301001
 ,,Retained Earnings
 Total Shareholder's Equity,,
 ,,,

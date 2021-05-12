@@ -5,7 +5,7 @@ select * from
 select je.company_code, 
 		je.entry_type_id, 
 		je.je_id as entry_id,
-		je.transaction_date as date,
+		jei.transaction_date as date,
 		jei.general_ledger_number,
 		jei.cc_id as cost_centre,
 		jei.wbs_code,
@@ -16,7 +16,7 @@ from journal_entry_item jei
 inner join journal_entry je
 on je.je_id = jei.je_id
 where je.company_code = 'US001'
-and je.transaction_date between '2021-03-01' and '2021-03-31'
+and jei.transaction_date between '2021-03-01' and '2021-03-31'
 -- double entries from ar_invoice
 union all
 select ar.company_code, 

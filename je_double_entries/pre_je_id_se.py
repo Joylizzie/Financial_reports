@@ -15,13 +15,13 @@ def generate_je_id(conn):
     with conn.cursor() as curs:
         curs.execute(sql_str)  #cursor closed after the execute action
         (next_je_id) = curs.fetchone()# if the data is large, then use fetchone or fetchmany(), loop through
-    return [('US001', next_je_id)]
+    return [('US001','JE', next_je_id)]
 
 # insert the generated value tuples into database
 def insert_je_id(conn):
     tups = generate_je_id(conn)
-    sql_insert = '''insert into journal_entry (company_code, je_id)
-                    VALUES(%s,%s)'''
+    sql_insert = '''insert into journal_entry (company_code, entry_type_id, je_id)
+                    VALUES(%s,%s,%s)'''
 
     try:
         with conn.cursor() as curs:
