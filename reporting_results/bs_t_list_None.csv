@@ -1,17 +1,8 @@
-1,Assets,1,Current assets,1,Cash and cash equivalent,112749010.00
-1,Assets,1,Current assets,1,,112749010.00
-1,Assets,1,Current assets,3,Account receivables,0.00
-1,Assets,1,Current assets,3,,0.00
-1,Assets,1,Current assets,,,112749010.00
-1,Assets,1,,,,112749010.00
-1,Assets,,,,,112749010.00
-1,,,,,,112749010.00
-2,Liabilities,3,Current libilities,20,Account payables,-529990.00
-2,Liabilities,3,Current libilities,20,,-529990.00
-2,Liabilities,3,Current libilities,23,Tax payable,-10247390.00
-2,Liabilities,3,Current libilities,23,,-10247390.00
-2,Liabilities,3,Current libilities,,,-10777380.00
-2,Liabilities,3,,,,-10777380.00
-2,Liabilities,,,,,-10777380.00
-2,,,,,,-10777380.00
-,,,,,,101971630.00
+100001,119749010.00
+200001,-529990.00
+102001,0.00
+301001,-10000000.00
+203001,-10247390.00
+603001,529990.00
+501001,-102473900.00
+100002,3000000.00

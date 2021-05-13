@@ -10,6 +10,7 @@ set search_path TO ocean;
 
 drop table if exists companies CASCADE;
 drop table if exists coa_categories CASCADE;
+drop table if exists fiscal_months CASCADE;
 drop table if exists sub_coa_categories CASCADE;
 drop table if exists bs_pl_idx CASCADE;
 drop table if exists business_type CASCADE;
@@ -90,6 +91,14 @@ create table if not exists bs_pl_idx(
       FOREIGN KEY(sub_coacat_id) 
 	  REFERENCES sub_coa_categories(sub_coacat_id)
     );
+    
+create table if not exists fiscal_months(
+    id serial PRIMARY key NOT NULL,
+    year integer NOT NULL,
+    month integer NOT NULL,
+    start_date date unique NOT NULL,
+    end_date date unique NOT NULL
+    );    
     	
 create table if not exists tax(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
@@ -254,7 +263,7 @@ create table if not exists customer_addresses (
 
 create table if not exists product_categories(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-	cat_id serial primary key,
+	cat_id char(1) primary key,
 	cat_name varchar(20) not null,
 	subcat_id integer,
 	subcat_name varchar(20),
@@ -266,7 +275,7 @@ create table if not exists product_categories(
 create table if not exists products (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	product_id serial primary key not null,
-	cat_id integer references product_categories(cat_id) not null,
+	cat_id char(1) references product_categories(cat_id) not null,
 	product_name varchar(60) not null,
 	product_unit_name varchar(30),
 	product_units integer,
@@ -286,7 +295,7 @@ create table if not exists products (
 create table if not exists purchase_orders (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	p_order_id serial primary key,
-	p_order_date DATE NOT NULL DEFAULT CURRENT_DATE,
+	p_order_date DATE NOT NULL,
 	vendor_id char(6) not null,
 	CONSTRAINT fk_companyCode
       FOREIGN KEY(company_code) 
@@ -328,7 +337,7 @@ create table if not exists purchase_orders_items (
 create table if not exists sales_orders(
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
 	sales_order_id serial primary key not null,
-	s_order_date DATE NOT NULL DEFAULT CURRENT_DATE,
+	s_order_date DATE NOT NULL,
 	customer_id char(6) references customer_names(customer_id) not null,
 	CONSTRAINT fk_companyCode
       FOREIGN KEY(company_code) 
@@ -368,7 +377,7 @@ create table if not exists sales_orders_items (
 -- sales invoice will be issued to customers with shipped sales order items
 create table if not exists sales_invoices (
 	company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
-	invoice_date DATE NOT NULL DEFAULT CURRENT_DATE,
+	invoice_date DATE NOT NULL,
 	invoice_id serial primary key not null,
     sales_order_id integer not null,
 	customer_id char(6) references customer_names(customer_id) not null,
@@ -393,7 +402,6 @@ create table if not exists entry_type(
 create table if not exists journal_entry(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         entry_type_id varchar(3) default 'JE',
-        transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
         je_id serial primary key,
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 
@@ -408,7 +416,7 @@ create table if not exists journal_entry(
 create table if not exists journal_entry_item(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         je_id integer not null,
-        transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
+        transaction_date DATE NOT NULL,
         description varchar(80),
         general_ledger_number integer not null,
         cc_id char(6) references cost_centres(cc_id), 
@@ -441,7 +449,7 @@ create table if not exists ar_invoice(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         entry_type_id varchar(3) default 'RIE',
         rie_id serial primary key not null,
-		date DATE NOT NULL DEFAULT CURRENT_DATE,
+		date DATE NOT NULL,
 		invoice_id integer not null,
         CONSTRAINT fk_companyCode
       	    FOREIGN KEY(company_code) 
@@ -487,7 +495,7 @@ create table if not exists ar_receipt(
         company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         entry_type_id varchar(3) default 'RRE',
         rre_id serial primary key not null,
-		date DATE NOT NULL DEFAULT CURRENT_DATE,		
+		date DATE NOT NULL,		
 		rie_id integer not null,
 		customer_id char(6) check (customer_id ~ '[A-Z]{3}[0-9]{3}' ),
         CONSTRAINT fk_companyCode	
@@ -528,7 +536,7 @@ create table if not exists ap_invoice(
         entry_type_id varchar(3) default 'PIE',
 	    pie_id serial primary key not null,
         vendor_id char(5) check (vendor_id ~ '[A-Z]{2}[0-9]{3}' ) not null,
-		date DATE NOT NULL DEFAULT CURRENT_DATE,
+		date DATE NOT NULL,
         p_order_id integer references purchase_orders(p_order_id),
         invoice_id varchar(10) not null,
         CONSTRAINT fk_companyCode
@@ -576,7 +584,7 @@ create table if not exists ap_payment(
 		company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
         entry_type_id varchar(3) default 'PPE',
 		ppe_id serial primary key,
-		date DATE NOT NULL DEFAULT CURRENT_DATE,
+		date DATE NOT NULL,
 		pie_id integer not null,
         vendor_id char(5) check (vendor_id ~ '[A-Z]{2}[0-9]{3}' ) not null,
         CONSTRAINT fk_companyCode

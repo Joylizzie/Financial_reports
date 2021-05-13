@@ -1,11 +1,12 @@
 -- combine double entries posted in journal_entry, ar and ap
 -- double entries from je
-select  --coa.coacat_id,
-        --cc.coa_category_name,
-        --coa.sub_coacat_id,
-        sub_coa.sub_coacat_name,
+select  --max(coa.coacat_id),
+        cc.coa_category_name,
+        --max(coa.sub_coacat_id),
+        --sub_coa.sub_coacat_name,
+        --max(bpi.bs_pl_index),
         bpi.bs_pl_cat_name,
-	   --tmp.general_ledger_number,
+	    --tmp.general_ledger_number,
 	   --coa.general_ledger_name,
 	   sum(case when tmp.debit_credit = 'credit' then -tmp.amount else tmp.amount end)
 from
@@ -13,7 +14,7 @@ from
     select je.company_code, 
 		    je.entry_type_id, 
 		    je.je_id as entry_id,
-		    je.transaction_date as date,
+		    jei.transaction_date as date,
 		    jei.general_ledger_number,
 		    jei.cc_id as cost_centre,
 		    jei.wbs_code,
@@ -27,7 +28,7 @@ from
     inner join chart_of_accounts coa
     on coa.general_ledger_number = jei.general_ledger_number
     where je.company_code = 'US001'
-    and je.transaction_date between %(start_date)s and %(end_date)s
+    and jei.transaction_date between %(start_date)s and %(end_date)s
     and coa.coacat_id in %(coacat_id_tup)s
     -- double entries from ar_invoice
     union all
@@ -125,14 +126,16 @@ on  bpi.bs_pl_index = coa.bs_pl_index
     --where tmp.company_code = 'US001'
     --and tmp.date between %(start_date)s and %(end_date)s
     --and coa.coacat_id in %(coacat_id_tup)s
-group by rollup(sub_coa.sub_coacat_name,
+group by rollup(--coa.coacat_id,
+                cc.coa_category_name,
+                --coa.sub_coacat_id,
+                --sub_coa.sub_coacat_name,
+                --bpi.bs_pl_index
                 bpi.bs_pl_cat_name
-        --rollup(  
-                
-                 --tmp.coacat_id,
-		         --tmp.general_ledger_number,
-		         --coa.general_ledger_name
-		         )
-order by sub_coa.sub_coacat_name,
+	          )
+order by max(coa.coacat_id),
+        --coa.sub_coacat_id,
+        max(bpi.bs_pl_index),
+        cc.coa_category_name,
         bpi.bs_pl_cat_name;
-          --coa.coacat_id,coa.sub_coacat_id,bpi.bs_pl_index;
+

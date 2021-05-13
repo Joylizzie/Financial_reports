@@ -16,7 +16,7 @@ def _get_conn(pw, user_str):
 
 # Get (debit - credit) amount by category with rollup during start and end date
 def get_t_list(conn, coacat_id_tup, start_date, end_date):
-    sql_file = open('reports/t_list_asset.sql', 'r')
+    sql_file = open('reports/t_list.sql', 'r')
     sql = sql_file.read()
     #print(sql)
     with conn.cursor() as curs:
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     pw = os.environ['POSTGRES_PW']
     user_str = os.environ['POSTGRES_USER']
     conn = _get_conn(pw, user_str)
-    coacat_id_tup = (1,2,3)
+    coacat_id_tup = (1,2,3,5,6)
     start_date = datetime.date(2021,3,1)
     end_date = datetime.date(2021,3,31)
     pl(conn, start_date, end_date)

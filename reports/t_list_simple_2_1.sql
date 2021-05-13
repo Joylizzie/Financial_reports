@@ -7,7 +7,7 @@
 
 select bpi.bs_pl_cat_name,
         --coa.bs_pl_index,
-		tmp.general_ledger_number,
+		--tmp.general_ledger_number,
 		sum(tmp.amount)
 from(
  --je db list
@@ -54,8 +54,7 @@ inner join bs_pl_idx bpi -- trying get name of bs_pl_index
 on bpi.bs_pl_index = coa.bs_pl_index
 where bpi.bs_pl_index in %(bs_pl_index_tup)s -- sign as variable, Python code can change it and get different result	 
 group by coa.bs_pl_index,
-         bpi.bs_pl_cat_name,
-         tmp.general_ledger_number
+         bpi.bs_pl_cat_name
 order by coa.bs_pl_index;
 
 
