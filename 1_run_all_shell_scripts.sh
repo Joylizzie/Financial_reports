@@ -20,6 +20,7 @@ psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt
 # insert ar invoice items - credit side
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt/insert_ar_invoice_items_credit.sql
 # ar_receipt_item ids
+cp ar_in_to_receipt/pre_ar_receipt_id.csv /tmp
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt/pre_ar_receipt_id.sql
 # ar_receipt_item double entries for both debit and credit side  
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt/pre_ar_receipt_item.sql
