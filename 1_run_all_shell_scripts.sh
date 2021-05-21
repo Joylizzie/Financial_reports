@@ -19,6 +19,8 @@ psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt/insert_ar_invoice_items_debit.sql
 # insert ar invoice items - credit side
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt/insert_ar_invoice_items_credit.sql
+# get received_customer_id
+python ar_in_to_receipt/received_customer_id.py
 # ar_receipt_item ids
 cp ar_in_to_receipt/pre_ar_receipt_id.csv /tmp
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt/pre_ar_receipt_id.sql
@@ -43,3 +45,7 @@ python reports/2_balance_sheet.py
 python reports/3_balance_sheet.py
 # final results with total for different categories and balance sheet is balanced if plus the total amount of profit_loss
 python reports/4_balance_sheet.py
+
+
+#ar aging report
+python reports/ar_aging.py

@@ -24,7 +24,7 @@ def ar_aging(conn, company_code, query_date):
 
 def to_csv(conn, company_code, query_date):
     ar_aging_tups = ar_aging(conn, company_code, query_date) 
-    print(ar_aging_tups)   
+      
     with open(os.path.join('reporting_results', f'ar_aging_report_{query_date}.csv'),'w', newline='') as write_obj:
         ar_aging_writer = csv.writer(write_obj)
         ar_aging_writer.writerow(['Customer Name', 'Phone number', 'Total current AR', 'Within 10 days','Within 20 days ', 'Within 30 days', 'Over 30 days']) # write header

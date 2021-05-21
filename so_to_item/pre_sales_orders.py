@@ -31,8 +31,12 @@ def generate_value_tuples(n, start_date, end_date,conn):
                 """
     with conn.cursor() as curs:
         curs.execute(sql_cust)  #cursor closed after the execute action
-        item_lst = curs.fetchall()# a list of tuples
-    t = [('US001',randomdate(start_date, end_date),*item_lst[i]) for i in range(n)]
+        cust_ids = curs.fetchall()# a list of tuples
+        
+    random_cust_ids_sample = random.sample(cust_ids, 2*n)
+
+    random_cust_ids = random.choices(random_cust_ids_sample, k=n)
+    t = [('US001',randomdate(start_date, end_date),*random_cust_ids[i]) for i in range(n)]
     return t
 
          
@@ -55,5 +59,6 @@ if __name__ == '__main__':
     conn = _get_conn(pw, user_str)
     start_date = datetime.date(2021, 3, 1)
     end_date = datetime.date(2021, 3, 31)
-    n = 10000
+    n = 5000
+    generate_value_tuples(n, start_date, end_date,conn)
     _to_csv(n, conn, outfile='pre_sales_orders.csv')
