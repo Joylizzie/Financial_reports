@@ -101,5 +101,5 @@ if __name__ == '__main__':
     #get_product_ids(conn)
     #weight_pro()
     generate_value_tuples(conn)
-    #_to_csv(conn, outfile='pre_sales_orders_items_i.csv')
+    _to_csv(conn, outfile='pre_sales_orders_items_i.csv')
  
