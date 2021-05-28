@@ -44,7 +44,7 @@ def pl(conn, start_date, end_date):
         pl_writer.writerow(['Ocean Stream'])
         pl_writer.writerow(['Profit and Loss'])
         pl_writer.writerow(['Year 2021'])
-        pl_writer.writerow(['','', f'{start_date.strftime("%b")}'.center(15)])
+        pl_writer.writerow(['','', f'{start_date.strftime("%b-%Y")}'.center(15)])
 
         for item in t_list_pl:
             pl_writer.writerow(item)
