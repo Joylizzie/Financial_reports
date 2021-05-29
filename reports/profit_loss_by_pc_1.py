@@ -6,6 +6,14 @@ import pandas as pd
 from bokeh.io import output_notebook, output_file, save
 from bokeh.plotting import figure, show
 from bokeh.models import (HoverTool, ColumnDataSource)
+from jinja2 import Environment, select_autoescape, FileSystemLoader
+
+DIR = os.path.split(os.path.abspath(__file__))[0]
+
+ENV = Environment(
+    loader=FileSystemLoader(os.path.join(DIR, 'templates')),
+    autoescape=select_autoescape(['html', 'xml'])
+)
 
 
 # connect to Postgres
@@ -36,10 +44,11 @@ def get_sub_graph(conn, start_date, end_date):
         source_rev = ColumnDataSource(df_rev)
         source_exp = ColumnDataSource(df_exp)
         
-        filename = f'profit_loss_by_pc_{end_date.strftime("%m_%Y")}.html'
+        filename = f'1_profit_loss_by_pc_{end_date.strftime("%m_%Y")}.html'
         filepath = 'reporting_results/htmls'
         
-        output_file(filename=filename, title=f'profit and loss during {end_date.strftime("%b-%Y")}')
+        output_file(filename=filename, title=f'profit and loss during {end_date.strftime("%b-%Y")}')        
+        #output_file(filename=filename, title=f'profit and loss during {end_date.strftime("%b-%Y")}', mode='relative', root_dir=filepath)
         p = figure(x_range=pcs,                 
                    plot_height=500,
                   plot_width=500,
@@ -67,8 +76,9 @@ def get_sub_graph(conn, start_date, end_date):
         p.add_tools(HoverTool(tooltips=[('company_code', '@company_code'),
                                         ('profit_centre', '@profit_centre'),                                    
                                     ('amount', '@amount')], mode='vline'))
+                                                               
         p.legend.orientation = "horizontal"
-        p.legend.label_text_font_size = '8pt'
+        p.legend.label_text_font_size = '12pt'
         show(p)
         save(p)
         #return p
