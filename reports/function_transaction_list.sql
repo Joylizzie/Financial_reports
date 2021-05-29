@@ -2,9 +2,9 @@
    2.Filtered by company_code
   
 */
---
---drop function transaction_list(company_code char(6),general_ledger_number_sp integer,general_ledger_number_ep integer, 
---	start_date_p date, end_date_p date);
+
+drop function transaction_list(company_code char(6),general_ledger_number_sp integer,general_ledger_number_ep integer, 
+	start_date_p date, end_date_p date);
 
 create or replace function transaction_list(
                 company_code_p char(6), 
@@ -20,7 +20,7 @@ create or replace function transaction_list(
                  revenue_cost varchar(40),
 --                 cost_centre char(5),
 --                 wbs_code char(5),
-                 profit_centre char(6),
+                 profit_centre varchar(30),
                 -- debit_credit varchar(6),
                  currency_id integer,
                  amount numeric)
@@ -28,7 +28,7 @@ as
  $$
   select tmp3.company_code, 
          tmp3.revenue_cost,
-         tmp3.profit_centre,
+         tmp3.profit_centre_name,
          tmp3.currency_id,         
          sum(amount) 
   from (
@@ -40,7 +40,7 @@ as
            sub.sub_coacat_name as revenue_cost,
            tmp1.cost_centre,
            tmp1.wbs_code,
-           ccs.pc_id profit_centre,
+           pc.pc_name as profit_centre_name,
            tmp1.debit_credit,
            tmp1.currency_id,
            tmp1.amount
@@ -141,6 +141,8 @@ as
     on tmp1.general_ledger_number = coa.general_ledger_number
     inner join sub_coa_categories sub
     on coa.sub_coacat_id = sub.sub_coacat_id
+    inner join profit_centres pc
+    on pc.pc_id = ccs.pc_id
 	order by tmp1.entry_type_id, tmp1.entry_id, tmp1.debit_credit)
   union all
     (select tmp2.company_code, 
@@ -151,7 +153,7 @@ as
            sub.sub_coacat_name as revenue_cost,
            tmp2.cost_centre,
            tmp2.wbs_code,
-           wbs.pc_id as profit_centre,
+           pc.pc_name as profit_centre_name,
            tmp2.debit_credit,
            tmp2.currency_id,
            tmp2.amount
@@ -251,7 +253,9 @@ as
     inner join chart_of_accounts coa 
     on tmp2.general_ledger_number = coa.general_ledger_number
     inner join sub_coa_categories sub
-    on coa.sub_coacat_id = sub.sub_coacat_id   
+    on coa.sub_coacat_id = sub.sub_coacat_id
+    inner join profit_centres pc
+    on wbs.pc_id = pc.pc_id   
     order by tmp2.entry_type_id, tmp2.entry_id, tmp2.debit_credit)
     ) tmp3
  group by tmp3.company_code, 
@@ -262,7 +266,7 @@ as
            tmp3.revenue_cost,
 --           tmp3.cost_centre,
 --           tmp3.wbs_code,
-           tmp3.profit_centre,
+           tmp3.profit_centre_name,
 --           tmp3.debit_credit,
           tmp3.currency_id
 ;
