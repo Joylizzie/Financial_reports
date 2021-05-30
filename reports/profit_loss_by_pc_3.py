@@ -78,7 +78,6 @@ def get_sub_graph(conn, start_date, end_date):
         p.legend.orientation = "horizontal"
         p.legend.label_text_font_size = '8pt'
         
-        plot.add_tools(LassoSelectTool())
         show(p)
         save(p)
         #return p
