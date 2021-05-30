@@ -34,18 +34,4 @@ bash je_double_entries/insert_je_2.sh
 # insert ap invoice ids and its double entry postings
 bash po_in_py/insert_po_in_ap.sh
 
-# generate financial statement
 
-# profit and loss 
-python reports/profit_loss.py
-# balance sheets progressively achieved desired results
-# v1 -v3 results inserted into desired places with different coa, subcoa and bs_pl_idx
-python reports/1_balance_sheet.py
-python reports/2_balance_sheet.py
-python reports/3_balance_sheet.py
-# final results with total for different categories and balance sheet is balanced if plus the total amount of profit_loss
-python reports/4_balance_sheet.py
-
-
-#ar aging report
-python reports/ar_aging.py
