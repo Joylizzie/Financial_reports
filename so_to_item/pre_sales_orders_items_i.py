@@ -4,6 +4,8 @@ import random
 import csv
 import itertools
 
+random.seed(5)
+
 # if rerun the below code, the results of pre_sales_orders_items will be different because of random values were chosen.
 # fetch existing sales_order_ids and product_ids in database where the company_code is 'US001'
 # generate sale_orders_items tuples.

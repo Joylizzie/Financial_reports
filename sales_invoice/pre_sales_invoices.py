@@ -24,7 +24,7 @@ def get_s_so_items(conn):
                         sum(soi.units * soi.unit_selling_price*(1+t.tax_rate)) as amount
                      from sales_orders_items soi
                      inner join sales_orders so
-                     on soi. sales_order_id = so.sales_order_id
+                     on soi.sales_order_id = so.sales_order_id
                      inner join tax t
                      on t.tax_code = soi.tax_code
                      where soi.shipped = 'yes'

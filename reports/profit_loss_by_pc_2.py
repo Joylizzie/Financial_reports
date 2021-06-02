@@ -5,17 +5,11 @@ import csv
 import pandas as pd
 from bokeh.io import output_notebook, output_file, save
 from bokeh.plotting import figure, show
-from bokeh.models import (HoverTool, ColumnDataSource)
-from jinja2 import Environment, select_autoescape, FileSystemLoader
+from bokeh.models import (HoverTool, ColumnDataSource,NumeralTickFormatter)
+from math import pi
+import pathlib
 
-DIR = os.path.split(os.path.abspath(__file__))[0]
-
-ENV = Environment(
-    loader=FileSystemLoader(os.path.join(DIR, 'templates')),
-    autoescape=select_autoescape(['html', 'xml'])
-)
-
-
+    
 # connect to Postgres
 def _get_conn(pw, user_str):
     conn = psycopg2.connect(host="localhost",
@@ -33,7 +27,7 @@ def get_sub_graph(conn, start_date, end_date):
 
         conn.commit()
         df = pd.DataFrame(pls, columns=['company_code', 'sub_name','profit_centre','currency_id','amount'])
-        # a list of unique profit centre for bokeh figure
+        # a list of unique profit centres for bokeh figure
         pcs = list(df['profit_centre'].unique())
         # a list of unique sub_name for different graphs
         sub_names = list(df['sub_name'].unique())
@@ -43,25 +37,25 @@ def get_sub_graph(conn, start_date, end_date):
         #turn above sub_name dataframe into ColumnDataSource
         source_rev = ColumnDataSource(df_rev)
         source_exp = ColumnDataSource(df_exp)
-        
-        filename = f'1_profit_loss_by_pc_{end_date.strftime("%m_%Y")}.html'
-        filepath = 'reporting_results/htmls'
-        
-        output_file(filename=filename, title=f'profit and loss during {end_date.strftime("%b-%Y")}')        
-        #output_file(filename=filename, title=f'profit and loss during {end_date.strftime("%b-%Y")}', mode='relative', root_dir=filepath)
+        # save the html file to folder '/home/lizhi/projects/joylizzie/Financial_reports/reporting_results/htmls'
+        head, tail =  os.path.split(pathlib.Path(__file__).parent.absolute())
+ 
+        path = os.path.join(head, 'reporting_results/htmls', f'2_profit_loss_by_pc_{end_date.strftime("%m_%Y")}.html')
+        output_file(filename=path, title=f'profit and loss during {end_date.strftime("%b-%Y")}')        
+
         p = figure(x_range=pcs,                 
                    plot_height=500,
-                  plot_width=500,
+                  plot_width=550,
                title='Profit and loss by profit centre',
-               x_axis_label="profit centre",
+               x_axis_label="Profit centres",
                y_axis_label="Amount",
-               toolbar_location="below")
+               toolbar_location="right")
 
         p.vbar(x='profit_centre',
             top='amount',
             bottom = 0,
             source = source_rev,
-            width=0.9,
+            width=0.8,
             color='blue',
             legend_label='Revenue')
 
@@ -76,9 +70,13 @@ def get_sub_graph(conn, start_date, end_date):
         p.add_tools(HoverTool(tooltips=[('company_code', '@company_code'),
                                         ('profit_centre', '@profit_centre'),                                    
                                     ('amount', '@amount')], mode='vline'))
-                                                               
+                                    
+        p.yaxis.formatter=NumeralTickFormatter(format="$‘0 a’")        
+        p.xaxis.major_label_orientation = pi/4 
+        p.xaxis.axis_label_text_font_size = "12pt"
+        p.axis.axis_label_text_font_style = 'bold'                               
         p.legend.orientation = "horizontal"
-        p.legend.label_text_font_size = '12pt'
+        p.legend.label_text_font_size = '8pt'
         show(p)
         save(p)
         #return p

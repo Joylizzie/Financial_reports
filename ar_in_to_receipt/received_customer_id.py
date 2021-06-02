@@ -18,6 +18,7 @@ def _get_conn(pw, user_str):
                             password=pw)
     conn.autocommit = False
     return conn
+
     
 def get_invoice_ids(conn):
     sql = """ select rie_id, date as invoice_date, customer_id
@@ -39,29 +40,31 @@ def weighted_receipt(conn, n):
     # assuming n number of invoices issued will be received in the same month
     rdi_tups = get_invoice_ids(conn)
     random_rdi_tups = random.sample(list(rdi_tups), n)
-
+    days = random.randrange(0, 30)
     return [('US001',
-			 '2021-03-31', 
+			 x[1] + datetime.timedelta(days=days), 
 	         x[0],
              x[2]) for x in random_rdi_tups]
 
 
-def _to_csv(conn, outfile):
+def _to_csv(conn):
     tups = weighted_receipt(conn,n)
-    with open(os.path.join('ar_in_to_receipt', outfile), 'w') as write_obj:
+    with open(os.path.join('ar_in_to_receipt', f'pre_ar_receipt_id.csv'), 'w') as write_obj:
         csv_writer = csv.writer(write_obj)
         csv_writer.writerow(['company_code', 'date', 'rie_id','customer_id']) # write header
         for tup in tups:
             csv_writer.writerow(tup)
         print('Done writing')               
+             
 
+       
 if __name__ == '__main__':
     db = 'ocean_stream'
     pw = os.environ['POSTGRES_PW']
     user_str = os.environ['POSTGRES_USER']
     conn = _get_conn(pw, user_str)
-    outfile = 'pre_ar_receipt_id.csv'
-    n=2000
     get_invoice_ids(conn)
+    n = 1000
     weighted_receipt(conn,n)
-    _to_csv(conn, outfile)                
+    _to_csv(conn)
+            
