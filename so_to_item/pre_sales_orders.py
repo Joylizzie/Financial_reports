@@ -4,6 +4,7 @@ import random
 import datetime
 import csv
 
+random.seed(5)
 
 # get connection via psycopg2
 def _get_conn(pw, user_str):

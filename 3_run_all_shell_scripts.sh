@@ -27,6 +27,7 @@ python reports/4_balance_sheet.py
 
 # ar aging report
 python reports/ar_aging.py
+python reports/ar_aging_p_d.py
 
 # profit and loss by profit centre
 python reports/profit_loss_by_pc_1.py
