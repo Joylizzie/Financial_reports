@@ -1,5 +1,4 @@
 Customer Name,Phone number,Total current AR,Within 10 days,Within 20 days ,Within 30 days,Over 30 days
-,Total,35773980.00,0,3505920.00,11999680.00,20268380.00
 "Abbott,Edward",360-175-6239,7920.00,0,7920.00,0,0
 "Abbott,Edward",360-175-6239,31240.00,0,0,0,31240.00
 "Adams,Aaron",360-338-6749,20790.00,0,0,20790.00,0
@@ -1565,3 +1564,4 @@ Customer Name,Phone number,Total current AR,Within 10 days,Within 20 days ,Withi
 "Zimmerman,Elizabeth",509-389-6642,9790.00,0,0,0,9790.00
 "Zimmerman,Elizabeth",509-389-6642,19800.00,0,0,19800.00,0
 "Zimmerman,Mary",509-274-1644,52030.00,0,0,0,52030.00
+,Total,35773980.00,0,3505920.00,11999680.00,20268380.00
