@@ -3,7 +3,7 @@ import pandas as pd
 import csv
 import random
 
-from generate_cust_id import customer_ids
+from generate_cust_ids import customer_ids
 from generate_cust_names import  generate_customer_names, create_csv 
 import make_random_data
 
@@ -13,6 +13,7 @@ random.seed(5)
 def generate_customer_addresses(data_file):
     df = pd.read_csv('data/customer_names.csv', usecols=['customer_id'])
     n = len(df['customer_id'])
+    print(n)
     customer_ids_lst = df['customer_id'].values.tolist()
     cities_list = make_random_data.make_random_cities(path = 'data/wash_cities.csv', num = n)
     customer_surnames = make_random_data.make_random_surnames(path = 'data/surnames.csv', num = n)

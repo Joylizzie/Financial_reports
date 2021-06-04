@@ -28,7 +28,8 @@ def randomdate(start_date, end_date):
 # generate sale order tuples
 def generate_value_tuples(n, start_date, end_date,conn):
 
-    sql_cust =  """select customer_id from customer_names where company_code='US001';             
+    sql_cust =  """select cn.customer_id,cn.business_type_id from customer_names 
+            where company_code='US001';             
                 """
     with conn.cursor() as curs:
         curs.execute(sql_cust)  #cursor closed after the execute action

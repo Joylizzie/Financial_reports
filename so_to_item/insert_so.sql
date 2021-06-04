@@ -4,6 +4,6 @@ set search_path TO ocean;
 
 COPY sales_orders (company_code, s_order_date, customer_id)
 FROM
-    '/tmp/pre_sales_orders.csv' DELIMITER ',' CSV HEADER;
+    '/tmp/pre_sales_orders_1.csv' DELIMITER ',' CSV HEADER;
     
 
