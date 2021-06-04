@@ -4,7 +4,7 @@ import csv
 import random
 
 
-from generate_cust_id import customer_ids
+from generate_cust_ids import customer_ids
 import make_random_data
 
 random.seed(5)
@@ -19,7 +19,7 @@ def generate_customer_names(data_file):
     customer_first_names = make_random_data.make_random_first_names(path = 'data/first_names.csv', num = n)
     return [('US001',
             customer_ids_lst[k], 
-            random.choice(business_type),
+            random.choices(business_type, weights=[30,70],k=1)[0],
             customer_surnames[k] + ',' + customer_first_names[k][0],
             102001,1) for k in range(n)]
 

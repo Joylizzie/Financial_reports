@@ -42,7 +42,7 @@ def get_s_so_items(conn):
         (shipped_items) = curs.fetchall()
 
     # write to csv file 
-    with open(os.path.join('intermediate_csv', 'pre_sales_invoices_i_1.csv'), 'w') as write_obj:
+    with open(os.path.join('intermediate_csv', 'pre_sales_invoices.csv'), 'w') as write_obj:
         csv_writer = csv.writer(write_obj)
         csv_writer.writerow(['company_code','invoice_date', 'sales_order_id', 'customer_id', 'amount'])
         for shipped_item in shipped_items:

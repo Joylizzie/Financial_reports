@@ -49,9 +49,9 @@ inner join area_code as ac
 on ca.postcode = ac.zip
 inner join products p
 on p.product_id = tmp.product_id
-inner join customer_names cn
-on si.customer_id = cn.customer_id
-where cn.business_type_id = 2
+--inner join customer_names cn
+--on si.customer_id = cn.customer_id
+--where cn.business_type_id = 2
 order by ari.rie_id;
   
 

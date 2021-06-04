@@ -39,6 +39,7 @@ def get_invoice_ids(conn):
 def weighted_receipt(conn, n):
     # assuming n number of invoices issued will be received in the same month
     rdi_tups = get_invoice_ids(conn)
+    print(len(rdi_tups))
     random_rdi_tups = random.sample(list(rdi_tups), n)
     days = random.randrange(0, 30)
     return [('US001',
@@ -64,7 +65,7 @@ if __name__ == '__main__':
     user_str = os.environ['POSTGRES_USER']
     conn = _get_conn(pw, user_str)
     get_invoice_ids(conn)
-    n = 1000
+    n = 780
     weighted_receipt(conn,n)
     _to_csv(conn)
             
