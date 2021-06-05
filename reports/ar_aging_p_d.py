@@ -7,7 +7,7 @@ import pathlib
 
 from bokeh.io import output_notebook, output_file, save
 from bokeh.plotting import figure, show
-from bokeh.io import curdoc
+from bokeh.io import curdoc,export_png
 from bokeh.layouts import column, row
 from bokeh.models import (HoverTool,ColumnDataSource, CustomJSTransform, FuncTickFormatter, Select)
 from bokeh.plotting import figure
@@ -50,10 +50,13 @@ def ar_aging_graph(conn, company_code, query_date):
     source = ColumnDataSource(df_a)
     
     head, tail =  os.path.split(pathlib.Path(__file__).parent.absolute())
-
-    path = os.path.join(head, 'reporting_results/htmls', f'ar_aging_{query_date}.html')
-    output_file(filename=path, title=f'AR aging as of {query_date}')        
-
+    # save as html file in 'html' folder
+    path_html = os.path.join(head, 'reporting_results/htmls', f'ar_aging_{query_date}.html')
+    output_file(filename=path_html, title=f'AR aging as of {query_date}') 
+    # save as png file in 'png' folder
+#    path_png = os.path.join(head, 'reporting_results/pngs', f'ar_aging_{query_date}.png')     
+#    output_file(filename=path_png, title=f'AR aging as of {query_date}') 
+    
     p = figure(#plot_height=500,
               #plot_width=550,
            title=f'AR aging as of {query_date}',
@@ -83,13 +86,14 @@ def ar_aging_graph(conn, company_code, query_date):
     p.legend.label_text_font_size = '8pt'
     show(p)
     save(p)
+    #export_png(p, filename="path_png")
     
 if __name__ == '__main__':
     db = 'ocean_stream'
     pw = os.environ['POSTGRES_PW']
     user_str = os.environ['POSTGRES_USER']
     conn = _get_conn(pw, user_str)
-    query_date = '2021-04-18'
+    query_date = '2021-04-12'
     company_code = 'US001'
     get_ar_aging(conn, company_code, query_date)
     #to_csv(conn, company_code, query_date)

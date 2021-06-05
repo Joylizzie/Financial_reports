@@ -78,8 +78,8 @@ if __name__ == '__main__':
     conn = _get_conn(pw, user_str)
     start_date = datetime.date(2021, 3, 1)
     end_date = datetime.date(2021, 3, 31)
-    sample_b = 300
-    sample_i = 1300
+    sample_b = 750
+    sample_i = 1749
     #get_cust_ids(conn)
     generate_value_tuples(sample_b,sample_i, start_date, end_date,conn)
     _to_csv(sample_b,sample_i, start_date, end_date, conn, outfile=f'pre_sales_orders_1.csv')
