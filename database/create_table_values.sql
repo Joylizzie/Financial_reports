@@ -66,3 +66,15 @@ FROM '/tmp/area_code.csv'
 DELIMITER ','
 CSV HEADER;
 
+COPY grades(company_code,grade_code,grade_name)
+FROM
+    '/tmp/grades.csv' DELIMITER ',' CSV HEADER;
+    
+COPY employee_names(company_code,employee_id,employee_name, grade_code)
+FROM
+    '/tmp/employee_names.csv' DELIMITER ',' CSV HEADER;
+    
+COPY employee_salaries(company_code,employee_id, grade_code, currency_id, salary)
+FROM
+    '/tmp/employee_salary.csv' DELIMITER ',' CSV HEADER;    
+

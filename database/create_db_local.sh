@@ -18,4 +18,10 @@ cp data/cost_centres.csv /tmp
 cp data/tax.csv /tmp
 cp data/wbs.csv /tmp
 cp data/area_code.csv /tmp
+cp data/grades.csv /tmp
+
+python employee/generate_employee_ids.py
+cp data/employee_names.csv /tmp
+cp data/employee_salary.csv /tmp
+
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f database/create_table_values.sql
