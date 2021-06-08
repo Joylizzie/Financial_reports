@@ -18,9 +18,9 @@ psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f reports/function
 python reports/profit_loss.py
 # balance sheets progressively achieved desired results
 # v1 -v3 results inserted into desired places with different coa, subcoa and bs_pl_idx
-python reports/1_balance_sheet.py
-python reports/2_balance_sheet.py
-python reports/3_balance_sheet.py
+#python reports/1_balance_sheet.py
+#python reports/2_balance_sheet.py
+#python reports/3_balance_sheet.py
 # final results with total for different categories and balance sheet is balanced if plus the total amount of profit_loss
 python reports/4_balance_sheet.py
 

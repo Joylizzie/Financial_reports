@@ -43,6 +43,10 @@ drop table if exists ar_invoice CASCADE;
 drop table if exists ar_invoice_item CASCADE;
 drop table if exists ar_receipt CASCADE;
 drop table if exists ar_receipt_item CASCADE;
+drop table if exists grades CASCADE;
+drop table if exists employee_names CASCADE;
+drop table if exists employee_salaries CASCADE;
+drop table if exists employee_cost_centres CASCADE;
 
 -- company_code should be country's name in two capital letters, plus three digits
 -- company_name
@@ -617,7 +621,60 @@ create table if not exists ap_payment_item(
             FOREIGN KEY(ppe_id) 
 	            REFERENCES ap_payment(ppe_id)       
         );
+        
+create table if not exists grades(
+      company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
+      grade_code integer check(grade_code in (1,2,3)) primary key,
+      grade_name varchar(20),
+      CONSTRAINT fk_companyCode
+        FOREIGN KEY(company_code) 
+	        REFERENCES companies(company_code)
+	  );               
                         
-
-
-
+create table if not exists employee_names(
+    company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
+    employee_id char(5) primary key check (employee_id ~ '[A-Z]{2}[0-9]{3}'),
+    employee_name varchar(50) not null,
+    grade_code integer check(grade_code between 1 and 3)  not null,
+    CONSTRAINT fk_companyCode
+  	    FOREIGN KEY(company_code) 
+  		    REFERENCES companies(company_code), 
+    CONSTRAINT fk_gradecode
+  	    FOREIGN KEY(grade_code) 
+  		    REFERENCES grades(grade_code) 
+  	);	     		       
+    
+create table if not exists employee_salaries(
+    company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
+    employee_id char(5) primary key check (employee_id ~ '[A-Z]{2}[0-9]{3}'),
+    grade_code integer check(grade_code between 1 and 3) not null,
+    currency_id integer references currencies not null,
+    salary numeric(12,2),
+    CONSTRAINT fk_companyCode
+  	    FOREIGN KEY(company_code) 
+  		    REFERENCES companies(company_code),
+    CONSTRAINT fk_currencyid
+        FOREIGN KEY(currency_id) 
+            REFERENCES currencies(currency_id),  		     
+    CONSTRAINT fk_gradecode
+  	    FOREIGN KEY(grade_code) 
+  		    REFERENCES grades(grade_code),  		     
+    CONSTRAINT fk_employid
+  	    FOREIGN KEY(employee_id) 
+  		    REFERENCES employee_names(employee_id)
+    );
+    
+create table if not exists employee_cost_centres(
+    company_code char(5) check (company_code ~ '[A-Z]{2}[0-9]{3}' ) not null,
+    employee_id char(5) primary key check (employee_id ~ '[A-Z]{2}[0-9]{3}'),
+    cc_id char(5) check(cc_id ~ '[A-Z]{3}[0-9]{2}'), 
+    CONSTRAINT fk_companyCode
+  	    FOREIGN KEY(company_code) 
+  		    REFERENCES companies(company_code), 
+     CONSTRAINT fk_costcentre
+       FOREIGN KEY(cc_id) 
+	    REFERENCES cost_centres(cc_id),
+    CONSTRAINT fk_employid
+  	    FOREIGN KEY(employee_id) 
+  		    REFERENCES employee_names(employee_id)
+    );    
