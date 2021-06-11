@@ -25,42 +25,35 @@ def get_employee(conn):
         curs.execute(sql)
         employees = curs.fetchall()
     conn.commit()
-    df = pd.DataFrame(employees, columns = ['company_code','employee_id', 'grade_code'])
-    return df
+    #df = pd.DataFrame(employees, columns = ['company_code','employee_id', 'grade_code'])
+    return employees
 
+       
+def get_random_salary(grade):
+    ranges = [(60000, 90000), (30000, 59999),(10000, 29999)]
+    return random.randrange(*ranges[grade-1])
+            
     
 # individual employee total compensation by month
 def grade_monthly_salary(conn,out_file):
     
-    # salaries in different grade
-    grade_1_s = random.randrange(100000, 300000)
-    grade_2_s = random.randrange(50000, 99999)
-    grade_3_s = random.randrange(10000, 49999)
-   
-    df = get_employee(conn)
-    # or read from csv file if employee_names.csv is up to date
-#    df = pd.read_csv('data/employee_names.csv', usecols=['company_code','employee_id', 'grade_code'])
-#    n = len(df.index)
-#    print(n)
-    
-    df['currency_id'] = 1
-    
-    condition = [df['grade_code'] == 1, df['grade_code'] == 2, df['grade_code'] == 3]
-    values = [grade_1_s,grade_2_s,grade_3_s]
-    df['salary'] = np.select(condition, values)
-    
-    df.to_csv(out_file, columns=['company_code','employee_id', 'grade_code', 'currency_id', 'salary'], header=True,index=False)
-    print('Done writing.') 
-     
-    return df
-    
+    employees = get_employee(conn)
+    lst = []
+    for tup in employees:
+        lst.append(list(tup) + [1] + [get_random_salary(tup[2])])
+
+    with open(out_file, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(['company_code','employee_id','grade_code','currency_id','salary'])
+        writer.writerows(lst)
+#        print('done writing')    
     
 if __name__ == '__main__':
     db = 'ocean_stream'
     pw = os.environ['POSTGRES_PW']
     user_str = os.environ['POSTGRES_USER']
     conn = _get_conn(pw, user_str)
-    out_file = '/home/lizhi/projects/joylizzie/Financial_reports/data/employee_salary.csv'
+    out_file = '/home/lizhi/projects/joylizzie/Financial_reports/data/employee_salaries.csv'
 
     grade_monthly_salary(conn, out_file)
 

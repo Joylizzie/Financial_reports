@@ -9,7 +9,7 @@ from bokeh.io import output_notebook, output_file, save
 from bokeh.plotting import figure, show
 from bokeh.io import curdoc,export_png
 from bokeh.layouts import column, row
-from bokeh.models import (HoverTool,ColumnDataSource, CustomJSTransform, FuncTickFormatter, Select)
+from bokeh.models import (HoverTool,ColumnDataSource, CustomJSTransform, NumeralTickFormatter,FuncTickFormatter, Select)
 from bokeh.plotting import figure
 
 
@@ -80,6 +80,7 @@ def ar_aging_graph(conn, company_code, query_date):
                                 
           
     #p.xaxis.major_label_orientation = pi/4 
+    p.yaxis.formatter=NumeralTickFormatter(format="$‘0 a’") 
     p.xaxis.axis_label_text_font_size = "12pt"
     p.axis.axis_label_text_font_style = 'bold'                               
     p.legend.orientation = "horizontal"
