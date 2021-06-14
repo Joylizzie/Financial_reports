@@ -6,6 +6,9 @@ set -e
 # function for trial_balance(level to general_ledger)
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f reports/function_trial_balance_gl.sql
 
+# function for trial_balance(level to bspl which is to balance sheet and profit/loss) with bs_pl_idx
+psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f reports/function_trial_balance_pl_whole.sql
+
 # function for trial_balance(level to bspl which is to balance sheet and profit/loss)
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f reports/function_trial_balance_bspl.sql
 
@@ -29,8 +32,8 @@ python reports/4_balance_sheet.py
 python reports/ar_aging.py
 python reports/ar_aging_p_d.py
 
-# profit and loss by profit centre
-python reports/profit_loss_by_pc_1.py
+# profit and loss at company level display in waterfall chart
+python reports/profit_loss_whole.py
 # more formating with os path changed
 python reports/profit_loss_by_pc_2.py
 

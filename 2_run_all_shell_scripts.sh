@@ -5,6 +5,7 @@ set -e
 
 #insert customer names and addresses
 bash customers/insert_customer_n_a.sh
+
 # insert sales_order_id
 bash so_to_item/insert_so.sh
 # insert sales orders items
@@ -24,6 +25,8 @@ cp ar_in_to_receipt/pre_ar_receipt_id.csv /tmp
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt/pre_ar_receipt_id.sql
 # ar_receipt_item double entries for both debit and credit side  
 psql --host=localhost -U ocean_user --dbname=ocean_stream -a -f ar_in_to_receipt/pre_ar_receipt_item.sql
+# insert employ ids, names, grades, salaries, cost centre which belong to
+bash employee/insert_employee.sh
 
 # je double entry postings(insert je_id, then journal_entry_item)
 bash je_double_entries/insert_je_capital.sh

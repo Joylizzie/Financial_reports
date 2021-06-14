@@ -20,7 +20,7 @@ def generate_employee_names(data_file):
     employee_first_names = make_random_data.make_random_first_names(path = 'data/first_names.csv', num = n)
     # grades
     grade = [1,2,3]
-    grade_weights = [10, 60, 40]
+    grade_weights = [10, 1500, 1490]
     
     
     return [('US001',
