@@ -33,9 +33,11 @@ def get_sub_graph(conn, start_date, end_date):
         sub_names = list(df['sub_name'].unique())
         # dataframes filtered by sub_name 
         df_rev = df.loc[df['sub_name']== 'Revenue']
+        df_cogs = df.loc[df['sub_name']== 'Cost of goods sold']
         df_exp = df.loc[df['sub_name']== 'Expenses']
         #turn above sub_name dataframe into ColumnDataSource
         source_rev = ColumnDataSource(df_rev)
+        source_cogs = ColumnDataSource(df_cogs)
         source_exp = ColumnDataSource(df_exp)
         # save the html file to folder '/home/lizhi/projects/joylizzie/Financial_reports/reporting_results/htmls'
         head, tail =  os.path.split(pathlib.Path(__file__).parent.absolute())
@@ -51,7 +53,7 @@ def get_sub_graph(conn, start_date, end_date):
                y_axis_label="Amount",
                toolbar_location="right")
 
-        p.vbar(x='profit_centre',
+        p_rev=p.vbar(x='profit_centre',
             top='amount',
             bottom = 0,
             source = source_rev,
@@ -59,17 +61,27 @@ def get_sub_graph(conn, start_date, end_date):
             color='blue',
             legend_label='Revenue')
 
-        p.vbar(x='profit_centre',
+        
+        p_cogs=p.vbar(x='profit_centre',
+            top='amount',
+            bottom = 0,
+            source = source_cogs,
+            width=0.8,
+            color='firebrick',
+            legend_label='COGS')
+
+                    
+        p_exp=p.vbar(x='profit_centre',
             top='amount',
             bottom = 0,
             source = source_exp,
             width=0.9,
-            color='red',
+            color='purple',
             legend_label='Expenses')
 
-        p.add_tools(HoverTool(tooltips=[('company_code', '@company_code'),
-                                        ('profit_centre', '@profit_centre'),                                    
-                                    ('amount', '@amount')], mode='vline'))
+        p.add_tools(HoverTool(renderers=[p_rev],tooltips=[('Revenue', '@amount{($ 0.00 a)}')], mode='vline'))
+        p.add_tools(HoverTool(renderers=[p_cogs],tooltips=[('COGS', '@amount{($ 0.00 a)}')], mode='vline'))        
+        p.add_tools(HoverTool(renderers=[p_exp],tooltips=[('Expenses', '@amount{($ 0.00 a)}')], mode='vline'))
                                     
         p.yaxis.formatter=NumeralTickFormatter(format="$‘0 a’")        
         p.xaxis.major_label_orientation = pi/4 
