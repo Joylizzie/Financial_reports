@@ -33,7 +33,7 @@ python reports/ar_aging.py
 python reports/ar_aging_p_d.py
 
 # profit and loss at company level display in waterfall chart
-python reports/profit_loss_whole.py
+python reports/profit_loss_whole_s.py
 # more formating with os path changed
 python reports/profit_loss_by_pc_2.py
 
