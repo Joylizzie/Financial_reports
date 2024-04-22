@@ -4,6 +4,6 @@ temp.sh
 temp.sql
 data/customers_full.csv
 in_progress/
-henry/
-venv/
+/henry/
+/venv/
 intermediate_csv/
