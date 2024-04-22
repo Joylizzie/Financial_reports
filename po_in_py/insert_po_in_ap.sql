@@ -1,5 +1,5 @@
 
-set search_path TO ocean;
+set search_path TO ocean_stream;
 
 
 COPY vendors(company_code, vendor_id, vendor_name, general_ledger_number, currency_id)

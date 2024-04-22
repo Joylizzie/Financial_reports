@@ -1,5 +1,5 @@
 
-set search_path TO ocean;
+set search_path TO ocean_stream;
 
 COPY customer_names
 FROM

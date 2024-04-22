@@ -1,5 +1,5 @@
 
-set search_path TO ocean;
+set search_path TO ocean_stream;
 
 COPY grades(company_code,grade_code,grade_name)
 FROM
