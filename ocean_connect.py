@@ -4,13 +4,12 @@ import tempfile
 
 import psycopg2
 
-
-def _get_conn(pw):
+def get_conn(str_user):
     conn = psycopg2.connect(
         host="localhost",
         database="ocean_stream",
-        user="financial_user",
-        password=pw)
+        user=str_user
+        )
     return conn
 
 def test_conn(pw):
@@ -18,17 +17,17 @@ def test_conn(pw):
     cur = conn.cursor()
     cur.execute('SELECT version()')
 
-def main(pw):
-    conn = _get_conn(pw)
-    sql = """select company_code, company_name from companies"""
+def main():
+    conn = _get_conn()
+    sql = """select * from area_code limit 10"""
     with conn.cursor() as cur:
         cur.execute(sql)
         rows = cur.fetchall()
         for i in rows:
             print(i)
 
-def create_csv(pw):
-    conn = _get_conn(pw)
+def create_csv():
+    conn = _get_conn()
     sql  = """ create table if not exists test_csv(
     name varchar(10),
     num integer
@@ -57,9 +56,9 @@ def create_csv(pw):
         cur.execute('drop table test_csv')
 
 if __name__ == '__main__':
-    pw = os.environ['POSTGRES_PW']
+    #pw = os.environ['POSTGRES_PW']
     #test_conn(pw)
     #main(pw)
-    user="financial_user",
-    password=pw)
-    create_csv(pw)
+    # user="financial_user",
+    # password=pw
+    create_csv()

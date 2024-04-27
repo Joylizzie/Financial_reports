@@ -10,16 +10,27 @@ random.seed(5)
 # will be in some period of time, with predefined percentage
 
 
-# connect to 
-def _get_conn(pw, user_str):
+# get connection via psycopg2
+# def _get_conn(pw, user_str):
+#    """use .bashrc to store postgres variables"""
+#     conn = psycopg2.connect(host="localhost",
+#                             database = db,
+#                             user= user_str,
+#                             password=pw)
+#     conn.autocommit = False
+#     return conn
+
+# get connection via psycopg2
+def _get_conn(user_str):
+    """use .pgpass to store postgres variables"""
     conn = psycopg2.connect(host="localhost",
                             database = db,
-                            user= user_str,
-                            password=pw)
+                            user= user_str
+                            )
     conn.autocommit = False
     return conn
+   
 
-    
 def get_invoice_ids(conn):
     sql = """ select rie_id, date as invoice_date, customer_id
             from ar_invoice ai
@@ -29,6 +40,7 @@ def get_invoice_ids(conn):
 	            (select rie_id from ar_receipt where company_code = 'US001')
           """
     with conn.cursor() as curs:
+        curs.execute("set search_path to ocean_stream;")
         curs.execute(sql)
         (rdi) = curs.fetchall()
     conn.commit()
@@ -61,9 +73,11 @@ def _to_csv(conn):
        
 if __name__ == '__main__':
     db = 'ocean_stream'
-    pw = os.environ['POSTGRES_PW']
-    user_str = os.environ['POSTGRES_USER']
-    conn = _get_conn(pw, user_str)
+    # pw = os.environ['POSTGRES_PW']
+    # user_str = os.environ['POSTGRES_USER']
+    user_str = 'ocean_user'
+    # conn = _get_conn(pw, user_str)
+    conn = _get_conn(user_str)
     get_invoice_ids(conn)
     n = 780
     weighted_receipt(conn,n)

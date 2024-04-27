@@ -1,6 +1,8 @@
 /* This query return a result that all customers owe Ocean Stream at the date of April 16 , with total	
 */
 
+set search_path to ocean_stream;
+
 
 (select 
 		 cn.customer_name,

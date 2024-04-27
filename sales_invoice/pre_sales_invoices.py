@@ -4,12 +4,23 @@ import csv
 
 
 # fetch existing sales_order_ids and product_ids in database where the company_code is 'US001'
-# generate sale_orders_items tuples
-def _get_conn(pw, user_str):
+# get connection via psycopg2
+# def _get_conn(pw, user_str):
+#    """use .bashrc to store postgres variables"""
+#     conn = psycopg2.connect(host="localhost",
+#                             database = db,
+#                             user= user_str,
+#                             password=pw)
+#     conn.autocommit = False
+#     return conn
+
+# get connection via psycopg2
+def _get_conn(user_str):
+    """use .pgpass to store postgres variables"""
     conn = psycopg2.connect(host="localhost",
                             database = db,
-                            user= user_str,
-                            password=pw)
+                            user= user_str
+                            )
     conn.autocommit = False
     return conn
 
@@ -38,6 +49,7 @@ def get_s_so_items(conn):
              """
              
     with conn.cursor() as curs:
+        curs.execute("set search_path to ocean_stream;")
         curs.execute(sql_shipped_item)  #cursor closed after the execute action
         (shipped_items) = curs.fetchall()
 
@@ -54,9 +66,11 @@ def get_s_so_items(conn):
    
 if __name__ == '__main__':
     db = 'ocean_stream'
-    pw = os.environ['POSTGRES_PW']
-    user_str = os.environ['POSTGRES_USER']
-    conn = _get_conn(pw, user_str)
+    # pw = os.environ['POSTGRES_PW']
+    # user_str = os.environ['POSTGRES_USER']
+    # conn = _get_conn(pw, user_str)
+    user_str = 'ocean_user'
+    conn = _get_conn(user_str)
     get_s_so_items(conn)
 
     

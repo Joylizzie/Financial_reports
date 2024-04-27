@@ -2,6 +2,8 @@
 
 <h3>1.create database(db)</h3>
 
+Note: run bash file from project folder level 1
+
 create database
     |
     |---> Psql from command line, PgAdmin GUI

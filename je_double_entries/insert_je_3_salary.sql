@@ -1,4 +1,6 @@
 
+set search_path TO ocean_stream;
+
 --assuming the salaries paid to employees by checking account
 
 --debit side: cost of goods sold

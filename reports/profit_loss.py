@@ -2,17 +2,27 @@ import os
 import psycopg2
 import datetime
 import csv
+#from ocean_connect import _get_conn
 
 
 # get connection
-def _get_conn(pw, user_str):
+# def _get_conn(pw, user_str):
+#     conn = psycopg2.connect(host="localhost",
+#                             database = db,
+#                             user= user_str,
+#                             password=pw)
+#     conn.autocommit = False
+#     return conn
+
+# get connection via psycopg2
+def _get_conn(user_str):
+    """use .pgpass to store postgres variables"""
     conn = psycopg2.connect(host="localhost",
                             database = db,
-                            user= user_str,
-                            password=pw)
+                            user= user_str
+                            )
     conn.autocommit = False
     return conn
-
 
 # Get (debit - credit) amount by category with rollup during start and end date
 def get_t_list(conn, coacat_id_tup, start_date, end_date):
@@ -21,6 +31,7 @@ def get_t_list(conn, coacat_id_tup, start_date, end_date):
     #print(sql)
     
     with conn.cursor() as curs:
+        curs.execute("set search_path to ocean_stream;")
         curs.execute(sql, {'start_date':start_date, 'end_date':end_date, 'coacat_id_tup':coacat_id_tup})  #cursor closed after the execute action
         t_list_w_None = curs.fetchall()
     #print(t_list_w_None)
@@ -53,9 +64,11 @@ def pl(conn, start_date, end_date):
         
 if __name__ == '__main__':
     db = 'ocean_stream'
-    pw = os.environ['POSTGRES_PW']
-    user_str = os.environ['POSTGRES_USER']
-    conn = _get_conn(pw, user_str)
+    # pw = os.environ['POSTGRES_PW']
+    # user_str = os.environ['POSTGRES_USER']
+    # conn = _get_conn(pw, user_str)
+    user_str = 'ocean_user'
+    conn = _get_conn(user_str)
     coacat_id_tup = (5,6)
     start_date = datetime.date(2021,3,1)
     end_date = datetime.date(2021,3,31)

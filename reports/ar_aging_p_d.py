@@ -11,14 +11,15 @@ from bokeh.io import curdoc,export_png
 from bokeh.layouts import column, row
 from bokeh.models import (HoverTool,ColumnDataSource, CustomJSTransform, NumeralTickFormatter,FuncTickFormatter, Select)
 from bokeh.plotting import figure
-
+# from ocean_connect import _get_conn
 
 # Get connection
-def _get_conn(pw, user_str):
+def _get_conn(user_str):
     conn = psycopg2.connect(host="localhost",
                             database = db,
                             user= user_str,
-                            password=pw)
+                            #password=pw
+                            )
     conn.autocommit = False
     return conn
     
@@ -27,13 +28,14 @@ def get_ar_aging(conn, company_code, query_date):
     sql = sql_file.read()
     
     with conn.cursor() as curs:
+        curs.execute("set search_path to ocean_stream;")
         curs.execute(sql, {'company_code':company_code, 'query_date':query_date})  #cursor closed after the execute action
         (ar_aging) = curs.fetchall()
         return ar_aging
     conn.commit()
 
 def to_csv(conn, company_code, query_date):
-    ar_aging_tups = ar_aging(conn, company_code, query_date) 
+    ar_aging_tups = get_ar_aging(conn, company_code, query_date) 
       
     with open(os.path.join('reporting_results', f'ar_aging_report_{query_date}_d.csv'),'w', newline='') as write_obj:
         ar_aging_writer = csv.writer(write_obj)
@@ -46,6 +48,7 @@ def to_csv(conn, company_code, query_date):
 def ar_aging_graph(conn, company_code, query_date):
     ar_aging = get_ar_aging(conn, company_code, query_date)
     df_a = pd.DataFrame(ar_aging, columns=['company_code','customer_name', 'phone_number', 'rie_id', 'age_in_days', 'current_ar'])
+    df_a['current_ar'] = df_a['current_ar'].astype(float)
     #print(df_a.head())
     source = ColumnDataSource(df_a)
     
@@ -64,7 +67,7 @@ def ar_aging_graph(conn, company_code, query_date):
            y_axis_label="Current AR amount",
            toolbar_location="right")
  
-    p.circle(x='age_in_days',
+    p.scatter(x='age_in_days',
              y = 'current_ar',
             source = df_a,
             fill_alpha=1.0, 
@@ -91,9 +94,11 @@ def ar_aging_graph(conn, company_code, query_date):
     
 if __name__ == '__main__':
     db = 'ocean_stream'
-    pw = os.environ['POSTGRES_PW']
-    user_str = os.environ['POSTGRES_USER']
-    conn = _get_conn(pw, user_str)
+    # pw = os.environ['POSTGRES_PW']
+    # user_str = os.environ['POSTGRES_USER']
+    # conn = _get_conn(pw, user_str)
+    user_str= 'ocean_user'
+    conn = _get_conn(user_str)
     query_date = '2021-04-12'
     company_code = 'US001'
     get_ar_aging(conn, company_code, query_date)

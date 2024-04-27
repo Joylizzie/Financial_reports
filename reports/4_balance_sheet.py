@@ -7,15 +7,24 @@ import csv
 import itertools
 
 
-# Get connection
-def _get_conn(pw, user_str):
+# # Get connection
+# def _get_conn(pw, user_str):
+#     conn = psycopg2.connect(host="localhost",
+#                             database = db,
+#                             user= user_str,
+#                             password=pw)
+#     conn.autocommit = False
+#     return conn
+
+# get connection via psycopg2
+def _get_conn(user_str):
+    """use .pgpass to store postgres variables"""
     conn = psycopg2.connect(host="localhost",
                             database = db,
-                            user= user_str,
-                            password=pw)
+                            user= user_str
+                            )
     conn.autocommit = False
-    return conn
-    
+    return conn 
     
 # get tranction list based on bs_pl_index
 def get_t_list(conn):
@@ -164,9 +173,11 @@ def sum_cat(conn, end_date):
 if __name__ == '__main__':
     # parameters:
     db = 'ocean_stream'
-    pw = os.environ['POSTGRES_PW']
-    user_str = os.environ['POSTGRES_USER']
-    conn = _get_conn(pw, user_str)
+    # pw = os.environ['POSTGRES_PW']
+    # user_str = os.environ['POSTGRES_USER']
+    # conn = _get_conn(pw, user_str)
+    user_str = "ocean_user"
+    conn = _get_conn(user_str)
     end_date = datetime.date(2021,3,31)
 
     # call functions

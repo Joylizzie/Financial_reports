@@ -1,4 +1,5 @@
 			  
+set search_path to ocean_stream;
 create or replace function ar_aging_report(
 	            company_code_p char(6), customer_id_p char(6), query_date date)
   returns table(customer_name char(6),
@@ -62,6 +63,6 @@ select
 	 inner join customer_addresses ca
 	 on ca.customer_id = tmp3.customer_id
 	 where tmp3.current_ar <> 0
-group by  cn.customer_name, ca.phone_number
+group by  cn.customer_name, ca.phone_number,  tmp3.current_ar 
  
 $$ language sql;

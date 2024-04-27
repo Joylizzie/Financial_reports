@@ -1,4 +1,6 @@
 
+set search_path TO ocean_stream;
+
 -- debit side
 insert into ar_invoice_item (company_code, rie_id, customer_id, general_ledger_number, currency_id, debit_credit, amount)
 	select

@@ -1,3 +1,5 @@
+set search_path to ocean_stream;
+
 -- combine double entries posted in journal_entry, ar and ap
 -- double entries from je
 select  --max(coa.coacat_id),
