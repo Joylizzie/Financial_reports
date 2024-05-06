@@ -1,5 +1,5 @@
 
-set search_path TO ocean;
+set search_path TO ocean_stream;
 
 
 COPY sales_orders_items(company_code, sales_order_id, product_id, units, unit_selling_price, currency_id,tax_code, shipped)

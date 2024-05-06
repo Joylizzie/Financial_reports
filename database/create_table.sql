@@ -1,11 +1,11 @@
 show search_path;
 
-DROP SCHEMA IF EXISTS ocean CASCADE;
+DROP SCHEMA IF EXISTS ocean_stream CASCADE;
 
-CREATE SCHEMA IF NOT EXISTS ocean
+CREATE SCHEMA IF NOT EXISTS ocean_stream
 AUTHORIZATION CURRENT_USER; 
 
-set search_path TO ocean;
+set search_path TO ocean_stream;
 
 
 drop table if exists companies CASCADE;
