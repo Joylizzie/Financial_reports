@@ -7,13 +7,26 @@ import csv
 random.seed(5)
 
 # get connection via psycopg2
-def _get_conn(pw, user_str):
+# def _get_conn(pw, user_str):
+#    """use .bashrc to store postgres variables"""
+#     conn = psycopg2.connect(host="localhost",
+#                             database = db,
+#                             user= user_str,
+#                             password=pw)
+#     conn.autocommit = False
+#     return conn
+
+# get connection via psycopg2
+def _get_conn(user_str):
+    """use .pgpass to store postgres variables"""
     conn = psycopg2.connect(host="localhost",
                             database = db,
-                            user= user_str,
-                            password=pw)
+                            user= user_str
+                            )
     conn.autocommit = False
     return conn
+
+
 
 # choose random date bwtween start and end date
 def randomdate(start_date, end_date):
@@ -32,6 +45,7 @@ def generate_value_tuples(n, start_date, end_date,conn):
             where company_code='US001';             
                 """
     with conn.cursor() as curs:
+        curs.execute("set search_path to ocean_stream;")
         curs.execute(sql_cust)  #cursor closed after the execute action
         cust_ids = curs.fetchall()# a list of tuples
         
@@ -56,9 +70,11 @@ def _to_csv(n, conn, outfile):
 
 if __name__ == '__main__':
     db = 'ocean_stream'
-    pw = os.environ['POSTGRES_PW']
-    user_str = os.environ['POSTGRES_USER']
-    conn = _get_conn(pw, user_str)
+    # pw = os.environ['POSTGRES_PW']
+    # user_str = os.environ['POSTGRES_USER']
+    # conn = _get_conn(pw, user_str)
+    user_str = 'ocean_user'
+    conn = _get_conn(user_str)
     start_date = datetime.date(2021, 3, 1)
     end_date = datetime.date(2021, 3, 31)
     n = 5000

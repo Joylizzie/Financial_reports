@@ -1,5 +1,7 @@
 -- combine double entries posted in journal_entry, ar and ap
 -- double entries from je
+set search_path to ocean_stream;
+
 select * from
 (
 select je.company_code, 

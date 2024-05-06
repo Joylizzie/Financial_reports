@@ -11,6 +11,8 @@ The double entry will be like this:
 */
 
 --credit side
+set search_path TO ocean_stream;
+
 insert into ar_receipt_item(company_code, rre_id, general_ledger_number, currency_id,debit_credit,amount)
     -- get the details of each customers receivables then change to credit side
     select ar.company_code, 

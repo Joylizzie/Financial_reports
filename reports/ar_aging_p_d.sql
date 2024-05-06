@@ -2,6 +2,8 @@
 */
 
 --by customer
+set search_path to ocean_stream;
+
 (select tmp3.company_code,
 		 cn.customer_name,
 		 ca.phone_number,

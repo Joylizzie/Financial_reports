@@ -4,6 +4,7 @@
   
 */
 
+set search_path to ocean_stream;
 --drop function trial_balance_bspl(char(6),date, date);
 
 create or replace function trial_balance_bspl(company_code_p char(6), 

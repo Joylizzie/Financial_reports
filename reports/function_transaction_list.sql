@@ -2,8 +2,9 @@
    2.Filtered by company_code
   
 */
+set search_path to ocean_stream;
 
-drop function transaction_list(company_code char(6),general_ledger_number_sp integer,general_ledger_number_ep integer, 
+drop function if exist transaction_list(company_code char(6),general_ledger_number_sp integer,general_ledger_number_ep integer, 
 	start_date_p date, end_date_p date);
 
 create or replace function transaction_list(

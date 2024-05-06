@@ -2,17 +2,30 @@ import os
 import psycopg2
 
 
-def _get_conn(pw, user_str):
+# def _get_conn(pw, user_str):
+#     """get password from .bashrc"""
+#     conn = psycopg2.connect(host="localhost",
+#                             database = db,
+#                             user= user_str,
+#                             password=pw)
+#     conn.autocommit = False
+#     return conn
+
+def _get_conn(user_str):
+    """get password from .pgpass"""
     conn = psycopg2.connect(host="localhost",
                             database = db,
                             user= user_str,
-                            password=pw)
+                            )
     conn.autocommit = False
     return conn
 
+
 def generate_je_id(conn):
+    sql_set_search_path = """set search_path to ocean_stream;"""
     sql_str = """ select nextval('journal_entry_je_id_seq')"""
     with conn.cursor() as curs:
+        curs.execute(sql_set_search_path)
         curs.execute(sql_str)  #cursor closed after the execute action
         (next_je_id) = curs.fetchone()# if the data is large, then use fetchone or fetchmany(), loop through
     return [('US001','JE', next_je_id)]
@@ -24,7 +37,9 @@ def insert_je_id(conn):
                     VALUES(%s,%s,%s)'''
 
     try:
+        sql_set_search_path = """set search_path to ocean_stream;"""
         with conn.cursor() as curs:
+            curs.execute(sql_set_search_path)
             curs.execute(sql_insert, tups[0]) #cursor close after the execute
         conn.commit()#commit the connection to confirm the insertion
     except (Exception, psycopg2.Error) as error:
@@ -35,14 +50,14 @@ def insert_je_id(conn):
         if (conn):
             conn.close()
             print("PostgreSQL connection is closed")                        
-    
 
 if __name__ == '__main__':  
     # call the function with parameters to see if the function works#
     db = 'ocean_stream' 
-    pw = os.environ['POSTGRES_PW']
-    user_str = os.environ['POSTGRES_USER']
-    conn = _get_conn(pw, user_str)
+    # pw = os.environ['POSTGRES_PW']
+    # user_str = os.environ['POSTGRES_USER']
+    user_str = 'ocean_user'
+    conn = _get_conn(user_str)
     insert_je_id(conn)
 
 

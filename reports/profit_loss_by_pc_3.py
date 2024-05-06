@@ -11,22 +11,23 @@ import pathlib
 
     
 # connect to Postgres
-def _get_conn(pw, user_str):
+def _get_conn(user_str):
     conn = psycopg2.connect(host="localhost",
                             database = db,
-                            user= user_str,
-                            password=pw)
+                            user= user_str)
     conn.autocommit = False
     return conn
 
 def get_sub_graph(conn, start_date, end_date):
     func = """select * from transaction_list('US001',500000, 999999, '2021-03-01', '2021-03-31')"""
     with conn.cursor() as curs:
+        curs.execute("set search_path to ocean_stream;")
         curs.execute(func)
         pls = curs.fetchall()
 
         conn.commit()
         df = pd.DataFrame(pls, columns=['company_code', 'sub_name','profit_centre','currency_id','amount'])
+        df['amount'] = df['amount'].astype(float)
         # a list of unique profit centres for bokeh figure
         pcs = list(df['profit_centre'].unique())
         # a list of unique sub_name for different graphs
@@ -44,8 +45,8 @@ def get_sub_graph(conn, start_date, end_date):
         output_file(filename=path, title=f'profit and loss during {end_date.strftime("%b-%Y")}')        
 
         p = figure(x_range=pcs,                 
-                   plot_height=500,
-                  plot_width=550,
+                   height=500,
+                  width=550,
                title='Profit and loss by profit centre',
                x_axis_label="Profit centres",
                y_axis_label="Amount",
@@ -84,11 +85,13 @@ def get_sub_graph(conn, start_date, end_date):
 
 if __name__ == '__main__':
     db = 'ocean_stream'
-    pw = os.environ['POSTGRES_PW']
-    user_str = os.environ['POSTGRES_USER']
-    conn = _get_conn(pw, user_str)
+    # pw = os.environ['POSTGRES_PW']
+    # user_str = os.environ['POSTGRES_USER']
+    # conn = _get_conn(pw, user_str)
+    user_str = 'ocean_user'
+    conn = _get_conn(user_str)
     start_date = datetime.date(2021,3,1)
     end_date = datetime.date(2021,3,31)
     col_names = ['company_code', 'sub_name','profit_centre', 'currency_id','amount']
-    df=get_sub_graph(conn, start_date, end_date)
+    get_sub_graph(conn, start_date, end_date)
 

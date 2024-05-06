@@ -1,5 +1,7 @@
 -- combine double entries posted in journal_entry, ar and ap
 -- double entries from je
+set search_path to ocean_stream;
+
 select --coa.bs_pl_cat,
 	   tmp.general_ledger_number,
 	   --coa.general_ledger_name,

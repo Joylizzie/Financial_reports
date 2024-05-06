@@ -1,3 +1,5 @@
+set search_path TO ocean_stream;
+
 -- get shipped sales order ids placed by individuals
 -- credit side
 insert into ar_invoice_item (company_code, rie_id, customer_id, general_ledger_number,cc_id, currency_id, debit_credit, amount)

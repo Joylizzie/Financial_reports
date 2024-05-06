@@ -1,85 +1,61 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
-  
   <head>
-    
-      <meta charset="utf-8">
-      <title>profit and loss during Mar-2021</title>
-      
-      
-        
-          
-        
-        
-          
-        <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.2.3.min.js" integrity="sha384-T2yuo9Oe71Cz/I4X9Ac5+gpEa5a8PpJCDlqKYO0CfAuEszu1JrXLl8YugMqYe3sM" crossorigin="anonymous"></script>
-        <script type="text/javascript">
-            Bokeh.set_log_level("info");
-        </script>
-        
-      
-      
-    
+    <meta charset="utf-8">
+    <title>profit and loss during Mar-2021</title>
+    <style>
+      html, body {
+        box-sizing: border-box;
+        display: flow-root;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        Bokeh.set_log_level("info");
+    </script>
   </head>
-  
-  
   <body>
-    
-      
-        
-          
-          
-            
-              <div class="bk-root" id="4368b1b9-6196-4a04-949e-660282f5c9fc" data-root-id="1003"></div>
-            
-          
-        
-      
-      
-        <script type="application/json" id="1242">
-          {"9f919635-b146-49e8-bdfc-2feb9b53ffb6":{"roots":{"references":[{"attributes":{"items":[{"id":"1049"},{"id":"1065"}],"label_text_font_size":"8pt","orientation":"horizontal"},"id":"1048","type":"Legend"},{"attributes":{"text":"Profit and loss by profit centre"},"id":"1004","type":"Title"},{"attributes":{"label":{"value":"Revenue"},"renderers":[{"id":"1038"}]},"id":"1049","type":"LegendItem"},{"attributes":{},"id":"1046","type":"Selection"},{"attributes":{"fill_color":{"value":"blue"},"line_color":{"value":"blue"},"top":{"field":"amount"},"width":{"value":0.8},"x":{"field":"profit_centre"}},"id":"1036","type":"VBar"},{"attributes":{},"id":"1021","type":"PanTool"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"red"},"line_alpha":{"value":0.1},"line_color":{"value":"red"},"top":{"field":"amount"},"width":{"value":0.9},"x":{"field":"profit_centre"}},"id":"1052","type":"VBar"},{"attributes":{"fill_color":{"value":"red"},"line_color":{"value":"red"},"top":{"field":"amount"},"width":{"value":0.9},"x":{"field":"profit_centre"}},"id":"1051","type":"VBar"},{"attributes":{},"id":"1022","type":"WheelZoomTool"},{"attributes":{},"id":"1062","type":"UnionRenderers"},{"attributes":{"factors":["consulting_KG","paas_KG","saas_KG","paas_OY","paas_SE","paas_SP","saas_OY","saas_SE","saas_SP"]},"id":"1006","type":"FactorRange"},{"attributes":{"source":{"id":"1002"}},"id":"1054","type":"CDSView"},{"attributes":{"overlay":{"id":"1027"}},"id":"1023","type":"BoxZoomTool"},{"attributes":{},"id":"1024","type":"SaveTool"},{"attributes":{"below":[{"id":"1014"}],"center":[{"id":"1016"},{"id":"1020"},{"id":"1048"}],"left":[{"id":"1017"}],"plot_height":500,"plot_width":550,"renderers":[{"id":"1038"},{"id":"1053"}],"title":{"id":"1004"},"toolbar":{"id":"1028"},"x_range":{"id":"1006"},"x_scale":{"id":"1010"},"y_range":{"id":"1008"},"y_scale":{"id":"1012"}},"id":"1003","subtype":"Figure","type":"Plot"},{"attributes":{},"id":"1025","type":"ResetTool"},{"attributes":{"data_source":{"id":"1002"},"glyph":{"id":"1051"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1052"},"selection_glyph":null,"view":{"id":"1054"}},"id":"1053","type":"GlyphRenderer"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"blue"},"line_alpha":{"value":0.1},"line_color":{"value":"blue"},"top":{"field":"amount"},"width":{"value":0.8},"x":{"field":"profit_centre"}},"id":"1037","type":"VBar"},{"attributes":{},"id":"1026","type":"HelpTool"},{"attributes":{},"id":"1063","type":"Selection"},{"attributes":{},"id":"1043","type":"CategoricalTickFormatter"},{"attributes":{},"id":"1008","type":"DataRange1d"},{"attributes":{"label":{"value":"Expenses"},"renderers":[{"id":"1053"}]},"id":"1065","type":"LegendItem"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_multi":null,"active_scroll":"auto","active_tap":"auto","tools":[{"id":"1021"},{"id":"1022"},{"id":"1023"},{"id":"1024"},{"id":"1025"},{"id":"1026"},{"id":"1066"}]},"id":"1028","type":"Toolbar"},{"attributes":{},"id":"1010","type":"CategoricalScale"},{"attributes":{"callback":null,"mode":"vline","tooltips":[["company_code","@company_code"],["profit_centre","@profit_centre"],["amount","@amount"]]},"id":"1066","type":"HoverTool"},{"attributes":{"source":{"id":"1001"}},"id":"1039","type":"CDSView"},{"attributes":{},"id":"1012","type":"LinearScale"},{"attributes":{"format":"$\u20180 a\u2019"},"id":"1068","type":"NumeralTickFormatter"},{"attributes":{"axis_label":"Profit centres","axis_label_text_font_size":"12pt","axis_label_text_font_style":"bold","formatter":{"id":"1043"},"major_label_orientation":0.7853981633974483,"ticker":{"id":"1015"}},"id":"1014","type":"CategoricalAxis"},{"attributes":{"data_source":{"id":"1001"},"glyph":{"id":"1036"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1037"},"selection_glyph":null,"view":{"id":"1039"}},"id":"1038","type":"GlyphRenderer"},{"attributes":{},"id":"1015","type":"CategoricalTicker"},{"attributes":{"axis":{"id":"1014"},"ticker":null},"id":"1016","type":"Grid"},{"attributes":{"bottom_units":"screen","fill_alpha":0.5,"fill_color":"lightgrey","left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","top_units":"screen"},"id":"1027","type":"BoxAnnotation"},{"attributes":{"axis_label":"Amount","axis_label_text_font_style":"bold","formatter":{"id":"1068"},"ticker":{"id":"1018"}},"id":"1017","type":"LinearAxis"},{"attributes":{"data":{"amount":[3371200.0,7612000.0,13540200.0,4122700.0,2545200.0,6327600.0,10788000.0,2852400.0],"company_code":["US001","US001","US001","US001","US001","US001","US001","US001"],"currency_id":[1,1,1,1,1,1,1,1],"index":[3,4,5,6,7,8,9,10],"profit_centre":["paas_KG","paas_OY","paas_SE","paas_SP","saas_KG","saas_OY","saas_SE","saas_SP"],"sub_name":["Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue"]},"selected":{"id":"1046"},"selection_policy":{"id":"1045"}},"id":"1001","type":"ColumnDataSource"},{"attributes":{},"id":"1045","type":"UnionRenderers"},{"attributes":{},"id":"1018","type":"BasicTicker"},{"attributes":{"data":{"amount":[110000.0,179990.0,240000.0],"company_code":["US001","US001","US001"],"currency_id":[1,1,1],"index":[0,1,2],"profit_centre":["consulting_KG","paas_KG","saas_KG"],"sub_name":["Expenses","Expenses","Expenses"]},"selected":{"id":"1063"},"selection_policy":{"id":"1062"}},"id":"1002","type":"ColumnDataSource"},{"attributes":{"axis":{"id":"1017"},"dimension":1,"ticker":null},"id":"1020","type":"Grid"}],"root_ids":["1003"]},"title":"Bokeh Application","version":"2.2.3"}}
-        </script>
-        <script type="text/javascript">
-          (function() {
-            var fn = function() {
-              Bokeh.safely(function() {
-                (function(root) {
-                  function embed_document(root) {
-                    
-                  var docs_json = document.getElementById('1242').textContent;
-                  var render_items = [{"docid":"9f919635-b146-49e8-bdfc-2feb9b53ffb6","root_ids":["1003"],"roots":{"1003":"4368b1b9-6196-4a04-949e-660282f5c9fc"}}];
-                  root.Bokeh.embed.embed_items(docs_json, render_items);
-                
-                  }
+    <div id="aafdcf1d-86ec-4cec-8b88-5365bc864379" data-root-id="p1007" style="display: contents;"></div>
+  
+    <script type="application/json" id="c67540bd-e65d-4c67-b4d2-4270fc29a8f8">
+      {"8c2a6787-b02e-4c20-961d-726dcd1aef6b":{"version":"3.4.1","title":"Bokeh Application","roots":[{"type":"object","name":"Figure","id":"p1007","attributes":{"width":550,"height":500,"x_range":{"type":"object","name":"FactorRange","id":"p1017","attributes":{"factors":["consulting_KG","paas_KG","saas_KG","consulting_OY","consulting_SE","consulting_SP","hard_ware_server_KG","hard_ware_server_OY","hard_ware_server_SE","hard_ware_server_SP","paas_OY","paas_SE","paas_SP","saas_OY","saas_SE","saas_SP"]}},"y_range":{"type":"object","name":"DataRange1d","id":"p1009"},"x_scale":{"type":"object","name":"CategoricalScale","id":"p1018"},"y_scale":{"type":"object","name":"LinearScale","id":"p1019"},"title":{"type":"object","name":"Title","id":"p1010","attributes":{"text":"Profit and loss by profit centre"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1047","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1001","attributes":{"selected":{"type":"object","name":"Selection","id":"p1002","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1003"},"data":{"type":"map","entries":[["index",{"type":"ndarray","array":{"type":"bytes","data":"AwAAAAQAAAAFAAAABgAAAAcAAAAIAAAACQAAAAoAAAALAAAADAAAAA0AAAAOAAAADwAAABAAAAARAAAAEgAAAA=="},"shape":[16],"dtype":"int32","order":"little"}],["company_code",{"type":"ndarray","array":["US001","US001","US001","US001","US001","US001","US001","US001","US001","US001","US001","US001","US001","US001","US001","US001"],"shape":[16],"dtype":"object","order":"little"}],["sub_name",{"type":"ndarray","array":["Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue","Revenue"],"shape":[16],"dtype":"object","order":"little"}],["profit_centre",{"type":"ndarray","array":["consulting_KG","consulting_OY","consulting_SE","consulting_SP","hard_ware_server_KG","hard_ware_server_OY","hard_ware_server_SE","hard_ware_server_SP","paas_KG","paas_OY","paas_SE","paas_SP","saas_KG","saas_OY","saas_SE","saas_SP"],"shape":[16],"dtype":"object","order":"little"}],["currency_id",{"type":"ndarray","array":{"type":"bytes","data":"AQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAA=="},"shape":[16],"dtype":"int32","order":"little"}],["amount",{"type":"ndarray","array":{"type":"bytes","data":"AAAAANYXQkEAAAAAA8ZTQQAAAABwKGJBAAAAABgBREEAAAAAqMtIQQAAAACAhE5BAAAAAFyQXUEAAAAAYONGQQAAAADAPjpBAAAAAEjpTkEAAAAAZAZYQQAAAAD4mztBAAAAgN/hiEEAAADA2WSQQQAAAIBqm6BBAAAAAJAshkE="},"shape":[16],"dtype":"float64","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p1048","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1049"}}},"glyph":{"type":"object","name":"VBar","id":"p1044","attributes":{"x":{"type":"field","field":"profit_centre"},"width":{"type":"value","value":0.8},"top":{"type":"field","field":"amount"},"line_color":{"type":"value","value":"blue"},"fill_color":{"type":"value","value":"blue"},"hatch_color":{"type":"value","value":"blue"}}},"nonselection_glyph":{"type":"object","name":"VBar","id":"p1045","attributes":{"x":{"type":"field","field":"profit_centre"},"width":{"type":"value","value":0.8},"top":{"type":"field","field":"amount"},"line_color":{"type":"value","value":"blue"},"line_alpha":{"type":"value","value":0.1},"fill_color":{"type":"value","value":"blue"},"fill_alpha":{"type":"value","value":0.1},"hatch_color":{"type":"value","value":"blue"},"hatch_alpha":{"type":"value","value":0.1}}},"muted_glyph":{"type":"object","name":"VBar","id":"p1046","attributes":{"x":{"type":"field","field":"profit_centre"},"width":{"type":"value","value":0.8},"top":{"type":"field","field":"amount"},"line_color":{"type":"value","value":"blue"},"line_alpha":{"type":"value","value":0.2},"fill_color":{"type":"value","value":"blue"},"fill_alpha":{"type":"value","value":0.2},"hatch_color":{"type":"value","value":"blue"},"hatch_alpha":{"type":"value","value":0.2}}}}},{"type":"object","name":"GlyphRenderer","id":"p1058","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1004","attributes":{"selected":{"type":"object","name":"Selection","id":"p1005","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1006"},"data":{"type":"map","entries":[["index",{"type":"ndarray","array":{"type":"bytes","data":"AAAAAAEAAAACAAAA"},"shape":[3],"dtype":"int32","order":"little"}],["company_code",{"type":"ndarray","array":["US001","US001","US001"],"shape":[3],"dtype":"object","order":"little"}],["sub_name",{"type":"ndarray","array":["Expenses","Expenses","Expenses"],"shape":[3],"dtype":"object","order":"little"}],["profit_centre",{"type":"ndarray","array":["consulting_KG","paas_KG","saas_KG"],"shape":[3],"dtype":"object","order":"little"}],["currency_id",{"type":"ndarray","array":{"type":"bytes","data":"AQAAAAEAAAABAAAA"},"shape":[3],"dtype":"int32","order":"little"}],["amount",{"type":"ndarray","array":{"type":"bytes","data":"AAAAAADb+kAAAAAAsPgFQQAAAAAATA1B"},"shape":[3],"dtype":"float64","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p1059","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1060"}}},"glyph":{"type":"object","name":"VBar","id":"p1055","attributes":{"x":{"type":"field","field":"profit_centre"},"width":{"type":"value","value":0.9},"top":{"type":"field","field":"amount"},"line_color":{"type":"value","value":"red"},"fill_color":{"type":"value","value":"red"},"hatch_color":{"type":"value","value":"red"}}},"nonselection_glyph":{"type":"object","name":"VBar","id":"p1056","attributes":{"x":{"type":"field","field":"profit_centre"},"width":{"type":"value","value":0.9},"top":{"type":"field","field":"amount"},"line_color":{"type":"value","value":"red"},"line_alpha":{"type":"value","value":0.1},"fill_color":{"type":"value","value":"red"},"fill_alpha":{"type":"value","value":0.1},"hatch_color":{"type":"value","value":"red"},"hatch_alpha":{"type":"value","value":0.1}}},"muted_glyph":{"type":"object","name":"VBar","id":"p1057","attributes":{"x":{"type":"field","field":"profit_centre"},"width":{"type":"value","value":0.9},"top":{"type":"field","field":"amount"},"line_color":{"type":"value","value":"red"},"line_alpha":{"type":"value","value":0.2},"fill_color":{"type":"value","value":"red"},"fill_alpha":{"type":"value","value":0.2},"hatch_color":{"type":"value","value":"red"},"hatch_alpha":{"type":"value","value":0.2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1016","attributes":{"tools":[{"type":"object","name":"PanTool","id":"p1030"},{"type":"object","name":"WheelZoomTool","id":"p1031","attributes":{"renderers":"auto"}},{"type":"object","name":"BoxZoomTool","id":"p1032","attributes":{"overlay":{"type":"object","name":"BoxAnnotation","id":"p1033","attributes":{"syncable":false,"level":"overlay","visible":false,"left":{"type":"number","value":"nan"},"right":{"type":"number","value":"nan"},"top":{"type":"number","value":"nan"},"bottom":{"type":"number","value":"nan"},"left_units":"canvas","right_units":"canvas","top_units":"canvas","bottom_units":"canvas","line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5}}}},{"type":"object","name":"SaveTool","id":"p1038"},{"type":"object","name":"ResetTool","id":"p1039"},{"type":"object","name":"HelpTool","id":"p1040"},{"type":"object","name":"HoverTool","id":"p1062","attributes":{"renderers":"auto","tooltips":[["company_code","@company_code"],["profit_centre","@profit_centre"],["amount","@amount"]],"mode":"vline"}}]}},"left":[{"type":"object","name":"LinearAxis","id":"p1025","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1026","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"NumeralTickFormatter","id":"p1063","attributes":{"format":"$\u20180 a\u2019"}},"axis_label":"Amount","axis_label_text_font_style":"bold","major_label_policy":{"type":"object","name":"AllLabels","id":"p1028"}}}],"below":[{"type":"object","name":"CategoricalAxis","id":"p1020","attributes":{"ticker":{"type":"object","name":"CategoricalTicker","id":"p1021"},"formatter":{"type":"object","name":"CategoricalTickFormatter","id":"p1022"},"axis_label":"Profit centres","axis_label_text_font_size":"12pt","axis_label_text_font_style":"bold","major_label_orientation":0.7853981633974483,"major_label_policy":{"type":"object","name":"AllLabels","id":"p1023"}}}],"center":[{"type":"object","name":"Grid","id":"p1024","attributes":{"axis":{"id":"p1020"}}},{"type":"object","name":"Grid","id":"p1029","attributes":{"dimension":1,"axis":{"id":"p1025"}}},{"type":"object","name":"Legend","id":"p1050","attributes":{"orientation":"horizontal","label_text_font_size":"8pt","items":[{"type":"object","name":"LegendItem","id":"p1051","attributes":{"label":{"type":"value","value":"Revenue"},"renderers":[{"id":"p1047"}]}},{"type":"object","name":"LegendItem","id":"p1061","attributes":{"label":{"type":"value","value":"Expenses"},"renderers":[{"id":"p1058"}]}}]}}]}}]}}
+    </script>
+    <script type="text/javascript">
+      (function() {
+        const fn = function() {
+          Bokeh.safely(function() {
+            (function(root) {
+              function embed_document(root) {
+              const docs_json = document.getElementById('c67540bd-e65d-4c67-b4d2-4270fc29a8f8').textContent;
+              const render_items = [{"docid":"8c2a6787-b02e-4c20-961d-726dcd1aef6b","roots":{"p1007":"aafdcf1d-86ec-4cec-8b88-5365bc864379"},"root_ids":["p1007"]}];
+              root.Bokeh.embed.embed_items(docs_json, render_items);
+              }
+              if (root.Bokeh !== undefined) {
+                embed_document(root);
+              } else {
+                let attempts = 0;
+                const timer = setInterval(function(root) {
                   if (root.Bokeh !== undefined) {
+                    clearInterval(timer);
                     embed_document(root);
                   } else {
-                    var attempts = 0;
-                    var timer = setInterval(function(root) {
-                      if (root.Bokeh !== undefined) {
-                        clearInterval(timer);
-                        embed_document(root);
-                      } else {
-                        attempts++;
-                        if (attempts > 100) {
-                          clearInterval(timer);
-                          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
-                        }
-                      }
-                    }, 10, root)
+                    attempts++;
+                    if (attempts > 100) {
+                      clearInterval(timer);
+                      console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+                    }
                   }
-                })(window);
-              });
-            };
-            if (document.readyState != "loading") fn();
-            else document.addEventListener("DOMContentLoaded", fn);
-          })();
-        </script>
-    
+                }, 10, root)
+              }
+            })(window);
+          });
+        };
+        if (document.readyState != "loading") fn();
+        else document.addEventListener("DOMContentLoaded", fn);
+      })();
+    </script>
   </body>
-  
 </html>

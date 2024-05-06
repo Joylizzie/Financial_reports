@@ -3,6 +3,8 @@
 -- after insert the query into database, rie_ids will be auto generated
 -- info of ar_invoice will feed the table ar_invoice_items
 
+set search_path TO ocean_stream;
+
 insert into ar_invoice(company_code, date, invoice_id)
 	select company_code,invoice_date as date, invoice_id from sales_invoices
 	        where company_code = 'US001'

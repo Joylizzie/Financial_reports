@@ -9,12 +9,24 @@ random.seed(5)
 
 # without random.seed(5),if rerun the below code, the results of pre_sales_orders_items will be different because of random values were chosen.
 # fetch existing sales_order_ids and product_ids in database where the company_code is 'US001'
-# generate sale_orders_items tuples.
-def _get_conn(pw, user_str):
+
+# get connection via psycopg2
+# def _get_conn(pw, user_str):
+#    """use .bashrc to store postgres variables"""
+#     conn = psycopg2.connect(host="localhost",
+#                             database = db,
+#                             user= user_str,
+#                             password=pw)
+#     conn.autocommit = False
+#     return conn
+
+# get connection via psycopg2
+def _get_conn(user_str):
+    """use .pgpass to store postgres variables"""
     conn = psycopg2.connect(host="localhost",
                             database = db,
-                            user= user_str,
-                            password=pw)
+                            user= user_str
+                            )
     conn.autocommit = False
     return conn
 
@@ -30,6 +42,7 @@ def get_so_ids(conn, start_date, end_date):
          """
                  
     with conn.cursor() as curs:
+        curs.execute("set search_path to ocean_stream;")
         curs.execute(sql_so_i,{'start_date':start_date, 'end_date':end_date})  #cursor closed after the execute action
         (sales_order_id_i) = curs.fetchall()
        
@@ -42,7 +55,8 @@ def get_product_ids(conn):
 
     sql_pi = """ select product_id, product_unit_price from products where company_code='US001' 
              """
-    with conn.cursor() as curs:
+    with  conn.cursor() as curs:
+        curs.execute("set search_path to ocean_stream;")
         curs.execute(sql_pi)  #cursor closed after the execute action
         products = curs.fetchall()
     conn.commit() 
@@ -107,9 +121,11 @@ def _to_csv(conn, start_date, end_date):
 
 if __name__ == '__main__':
     db = 'ocean_stream'
-    pw = os.environ['POSTGRES_PW']
-    user_str = os.environ['POSTGRES_USER']
-    conn = _get_conn(pw, user_str)
+    # pw = os.environ['POSTGRES_PW']
+    # user_str = os.environ['POSTGRES_USER']
+    # conn = _get_conn(pw, user_str)
+    user_str = 'ocean_user'
+    conn = _get_conn(user_str)
     start_date=datetime.date(2021,3,1)
     end_date= datetime.date(2021,3,31)
     #get_so_ids(conn, start_date, end_date)

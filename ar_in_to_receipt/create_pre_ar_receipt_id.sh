@@ -1,0 +1,1 @@
+cp ar_in_to_receipt/pre_ar_receipt_id.csv /tmp

@@ -7,8 +7,8 @@ import random
 from generate_cust_ids import customer_ids
 import make_random_data
 
-random.seed(5)
 
+random.seed(5)
 
 def generate_customer_names(data_file):
     business_type = [1,2]

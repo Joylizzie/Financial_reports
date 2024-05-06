@@ -14,11 +14,11 @@ import pathlib
 # then deduct all kinds of expenses to get the net profit 
 
 # connect to Postgres
-def _get_conn(pw, user_str):
+def _get_conn(user_str):
     conn = psycopg2.connect(host="localhost",
                             database = db,
                             user= user_str,
-                            password=pw)
+                            )
     conn.autocommit = False
     return conn
 
@@ -33,6 +33,7 @@ def num_format(num, round_to=2):
 def get_sub_graph(conn):
     func = """select * from trial_balance_bspl_full('US001',50,99, '2021-03-01', '2021-03-31');"""
     with conn.cursor() as curs:
+        curs.execute("set search_path to ocean_stream;")
         curs.execute(func)
         pls = curs.fetchall()
 
@@ -92,9 +93,10 @@ def get_sub_graph(conn):
     
 if __name__ == '__main__':
     db = 'ocean_stream'
-    pw = os.environ['POSTGRES_PW']
-    user_str = os.environ['POSTGRES_USER']
-    conn = _get_conn(pw, user_str)
+    # pw = os.environ['POSTGRES_PW']
+    # user_str = os.environ['POSTGRES_USER']
+    user_str = 'ocean_user'
+    conn = _get_conn(user_str)
     end_date = datetime.date(2021,3,31)
     
     get_sub_graph(conn)

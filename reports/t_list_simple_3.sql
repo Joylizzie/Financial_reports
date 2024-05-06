@@ -7,6 +7,8 @@
    6. This query is to change 'credit' as postitive number 
 */
 
+set search_path to ocean_stream;
+
 select coa.bs_pl_index,
         bpi.bs_pl_cat_name,
         

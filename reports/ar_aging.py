@@ -1,22 +1,34 @@
 import os
 import psycopg2
 import csv
+# from  ocean_connect import get_conn
 
 
 # Get connection
-def _get_conn(pw, user_str):
+# def _get_conn(pw, user_str):
+#     conn = psycopg2.connect(host="localhost",
+#                             database = db,
+#                             user= user_str,
+#                             password=pw)
+#     conn.autocommit = False
+#     return conn
+
+# get connection via psycopg2
+def _get_conn(user_str):
+    """use .pgpass to store postgres variables"""
     conn = psycopg2.connect(host="localhost",
                             database = db,
-                            user= user_str,
-                            password=pw)
+                            user= user_str
+                            )
     conn.autocommit = False
-    return conn
+    return conn 
     
 def ar_aging(conn, company_code, query_date):
     sql_file = open('reports/ar_aging_w_p.sql', 'r')
     sql = sql_file.read()
     
     with conn.cursor() as curs:
+        curs.execute("set search_path to ocean_stream;")
         curs.execute(sql, {'company_code':company_code, 'query_date':query_date})  #cursor closed after the execute action
         (ar_aging) = curs.fetchall()
         return ar_aging
@@ -34,9 +46,11 @@ def to_csv(conn, company_code, query_date):
     
 if __name__ == '__main__':
     db = 'ocean_stream'
-    pw = os.environ['POSTGRES_PW']
-    user_str = os.environ['POSTGRES_USER']
-    conn = _get_conn(pw, user_str)
+    # pw = os.environ['POSTGRES_PW']
+    # user_str = os.environ['POSTGRES_USER']
+    # conn = _get_conn(pw, user_str)
+    user_str ='ocean_user'
+    conn = _get_conn(user_str)
     query_date = '2021-04-16'
     company_code = 'US001'
     ar_aging(conn, company_code, query_date)

@@ -9,3 +9,7 @@ in_progress/
 intermediate_csv/
 venv
 venv/
+finweb/finweb/env
+finweb/finweb/__pycache__/
+finweb/araging/__pycache__/
+*.env
