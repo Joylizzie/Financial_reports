@@ -1,37 +1,79 @@
 from django.shortcuts import render
 
 from django.conf import settings
-from django.db import connection
 from django.http import HttpResponse
-from bokeh.plotting import figure, show
+from bokeh.plotting import figure
 from bokeh.resources import CDN
+from django.views import generic
 from bokeh.embed import components, file_html
-from .models import CustomerNames
+from django.db import connections
+
+import pandas as pd
+from bokeh.models import (HoverTool, ColumnDataSource,NumeralTickFormatter)
+from math import pi
 
 def index(request):
-    customers_lst = CustomerNames.objects.order_by('customer_id')[:20]
-    return HttpResponse(customers_lst)
+    conn = connections['default']
+    func = """select * from transaction_list('US001',500000, 999999, '2021-03-01', '2021-03-31')"""
+    with conn.cursor() as curs:
+        curs.execute("set search_path to ocean_stream;")
+        curs.execute(func)
+        pls = curs.fetchall()
 
-def homepage(request):
+        conn.commit()
+        df = pd.DataFrame(pls, columns=['company_code', 'sub_name','profit_centre','currency_id','amount'])
+        df['amount'] = df['amount'].astype(float)
+        # a list of unique profit centres for bokeh figure
+        pcs = list(df['profit_centre'].unique())
+        # a list of unique sub_name for different graphs
+        sub_names = list(df['sub_name'].unique())
+        # dataframes filtered by sub_name 
+        df_rev = df.loc[df['sub_name']== 'Revenue']
+        df_exp = df.loc[df['sub_name']== 'Expenses']
+        #turn above sub_name dataframe into ColumnDataSource
+        source_rev = ColumnDataSource(df_rev)
+        source_exp = ColumnDataSource(df_exp)
+        # # save the html file to folder '/home/lizhi/projects/joylizzie/Financial_reports/reporting_results/htmls'
+        # head, tail =  os.path.split(pathlib.Path(__file__).parent.absolute())
+ 
+        # path = os.path.join(head, 'reporting_results/htmls', f'3_profit_loss_by_pc_{end_date.strftime("%m_%Y")}.html')
+        # output_file(filename=path, title=f'profit and loss during {end_date.strftime("%b-%Y")}')        
 
-    fruits = ['Apples', 'Pears', 'Nectarines', 'Plums', 'Grapes', 'Strawberries']
-    counts = [5, 3, 4, 2, 4, 6]
+        p = figure(x_range=pcs,                 
+                   height=500,
+                  width=550,
+               title='Profit and loss by profit centre',
+               x_axis_label="Profit centres",
+               y_axis_label="Amount",
+               toolbar_location="right")
 
-    p = figure(x_range=fruits, height=350, title="Fruit Counts",
-           toolbar_location=None, tools="")
+        p.vbar(x='profit_centre',
+            top='amount',
+            bottom = 0,
+            source = source_rev,
+            width=0.8,
+            color='blue',
+            legend_label='Revenue')
 
-    p.vbar(x=fruits, top=counts, width=0.9)
+        p.vbar(x='profit_centre',
+            top='amount',
+            bottom = 0,
+            source = source_exp,
+            width=0.9,
+            color='red',
+            legend_label='Expenses')
 
-    p.xgrid.grid_line_color = None
-    p.y_range.start = 0
+        p.add_tools(HoverTool(tooltips=[('company_code', '@company_code'),
+                                        ('profit_centre', '@profit_centre'),                                    
+                                    ('amount', '@amount')], mode='vline'))
+                                    
+        p.yaxis.formatter=NumeralTickFormatter(format="$‘0 a’")        
+        p.xaxis.major_label_orientation = pi/4 
+        p.xaxis.axis_label_text_font_size = "12pt"
+        p.axis.axis_label_text_font_style = 'bold'                               
+        p.legend.orientation = "horizontal"
+        p.legend.label_text_font_size = '8pt'
 
-    script, div = components(p)
-    return render(request,'templates/araging/base.html', {'script':script, 'div':div})
-
-# def databases(request):
-#     connection.ensure_connection()
-#     return HttpResponse("")
-
-# def customers_view(request, customer_id):
-#     response = "This is cusomter %s"
-#     return HttpResponse(response%customer_id)
+        script, div = components(p)
+ 
+        return render(request, 'araging/index.html', {'script': script, 'div': div})

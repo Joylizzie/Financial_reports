@@ -1,5 +1,5 @@
 {% load static %}
-
+<!---
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,7 +13,7 @@
     <script defer src="{% static 'js/app.js' %}"></script>
 
     {# Generated with: https://realfavicongenerator.net/ #}
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="apple-touch-icon" sizes="80x180" href="{% static 'apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
     <link rel="manifest" href="{% static 'site.webmanifest' %}">
@@ -61,4 +61,37 @@
       </p>
     </footer>
   </body>
+</html>
+-->
+
+<!DOCTYPE html> <html>
+  <head>
+    <link href=”http://cdn.pydata.org/bokeh/release/bokeh-3.4.1.min.css
+    " rel=”stylesheet” type=”text/css”>
+ <link href=”http://cdn.pydata.org/bokeh/release/bokeh-widgets-3.4.1.min.css" 
+    rel=”stylesheet” type=”text/css”>
+    <title>Ocean Steam Finacial Report</title>
+  </head>
+  <body>
+    <h1> A Letter to Our Shareholders</h1>
+     {{div| safe}}
+     
+    <p> We appreciate your continiuing interest in our Company and are please to provide this review of out 2023 performance and , importantly, a look ahead.</p>
+    <p> The First Industrial team again delievered strong results in 2023, as we, along with everyone else, navigated out way through highly volatile and more costly capital markets and significant uncertainty with respect to the strength of the overall economy.</p>
+    <p> A major highlights for us was acgievibg a bew record for cash rental rate growth on new and renewwal leasing of 58 percent.</p>
+
+    <p>Please click each tab to see the different reports</p>
+    <nav>
+      <a href="/html/">Balance Sheet </a> |
+      <a href="/html/">Profit and Loss </a> |
+      <a href="AR aging/"> AR aging</a>
+    </nav>
+  
+  </body>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.4.1.min.js"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.4.1.min.js"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.4.1.min.js"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-api-3.4.1.min.js"></script>
+  {{script| safe}}
+
 </html>
