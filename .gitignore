@@ -5,11 +5,16 @@ temp.sql
 data/customers_full.csv
 in_progress/
 /henry/
-/venv/
 intermediate_csv/
-venv
-venv/
 finweb/finweb/env
-finweb/finweb/__pycache__/
-finweb/araging/__pycache__/
-*.env
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+db.sqlite3
+finweb/__pycache__/settings.cpython-312.pyc
+
