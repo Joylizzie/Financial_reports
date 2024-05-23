@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from pathlib import Path
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -13,6 +14,14 @@ from bokeh.models import (HoverTool, ColumnDataSource,NumeralTickFormatter)
 from math import pi
 
 def index(request):
+
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    return render(request, 'finreports/index.html')
+
+def balancesheet(request):
+    return render(request, "this is balance sheet")
+
+def pl(request):
     conn = connections['default']
     func = """select * from transaction_list('US001',500000, 999999, '2021-03-01', '2021-03-31')"""
     with conn.cursor() as curs:
@@ -76,4 +85,9 @@ def index(request):
 
         script, div = components(p)
  
-        return render(request, 'araging/index.html', {'script': script, 'div': div})
+        return render(request, '/pl/pl.html', {'script': script, 'div': div})
+
+
+def araging(request):
+
+    return render(request,"this is Account receivable aging")

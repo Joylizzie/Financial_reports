@@ -16,3 +16,5 @@ ENV/
 env.bak/
 venv.bak/
 db.sqlite3
+finweb/__pycache__/settings.cpython-312.pyc
+
