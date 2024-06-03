@@ -14,8 +14,6 @@ from bokeh.models import (HoverTool, ColumnDataSource,NumeralTickFormatter)
 from math import pi
 
 def index(request):
-
-    BASE_DIR = Path(__file__).resolve().parent.parent
     return render(request, 'finreports/index.html')
 
 def balancesheet(request):
