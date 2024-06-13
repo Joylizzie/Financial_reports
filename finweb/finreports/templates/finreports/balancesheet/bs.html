@@ -11,8 +11,8 @@
 </head>
 
   <body>
-    <h1 style="background-color: rgb(79, 178, 191);" align='left'>Income Statement</h1>
-    <p> We makde profit 20million</p>
+    <h1 style="background-color: rgb(79, 178, 191);" align='left'>Ocean Stream Balance Sheet</h1>
+    <p> We made profit 20million</p>
     <div class="container overflow-hidden">
       <div class="row gx-5">
         <dic class="col">
@@ -21,6 +21,17 @@
     </div>
     </dic>
   </div class="p-3 border bg-light">
+  <table id="table" class="display" style="width: 100%;">
+    <tbody>
+      {% for row in data %}
+      <tr>
+        {% for val in row.values %}
+        <td>{{ val }}</td>
+        {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
   
      {{div| safe}}               
     </div>
