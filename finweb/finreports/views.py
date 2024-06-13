@@ -8,6 +8,9 @@ from bokeh.resources import CDN
 from django.views import generic
 from bokeh.embed import components, file_html
 from django.db import connections
+from itertools import chain
+from pathlib import Path
+import csv
 
 import pandas as pd
 from bokeh.models import (HoverTool, ColumnDataSource,NumeralTickFormatter)
@@ -17,7 +20,12 @@ def index(request):
     return render(request, 'finreports/index.html')
 
 def balancesheet(request):
-    return render(request, "this is balance sheet")
+
+    BASE_DIR = Path(__file__).resolve().parent.parent.parent
+    csv_fp = open(f'{BASE_DIR}/reporting_results/4_sum_bs_03_2021.csv', 'r')
+    reader = csv.DictReader(csv_fp)
+    out = [row for row in reader]
+    return render(request, 'finreports/balancesheet/bs.html', {'data' : out})
 
 def pl(request):
     conn = connections['default']
@@ -83,7 +91,7 @@ def pl(request):
 
         script, div = components(p)
  
-        return render(request, '/pl/pl.html', {'script': script, 'div': div})
+        return render(request, 'finreports/pl/pl.html', {'script': script, 'div': div})
 
 
 def araging(request):

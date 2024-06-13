@@ -4,9 +4,11 @@ import pandas as pd
 import numpy as np
 import datetime
 import csv
+from pathlib import Path
 import itertools
 
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 # # Get connection
 # def _get_conn(pw, user_str):
 #     conn = psycopg2.connect(host="localhost",
